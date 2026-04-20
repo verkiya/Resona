@@ -10,14 +10,41 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
+
+        ctaGlow:
+          "relative bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] text-white font-semibold shadow-lg hover:brightness-110 active:scale-[0.97] before:absolute before:inset-0 before:rounded-md before:bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] before:blur-lg before:opacity-40 before:-z-10",
+
+        softGradient:
+          "bg-[linear-gradient(120deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] text-foreground border border-border shadow-sm hover:brightness-105 hover:saturate-110 hover:shadow-md active:scale-[0.99]",
+
+        accentFill:
+          "bg-accent/80 text-white font-medium shadow-sm hover:bg-accent hover:shadow-md data-[active=true]:bg-accent data-[active=true]:text-white",
+
+        subtleCta:
+          "bg-muted text-foreground border border-border hover:bg-[linear-gradient(90deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] hover:text-white",
+
+        outlineAccent:
+          "border border-accent/40 text-accent hover:bg-accent/10 hover:border-accent",
+
+        glassCta:
+          "bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 shadow-lg",
+
+        success:
+          "bg-[linear-gradient(90deg,#34d399,#4ade80)] text-white font-medium shadow-sm hover:brightness-110",
+
+        loading:
+          "relative overflow-hidden bg-muted text-muted-foreground before:absolute before:inset-0 before:bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)] before:animate-[shimmer_1.5s_infinite]",
+
+        destructive: "bg-destructive text-white hover:bg-destructive/90",
+
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

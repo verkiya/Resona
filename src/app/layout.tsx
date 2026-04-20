@@ -22,7 +22,10 @@ const mono = JetBrains_Mono({
    Metadata
 ========================= */
 export const metadata: Metadata = {
-  title: "Resona",
+  title: {
+    default: "Resona",
+    template: "Resona | %s",
+  },
   description: "AI Voice Generation SaaS Platform",
   icons: {
     icon: "/resona.svg",

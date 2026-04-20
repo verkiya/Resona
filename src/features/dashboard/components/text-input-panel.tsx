@@ -5,7 +5,10 @@ import { Coins } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { TEXT_MAX_LENGTH } from "@/features/text-to-speech/data/constants";
+import {
+  COST_PER_UNIT,
+  TEXT_MAX_LENGTH,
+} from "@/features/text-to-speech/data/constants";
 export function TextInputPanel() {
   const [text, setText] = useState("");
   const router = useRouter();
@@ -41,7 +44,7 @@ rounded-[22px] bg-[linear-gradient(185deg,#6d28d9cc_10%,#a855f7cc_45%,#db2777cc_
                 ) : (
                   <>
                     <span className="tabular-nums">
-                      ${(text.length * 0.0003).toFixed(4)}
+                      ${(text.length * COST_PER_UNIT).toFixed(4)}
                     </span>{" "}
                     estimated
                   </>
