@@ -6,6 +6,7 @@
     "predev": "prisma generate",
     "dev": "next dev",
     "prebuild": "prisma generate",
+    "postinstall": "prisma generate",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
