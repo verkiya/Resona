@@ -109,7 +109,7 @@ export function DashboardSidebar() {
     },
     {
       title: "Help and support",
-      url: "mailto:himanshuverkiya@gmail.com",
+      url: "https://github.com/verkiya",
       icon: Headphones,
     },
   ];
@@ -118,16 +118,18 @@ export function DashboardSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-col gap-4 pt-4">
         <div className="flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
-          <Image
-            src="/resona.svg"
-            alt="Resona"
-            width={40}
-            height={40}
-            className="rounded-sm mb-1"
-          />
-          <span className=" group-data-[collapsible=icon]:hidden font-semibold text-5xl mt-2 -ml-2 tracking-tighter bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] bg-clip-text text-transparent">
-            esona
-          </span>
+          <Link href="/" className="flex flex-1">
+            <Image
+              src="/resona.svg"
+              alt="Resona"
+              width={42}
+              height={42}
+              className="rounded-sm "
+            />
+            <span className="mt-4 group-data-[collapsible=icon]:hidden font-semibold text-5xl tracking-tighter bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] bg-clip-text text-transparent">
+              esona
+            </span>
+          </Link>
           <SidebarTrigger className="ml-auto lg:hidden" />
         </div>
 

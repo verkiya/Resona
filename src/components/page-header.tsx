@@ -23,14 +23,14 @@ export function PageHeader({
         <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
       </div>
       <div className="flex items-center gap-3">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="mailto:himanshuverkiya@gmail.com">
+        <Button variant="accentFill" size="sm" asChild>
+          <Link href="https://github.com/verkiya">
             <ThumbsUp />
             <span className="hidden lg:block">Feedback</span>
           </Link>
         </Button>
-        <Button variant="outline" size="sm" asChild>
-          <Link href="mailto:himanshuverkiya@gmail.com">
+        <Button variant="link" size="sm" asChild>
+          <Link href="https://github.com/verkiya">
             <Headphones />
             <span className="hidden lg:block">Need Help?</span>
           </Link>
