@@ -37,13 +37,13 @@ export function DashboardHeader() {
       </div>
 
       <div className="lg:flex items-center gap-3 hidden">
-        <Button variant="outline" size="sm" asChild>
+        <Button variant="accentFill" size="sm" asChild>
           <Link href="https://github.com/verkiya">
             <ThumbsUp />
             <span className="hidden lg:block">Feedback</span>
           </Link>
         </Button>
-        <Button variant="outline" size="sm" asChild>
+        <Button variant="link" size="sm" asChild>
           <Link href="https://github.com/verkiya">
             <Headphones />
             <span className="hidden lg:block">Need help?</span>
