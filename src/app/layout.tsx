@@ -3,6 +3,7 @@ import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
+import { TRPCReactProvider } from "@/trpc/client";
 /* =========================
    Fonts
 ========================= */
@@ -42,15 +43,17 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html
-        lang="en"
-        className={`${outfit.variable} ${mono.variable} h-full antialiased`}
-      >
-        <body className="min-h-full flex flex-col bg-background text-foreground">
-          {children}
-          <Toaster />
-        </body>
-      </html>
+      <TRPCReactProvider>
+        <html
+          lang="en"
+          className={`${outfit.variable} ${mono.variable} h-full antialiased`}
+        >
+          <body className="min-h-full flex flex-col bg-background text-foreground">
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </TRPCReactProvider>
     </ClerkProvider>
   );
 }

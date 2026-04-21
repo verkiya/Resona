@@ -1,7 +1,5 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
   provider = "prisma-client"
@@ -11,11 +9,13 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-enum VoiceVariant{
+
+enum VoiceVariant {
   SYSTEM
   CUSTOM
 }
-enum VoiceCategory{
+
+enum VoiceCategory {
   AUDIOBOOK
   CONVERSATIONAL
   CUSTOMER_SERVICE
@@ -30,35 +30,54 @@ enum VoiceCategory{
   CORPORATE
 }
 
-model Voice{
+model Voice {
   id String @id @default(cuid())
+
   orgId String?
+
   name String
   description String?
+
   category VoiceCategory @default(GENERAL)
   language String @default("en-US")
+
   variant VoiceVariant
-  r2ObjectKey String?
+
+  objectKey String?   // ✅ storage-agnostic key
+
   generations Generation[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@index([variant])
   @@index([orgId])
+  @@index([objectKey])         // ✅ useful for lookups
+  @@unique([name, variant])    // ✅ prevents duplicate SYSTEM voices
 }
-model Generation{
+
+model Generation {
   id String @id @default(cuid())
+
   orgId String
+
   voiceId String?
   voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull)
+
   voiceName String
   text String
-  r2ObjectKey String?
+
+  objectKey String?   // ✅ storage-agnostic key
+
   temperature Float
   topP Float
   topK Int
   repetitionPenalty Float
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
   @@index([orgId])
   @@index([voiceId])
+  @@index([objectKey])   // ✅ optional but useful
 }
