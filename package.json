@@ -17,6 +17,8 @@
     "@aws-sdk/s3-request-presigner": "^3.1033.0",
     "@base-ui/react": "^1.4.0",
     "@clerk/nextjs": "^7.2.3",
+    "@dicebear/collection": "^9.4.2",
+    "@dicebear/core": "^9.4.2",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
