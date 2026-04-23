@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { chatterbox } from "@/lib/chatterbox-client";
+import * as Sentry from "@sentry/node";
 import { prisma } from "@/lib/db";
 import { uploadAudio } from "@/lib/aws_s3";
 import { TEXT_MAX_LENGTH } from "@/features/text-to-speech/data/constants";
@@ -50,16 +51,13 @@ export const generationsRouter = createTRPCRouter({
         topP: z.number().min(0).max(1).default(0.95),
         topK: z.number().min(1).max(10000).default(1000),
         repetitionPenalty: z.number().min(1).max(2).default(1.2),
-      })
+      }),
     )
     .mutation(async ({ input, ctx }) => {
       const voice = await prisma.voice.findUnique({
         where: {
           id: input.voiceId,
-          OR: [
-            { variant: "SYSTEM" },
-            { variant: "CUSTOM", orgId: ctx.orgId, }
-          ],
+          OR: [{ variant: "SYSTEM" }, { variant: "CUSTOM", orgId: ctx.orgId }],
         },
         select: {
           id: true,
@@ -93,6 +91,11 @@ export const generationsRouter = createTRPCRouter({
           norm_loudness: true,
         },
         parseAs: "arrayBuffer",
+      });
+      Sentry.logger.info("Generation started", {
+        orgId: ctx.orgId,
+        voiceId: input.voiceId,
+        textLength: input.text.length,
       });
 
       if (error) {
@@ -143,6 +146,10 @@ export const generationsRouter = createTRPCRouter({
             objectKey,
           },
         });
+        Sentry.logger.info("Audio generated", {
+          orgId: ctx.orgId,
+          generationId: generation.id,
+        });
       } catch {
         if (generationId) {
           await prisma.generation
@@ -153,6 +160,10 @@ export const generationsRouter = createTRPCRouter({
             })
             .catch(() => {});
         }
+        Sentry.logger.error("Generation failed", {
+          orgId: ctx.orgId,
+          voiceId: input.voiceId,
+        });
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
