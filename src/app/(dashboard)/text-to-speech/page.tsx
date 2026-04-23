@@ -11,6 +11,7 @@ export default async function TextToSpeechPage({
   const text = params.text;
   const voiceId = params.voiceId ?? params.voiceid;
   prefetch(trpc.voices.getAll.queryOptions());
+  prefetch(trpc.generations.getAll.queryOptions());
   return (
     <HydrateClient>
       <TextToSpeechView initialValues={{ text, voiceId }} />
