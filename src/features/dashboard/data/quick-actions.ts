@@ -7,39 +7,44 @@ export interface QuickAction {
 
 export const quickActions: QuickAction[] = [
   {
-    title: "Narrate a Story",
-    description: "Turn text into immersive, expressive storytelling",
-    gradient: "from-cyan-300 via-sky-200 to-blue-200",
-    href: "/text-to-speech?text=In a village tucked between mist-covered mountains, there lived an old clockmaker whose clocks never told the right time — but they always told the truth. One rainy evening, a stranger walked in and asked for a clock that could show him his future.",
+    title: "The Truthkeeper's Clock",
+    description: "Narrate rich cinematic fiction with emotional pacing",
+    gradient: "from-rose-200 via-stone-100 to-amber-50",
+    href: "/text-to-speech?text=In a forgotten mountain village, an old clockmaker built clocks that never told the correct time, yet somehow always revealed the truth. One stormy evening, a traveler entered his workshop carrying a photograph of a woman who had vanished twenty years earlier. He placed it beside the ticking clocks and whispered, I need to know when she comes back.",
   },
+
   {
-    title: "Record an Ad",
-    description: "Create clean, persuasive voiceovers for products",
-    gradient: "from-yellow-300 via-amber-200 to-lime-200",
-    href: "/text-to-speech?text=Introducing BrightBean Coffee — the smoothest roast you'll ever taste. Sourced from high-altitude farms, slow-roasted to perfection, and delivered fresh to your door every single week. Wake up to something extraordinary. Try BrightBean today and get your first bag free.",
+    title: "Launch a Luxury Brand",
+    description: "Generate polished premium ad voiceovers that convert",
+    gradient: "from-yellow-200 via-amber-100 to-stone-50",
+    href: "/text-to-speech?text=Introducing Aureline No. 7, a fragrance crafted for those who leave a lasting impression without saying a word. Notes of smoked vanilla, saffron, and midnight cedar unfold with every breath. This is not perfume. It is presence. Discover Aureline, where elegance becomes unforgettable.",
   },
+
   {
-    title: "Direct a Movie Scene",
-    description: "Generate cinematic dialogue with emotional depth",
-    gradient: "from-indigo-400 via-blue-300 to-slate-200",
-    href: "/text-to-speech?text=The rain hammered against the window as she turned to face him. You knew, didn't you? she whispered, her voice barely holding together. He stepped forward, jaw clenched. I did what I had to do. The silence between them was louder than the storm outside.",
+    title: "Interrogate the Suspect",
+    description: "Create tense dialogue scenes with cinematic realism",
+    gradient: "from-slate-300 via-zinc-200 to-stone-100",
+    href: "/text-to-speech?text=Detective Rao leaned forward beneath the flickering interrogation room light. You said you were home at eleven. The taxi driver says midnight. Across the table, the suspect smiled faintly. Maybe your driver remembers the wrong face. Rao slid the photograph across the table. Then why were you standing beside the victim five minutes before he died?",
   },
+
   {
-    title: "Voice a Game Character",
-    description: "Bring characters to life with dynamic voices",
-    gradient: "from-blue-400 via-cyan-300 to-teal-200",
-    href: "/text-to-speech?text=Listen up, adventurer. The realm of Ashenvale is crumbling, and the Crystal of Eternity has been shattered into seven pieces. You are the only one who can reassemble it. Gather your courage, sharpen your blade, and meet me at the Gates of Dawn. Time is not on our side.",
+    title: "Summon the Final Boss",
+    description: "Bring larger-than-life game characters to life",
+    gradient: "from-fuchsia-200 via-violet-100 to-slate-100",
+    href: "/text-to-speech?text=So, the last of the heroes finally arrives. I watched kingdoms burn while you trained with wooden swords and false hope. Kneel now, and I may grant your people a quicker end. Refuse, and I will carve your name into the ruins of this world as a warning to those who dream of defiance.",
   },
+
   {
-    title: "Introduce Your Podcast",
-    description: "Hook listeners instantly with a strong opening",
-    gradient: "from-lime-300 via-emerald-200 to-green-200",
-    href: "/text-to-speech?text=Hey everyone, welcome back to another episode of The Curious Mind — the podcast where we dig into the stories, science, and strange ideas that shape our world. I'm your host, and today we have an incredible guest who's going to challenge everything you thought you knew.",
+    title: "Open a Viral Podcast",
+    description: "Craft energetic intros designed to hook listeners fast",
+    gradient: "from-teal-200 via-cyan-100 to-zinc-50",
+    href: "/text-to-speech?text=Welcome back to Signal & Static, the show where we unpack the strange stories shaping technology, culture, and the future. Today, we're diving into the billion-dollar startup that nearly collapsed because of a single overlooked email. Trust me, this one gets wild fast.",
   },
+
   {
-    title: "Guide a Meditation",
-    description: "Create calm, soothing guided audio sessions",
-    gradient: "from-sky-200 via-teal-200 to-emerald-100",
-    href: "/text-to-speech?text=Close your eyes and take a deep breath in. Hold it gently... and release. Feel the weight of the day slowly melting away. With each breath, you're sinking deeper into calm. There is nowhere else you need to be. Just here. Just now. Breathe in peace, breathe out tension.",
+    title: "Guide Deep Calm",
+    description: "Generate soothing meditation and mindfulness narration",
+    gradient: "from-emerald-100 via-teal-50 to-stone-50",
+    href: "/text-to-speech?text=Take a slow breath in through your nose. Hold it gently. Now release. Let your shoulders soften. Let your jaw unclench. Imagine the noise of the day dissolving like mist at sunrise. For the next few moments, there is nothing to solve, nowhere to rush, and nothing required of you except this breath.",
   },
 ];

@@ -1,10 +1,9 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { Headphones, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { FaGithub } from "react-icons/fa";
 
 export function DashboardHeader() {
   const { isLoaded, user } = useUser();
@@ -33,22 +32,27 @@ export function DashboardHeader() {
             <span className="w-4 h-4 rounded-full bg-[oklch(0.75_0.15_300)] animate-bounce [animation-delay:-0.1s]" />
             <span className="w-4 h-4 rounded-full bg-[oklch(0.72_0.13_25)] animate-bounce" />
           </span>
-        </h1>
+        </h1>{" "}
+        <p className="text-sm text-muted-foreground">
+          Ready to generate something new?
+        </p>
       </div>
 
       <div className="lg:flex items-center gap-3 hidden">
-        <Button variant="accentFill" size="sm" asChild>
-          <Link href="https://github.com/verkiya">
-            <ThumbsUp />
-            <span className="hidden lg:block">Feedback</span>
-          </Link>
-        </Button>
-        <Button variant="link" size="sm" asChild>
-          <Link href="https://github.com/verkiya">
-            <Headphones />
-            <span className="hidden lg:block">Need help?</span>
-          </Link>
-        </Button>
+        <Link
+          href="https://github.com/verkiya/Resona"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group elevated flex items-center gap-2 rounded-2xl border border-border/60 bg-card/70 px-4 py-2 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-[linear-gradient(90deg,oklch(0.72_0.13_25/.15),oklch(0.75_0.15_300/.15))]"
+        >
+          <FaGithub
+            className="h-5 w-5 transition-all duration-500 ease-out group-hover:-translate-y-0.5
+group-hover:rotate-12
+group-hover:scale-110  group-hover:text-primary"
+          />
+
+          <span className="text-sm font-medium">Source Code</span>
+        </Link>
       </div>
     </div>
   );

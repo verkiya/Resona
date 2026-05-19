@@ -189,6 +189,7 @@ export function DashboardSidebar() {
       title: "Help and support",
       url: "https://github.com/verkiya",
       icon: Headphones,
+      external: true,
     },
   ];
 
@@ -201,10 +202,7 @@ export function DashboardSidebar() {
       <Sidebar collapsible="icon">
         <SidebarHeader className="flex flex-col gap-4 pt-4">
           <div className="flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
-            <Link
-              href="/"
-              className="flex flex-1 "
-            >
+            <Link href="/" className="flex flex-1 ">
               <Image
                 src="/resona.svg"
                 alt="Resona"
@@ -224,7 +222,7 @@ export function DashboardSidebar() {
               <OrganizationSwitcher
                 hidePersonal
                 fallback={
-                  <Skeleton className="h-10 w-full rounded-xl border bg-card group-data-[collapsible=icon]:size-8" />
+                  <Skeleton className="h-10 w-full rounded-xl border border-border/60 bg-card shadow-sm group-data-[collapsible=icon]:size-10" />
                 }
                 appearance={{
                   elements: {
@@ -243,7 +241,7 @@ export function DashboardSidebar() {
                     organizationPreviewMainIdentifier: "text-sm!",
 
                     organizationSwitcherTriggerIcon:
-                      "size-2! text-muted-foreground! group-data-[collapsible=icon]:hidden!",
+                      "size-4! text-muted-foreground! group-data-[collapsible=icon]:hidden!",
                   },
                 }}
               />
@@ -274,7 +272,7 @@ export function DashboardSidebar() {
               <UserButton
                 showName
                 fallback={
-                  <Skeleton className="h-10 w-full rounded-xl border border-border/60 bg-card group-data-[collapsible=icon]:size-10" />
+                  <Skeleton className="h-10 w-full rounded-xl border border-border/60 bg-card shadow-sm group-data-[collapsible=icon]:size-10" />
                 }
                 appearance={{
                   elements: {

@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 
 export default function LearningsPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen cursor-[url('/resona.png')_0_0,pointer] bg-background text-foreground">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
         <Button
           asChild
