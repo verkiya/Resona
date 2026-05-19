@@ -48,7 +48,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${outfit.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-background text-foreground scrollbar-premium">
+       
         <ClerkProvider>
           <TRPCReactProvider>
             <NuqsAdapter>{children}</NuqsAdapter>

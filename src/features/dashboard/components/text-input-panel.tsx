@@ -68,7 +68,7 @@ rounded-[22px] bg-[linear-gradient(185deg,#6d28d9cc_10%,#a855f7cc_45%,#db2777cc_
             disabled={!text.trim()}
             onClick={handleGenerate}
             variant="neonAi"
-            className=" cursor-pointer w-full rounded-3xl"
+            className=" cursor-[url('/resona.png')_16_16,pointer] w-full rounded-3xl"
           >
             Generate speech
           </Button>
