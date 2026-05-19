@@ -43,17 +43,17 @@ model Voice {
 
   variant VoiceVariant
 
-  objectKey String?   // ✅ storage-agnostic key
+  objectKey String?   // storage-agnostic key
 
-  generations Generation[]
+  generations Generation[] // A voice can have many generations, but a generation can have only one voice
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([variant])
   @@index([orgId])
-  @@index([objectKey])         // ✅ useful for lookups
-  @@unique([name, variant])    // ✅ prevents duplicate SYSTEM voices
+  @@index([objectKey])         // useful for lookups
+  @@unique([name, variant])    // prevents duplicate SYSTEM voices
 }
 
 model Generation {
@@ -62,12 +62,12 @@ model Generation {
   orgId String
 
   voiceId String?
-  voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull)
+  voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull) //SetNull because we don't want to delete all the voice generations related to a deleted voice; a generation can only have one voice
 
   voiceName String
   text String
 
-  objectKey String?   // ✅ storage-agnostic key
+  objectKey String?   // storage-agnostic key, we display the files once it's been uploaded and ready to listen to
 
   temperature Float
   topP Float
@@ -79,5 +79,5 @@ model Generation {
 
   @@index([orgId])
   @@index([voiceId])
-  @@index([objectKey])   // ✅ optional but useful
+  @@index([objectKey])   //  optional but useful
 }

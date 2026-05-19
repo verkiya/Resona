@@ -3,7 +3,7 @@ import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
-import {NuqsAdapter} from "nuqs/adapters/next/app"
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "@/trpc/client";
 /* =========================
    Fonts
@@ -26,9 +26,9 @@ const mono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Resona",
-    template: "Resona | %s",
+    template: "%s | Resona",
   },
-  description: "AI Voice Generation SaaS Platform",
+  description: "Generate studio-quality AI voices in seconds",
   icons: {
     icon: "/resona.svg",
   },
@@ -43,18 +43,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <TRPCReactProvider>
-        <html
-          lang="en"
-          className={`${outfit.variable} ${mono.variable} h-full antialiased`}
-        >
-          <body className="min-h-full flex flex-col bg-background text-foreground">
-            <NuqsAdapter>{children}
-            </NuqsAdapter><Toaster />
-          </body>
-        </html>
-      </TRPCReactProvider>
-    </ClerkProvider>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${outfit.variable} ${mono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <ClerkProvider>
+          <TRPCReactProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+            <Toaster richColors closeButton />
+          </TRPCReactProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
