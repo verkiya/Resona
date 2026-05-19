@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "@/trpc/client";
+import { Analytics } from "@vercel/analytics/next";
 /* =========================
    Fonts
 ========================= */
@@ -52,7 +53,7 @@ export default function RootLayout({
         <ClerkProvider>
           <TRPCReactProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
-            <Toaster closeButton />
+            <Toaster closeButton /> <Analytics />
           </TRPCReactProvider>
         </ClerkProvider>
       </body>
