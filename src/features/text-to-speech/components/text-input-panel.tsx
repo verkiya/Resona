@@ -15,7 +15,7 @@ import { PromptSuggestions } from "./prompt-suggestions";
 import { COST_PER_UNIT, TEXT_MAX_LENGTH } from "../data/constants";
 
 const generateButtonClass =
-  "bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] cursor-pointer text-white font-light shadow-lg hover:brightness-110 hover:shadow-xl active:scale-[0.98] cursor-pointer";
+  "bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] tracking-wide font-semibold cursor-pointer text-white shadow-lg hover:brightness-100 hover:shadow-md active:scale-[0.98] cursor-pointer";
 
 export function TextInputPanel() {
   const form = useTypedAppFormContext(ttsFormOptions);
@@ -35,7 +35,7 @@ export function TextInputPanel() {
               placeholder="Start typing or paste your text"
               maxLength={TEXT_MAX_LENGTH}
               disabled={isSubmitting}
-              className="absolute inset-0 resize-none border-0 bg-transparent p-5 pb-4 text-lg leading-relaxed tracking-tight font-medium shadow-none wrap-break-word placeholder:text-muted-foreground/70 placeholder:font-normal focus-visible:ring-0 lg:p-6 lg:pb-5 lg:text-xl"
+              className="absolute inset-0 resize-none border-0 bg-transparent p-5 pb-4 text-lg leading-relaxed tracking-tight font-light shadow-none wrap-break-word placeholder:text-muted-foreground/70 placeholder:font-normal focus-visible:ring-0 lg:p-6 lg:pb-5 lg:text-xl"
             />
           )}
         </form.Field>
@@ -54,7 +54,7 @@ export function TextInputPanel() {
           </div>
 
           <GenerateButton
-            className="bg-[linear-gradient(120deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] text-foreground border border-border shadow-sm hover:brightness-105 hover:saturate-110 hover:shadow-md active:scale-[0.99]"
+            className="bg-[linear-gradient(120deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] text-foreground border font-semibold border-border shadow-sm hover:brightness-105 hover:saturate-110 hover:shadow-md active:scale-[0.99]"
             disabled={isSubmitting}
             isSubmitting={isSubmitting}
             onSubmit={() => form.handleSubmit()}

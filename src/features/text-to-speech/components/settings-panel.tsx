@@ -17,12 +17,12 @@ export function SettingsPanel() {
       >
         <TabsList className="h-12 w-full rounded-none border-b border-border/40 bg-background/60 p-0 backdrop-blur-md group-data-[orientation=horizontal]/tabs:h-12">
           <TabsTrigger value="settings" className={tabTriggerClassName}>
-            <Settings className="size-[18px]" />
+            <Settings className="size-5" />
             Settings
           </TabsTrigger>
 
           <TabsTrigger value="history" className={tabTriggerClassName}>
-            <History className="size-[18px]" />
+            <History className="size-5" />
             History
           </TabsTrigger>
         </TabsList>
