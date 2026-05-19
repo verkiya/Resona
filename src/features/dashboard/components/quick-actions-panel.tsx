@@ -3,9 +3,17 @@ import { QuickActionCard } from "./quick-action-card";
 
 export function QuickActionsPanel() {
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Quick actions</h2>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <section className="space-y-6 rounded-2xl border border-border/50 bg-card/30 p-3 backdrop-blur-sm">
+      <div>
+        <h2 className="text-xl font-semibold tracking-tight">
+          Explore voice scenarios
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Instantly test Resona with curated real-world voice prompts.
+        </p>
+      </div>
+
+      <div className="grid gap-4 grid-cols-3">
         {quickActions.map((action) => (
           <QuickActionCard
             key={action.title}
@@ -16,6 +24,6 @@ export function QuickActionsPanel() {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

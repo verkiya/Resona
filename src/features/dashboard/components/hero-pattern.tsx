@@ -1,19 +1,35 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 type HeroPatternProps = {
   isActive?: boolean;
 };
 
 export function HeroPattern({ isActive = false }: HeroPatternProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <div className="pointer-events-none absolute mb-50 inset-0 overflow-hidden">
+    <div
+      className="pointer-events-none absolute inset-0 mb-50 overflow-hidden"
+      style={{
+        maskImage:
+          "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)",
+      }}
+    >
       <motion.div
-        className="flex w-[200%] h-full"
-        animate={{ x: ["0%", "-50%"] }}
+        className="flex h-full w-[200%] opacity-75"
+        animate={
+          shouldReduceMotion
+            ? undefined
+            : {
+                x: ["0%", "-50%"],
+              }
+        }
         transition={{
-          duration: isActive ? 10 : 22,
+          duration: isActive ? 14 : 28,
           repeat: Infinity,
           ease: "linear",
         }}
@@ -28,48 +44,35 @@ export function HeroPattern({ isActive = false }: HeroPatternProps) {
 function WaveSVG() {
   return (
     <svg
-      className="w-1/2 h-full"
+      className="h-full w-1/2"
       viewBox="0 0 1440 400"
       preserveAspectRatio="none"
     >
-      {/* 🔥 BIG BASE WAVE */}
       <path
-        d="M0 160 Q 360 80 720 160 T 1440 160"
-        stroke="rgba(99,102,241,0.55)" // indigo
+        d="M0 165 Q 360 85 720 165 T 1440 165"
+        stroke="rgba(99,102,241,0.42)"
         strokeWidth="70"
         strokeLinecap="round"
         fill="none"
-        style={{ filter: "blur(1px)" }}
+        opacity="0.9"
       />
 
-      {/* 🔥 OVERLAY WAVE */}
       <path
-        d="M0 150 Q 360 70 720 150 T 1440 150"
-        stroke="rgba(56,189,248,0.5)" // sky
+        d="M0 148 Q 360 70 720 148 T 1440 148"
+        stroke="rgba(56,189,248,0.38)"
         strokeWidth="60"
         strokeLinecap="round"
         fill="none"
-        style={{ filter: "blur(1px)" }}
+        opacity="0.75"
       />
 
-      {/* 🔥 TOP HIGHLIGHT */}
       <path
-        d="M0 140 Q 360 60 720 140 T 1440 140"
-        stroke="rgba(168,85,247,0.45)" // violet
+        d="M0 132 Q 360 56 720 132 T 1440 132"
+        stroke="rgba(168,85,247,0.32)"
         strokeWidth="50"
         strokeLinecap="round"
         fill="none"
-        style={{ filter: "blur(0.8px)" }}
-      />
-
-      {/* 🔥 LOWER FILL BAND */}
-      <path
-        d="M0 190 Q 360 120 720 190 T 1440 190"
-        stroke="rgba(16,185,129,0.35)" // emerald contrast
-        strokeWidth="55"
-        strokeLinecap="round"
-        fill="none"
-        style={{ filter: "blur(1.2px)" }}
+        opacity="0.6"
       />
     </svg>
   );

@@ -3,6 +3,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Headphones, ThumbsUp } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 export function PageHeader({
   title,
@@ -23,18 +24,18 @@ export function PageHeader({
         <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
       </div>
       <div className="flex items-center gap-3">
-        <Button variant="accentFill" size="sm" asChild>
-          <Link href="https://github.com/verkiya">
-            <ThumbsUp />
-            <span className="hidden lg:block">Feedback</span>
-          </Link>
-        </Button>
-        <Button variant="link" size="sm" asChild>
-          <Link href="https://github.com/verkiya">
-            <Headphones />
-            <span className="hidden lg:block">Need Help?</span>
-          </Link>
-        </Button>
+        <Link
+          href="https://github.com/verkiya/Resona"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group elevated flex items-center gap-2 rounded-2xl border border-border/60 bg-card/70 px-4 py-2 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-muted"
+        >
+          <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-[18deg] group-hover:scale-110 group-hover:text-primary" />
+
+          <span className="text-sm font-medium sm:block">
+            Source Code
+          </span>
+        </Link>
       </div>
     </div>
   );

@@ -26,24 +26,28 @@ rounded-[22px] bg-[linear-gradient(185deg,#6d28d9cc_10%,#a855f7cc_45%,#db2777cc_
       {/* Using px values for border-radius to ensure proper gradient border math (outer - padding = inner). */}
       {/* Standard classes like rounded-4xl use CSS calc() which doesn't align cleanly at corners. */}
       <div className="rounded-[20px] bg-[#F9F9F9] p-1">
-        <div className="space-y-4 rounded-2xl bg-white p-4 drop-shadow-xs">
+        <div className="space-y-2  rounded-2xl bg-card p-2 shadow-sm transition-all duration-300 hover:shadow-md">
+          {" "}
           <Textarea
             placeholder="Start typing or paste your text here..."
-            className="min-h-30 text-lg resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0"
+            className="h-46 max-h-46 text-lg overflow-y-auto leading-relaxed font-medium resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
             value={text}
             onChange={(e) => setText(e.target.value)}
             maxLength={TEXT_MAX_LENGTH}
           />
           {/* Bottom info */}
-          <div className="flex items-center justify-between">
-            <Badge variant="outline" className="gap-1.5 border-dashed">
-              <Coins className="size-6 text-chart-5" />
-              <span className="text-xs">
+          <div className="flex items-center justify-between ">
+            <Badge
+              variant="outline"
+              className="h-7 gap-1 px-2 border-border/60 bg-background/60"
+            >
+              <Coins className="size-4 text-[oklch(0.74_0.19_78)]" />{" "}
+              <span className="text-xs tabular-nums">
                 {text.length === 0 ? (
-                  "Start typing to estimate cost"
+                  "Estimated cost appears here"
                 ) : (
                   <>
-                    <span className="tabular-nums">
+                    <span className="tabular-nums text-xs">
                       ${(text.length * COST_PER_UNIT).toFixed(4)}
                     </span>{" "}
                     estimated
@@ -51,19 +55,20 @@ rounded-[22px] bg-[linear-gradient(185deg,#6d28d9cc_10%,#a855f7cc_45%,#db2777cc_
                 )}
               </span>
             </Badge>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs tabular-nums text-muted-foreground">
               {text.length.toLocaleString()} /{" "}
               {TEXT_MAX_LENGTH.toLocaleString()} characters
             </span>
           </div>
         </div>
         {/* Action bar */}
-        <div className="flex items-center justify-end p-3">
+        <div className="flex items-center justify-center p-2 border-t border-border/50 ">
           <Button
-            size="sm"
+            size="default"
             disabled={!text.trim()}
             onClick={handleGenerate}
-            className="w-full lg:w-auto"
+            variant="neonAi"
+            className=" cursor-pointer w-full rounded-3xl"
           >
             Generate speech
           </Button>
