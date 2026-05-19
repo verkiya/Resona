@@ -18,15 +18,16 @@ export function GenerateButton({
 }) {
   return (
     <Button
+      type="button"
       size={size}
-      className={className}
+      className={`min-w-[160px] cursor-pointer ${className ?? ""}`}
       onClick={onSubmit}
       disabled={disabled}
     >
       {isSubmitting ? (
         <>
-          <Spinner className="size-3" />
-          Generating...
+          <Spinner className="size-4" />
+          Synthesizing...
         </>
       ) : (
         "Generate speech"

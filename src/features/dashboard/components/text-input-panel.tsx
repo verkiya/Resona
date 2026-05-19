@@ -30,7 +30,7 @@ rounded-[22px] bg-[linear-gradient(185deg,#6d28d9cc_10%,#a855f7cc_45%,#db2777cc_
           {" "}
           <Textarea
             placeholder="Start typing or paste your text here..."
-            className="h-46 max-h-46 text-lg overflow-y-auto leading-relaxed font-medium resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
+            className="h-46 max-h-46 text-md! overflow-y-auto leading-relaxed font-medium resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent"
             value={text}
             onChange={(e) => setText(e.target.value)}
             maxLength={TEXT_MAX_LENGTH}
@@ -68,7 +68,7 @@ rounded-[22px] bg-[linear-gradient(185deg,#6d28d9cc_10%,#a855f7cc_45%,#db2777cc_
             disabled={!text.trim()}
             onClick={handleGenerate}
             variant="neonAi"
-            className=" cursor-pointer w-full rounded-3xl"
+            className=" cursor-[url('/resona.png')_16_16,pointer] w-full rounded-3xl"
           >
             Generate speech
           </Button>

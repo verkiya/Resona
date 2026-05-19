@@ -32,7 +32,7 @@ export function AuthMarketing() {
           href="https://github.com/verkiya/Resona"
           target="_blank"
           rel="noopener noreferrer"
-          className="group elevated flex items-center gap-2 rounded-2xl border px-4 py-2 transition hover:scale-105"
+          className="group cursor-[url('/resona.png')_0_0,pointer] elevated flex items-center gap-2 rounded-2xl border px-4 py-2 transition hover:scale-105"
         >
           <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-[18deg] group-hover:scale-110 group-hover:text-primary" />
           <span className="text-sm font-medium">Source Code</span>
@@ -41,7 +41,7 @@ export function AuthMarketing() {
 
       {/* Hero */}
       <div className="max-w-xl">
-        
+
 
         <h1 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
           Build, clone, and generate AI voices at scale.

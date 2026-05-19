@@ -8,7 +8,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-screen overflow-hidden bg-background">
+    <div className="h-screen overflow-hidden bg-background cursor-[url('/resona.png')_0_0,pointer]">
       <header className="absolute top-0 right-0 z-50 p-6">
         <nav className="flex items-center gap-3">
           <Button

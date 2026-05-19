@@ -160,7 +160,45 @@
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
 }
+/* =========================
+   Premium Soft Scrollbar
+========================= */
 
+.scrollbar-premium {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.82 0.02 40) transparent;
+}
+
+/* Chrome / Edge / Safari */
+.scrollbar-premium::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-premium::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+
+.scrollbar-premium::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    oklch(0.9 0.015 60),
+    oklch(0.84 0.025 35)
+  );
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.2s ease;
+}
+
+.scrollbar-premium::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, oklch(0.86 0.02 55), oklch(0.78 0.04 30));
+}
+
+.scrollbar-premium::-webkit-scrollbar-corner {
+  background: transparent;
+}
 /* =========================
    BASE
 ========================= */
@@ -209,4 +247,169 @@
   .dark ::selection {
     background-color: oklch(0.82 0.11 40 / 0.25);
   }
+}
+/* =========================
+   Sonner Toast Themes
+========================= */
+
+[data-sonner-toast] {
+  border: 1px solid oklch(0.88 0.01 280 / 0.5) !important;
+  border-radius: 1rem !important;
+  color: var(--foreground) !important;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 12px 32px oklch(0.2 0.02 280 / 0.08),
+    inset 0 1px 0 rgb(255 255 255 / 0.35);
+
+  background: linear-gradient(
+    135deg,
+    oklch(0.975 0.008 68),
+    oklch(0.94 0.015 300)
+  ) !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+[data-sonner-toast]:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 16px 40px oklch(0.2 0.02 280 / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 0.4);
+}
+
+/* Success */
+[data-sonner-toast][data-type="success"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.96 0.03 45),
+    oklch(0.91 0.04 305)
+  ) !important;
+}
+
+/* Error */
+[data-sonner-toast][data-type="error"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.96 0.02 28),
+    oklch(0.91 0.045 18)
+  ) !important;
+}
+
+/* Warning */
+[data-sonner-toast][data-type="warning"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.975 0.025 90),
+    oklch(0.93 0.04 70)
+  ) !important;
+}
+
+/* Info */
+[data-sonner-toast][data-type="info"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.965 0.015 245),
+    oklch(0.92 0.03 285)
+  ) !important;
+}
+
+/* Loading */
+[data-sonner-toast][data-type="loading"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.94 0.025 260),
+    oklch(0.89 0.045 310)
+  ) !important;
+}
+
+/* Toast title */
+[data-sonner-toast] [data-title] {
+  font-weight: 600;
+  color: var(--foreground) !important;
+}
+
+/* Toast description */
+[data-sonner-toast] [data-description] {
+  color: var(--muted-foreground) !important;
+}
+
+/* Close button */
+[data-sonner-toast] [data-close-button] {
+  background: rgb(255 255 255 / 0.35) !important;
+  border: 1px solid rgb(255 255 255 / 0.2) !important;
+  color: var(--muted-foreground) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 999px !important;
+  transition: all 0.2s ease;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  background: rgb(255 255 255 / 0.55) !important;
+  color: var(--foreground) !important;
+  transform: scale(1.05);
+}
+
+/* Action buttons */
+[data-sonner-toast] [data-button] {
+  border-radius: 0.75rem !important;
+  border: 1px solid oklch(0.88 0.01 280 / 0.35) !important;
+  background: rgb(255 255 255 / 0.45) !important;
+  color: var(--foreground) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Dark mode */
+.dark [data-sonner-toast] {
+  border: 1px solid oklch(0.3 0.015 280 / 0.5) !important;
+  box-shadow:
+    0 16px 40px oklch(0.05 0.02 280 / 0.45),
+    inset 0 1px 0 rgb(255 255 255 / 0.04);
+
+  background: linear-gradient(
+    135deg,
+    oklch(0.18 0.02 278),
+    oklch(0.24 0.03 300)
+  ) !important;
+}
+
+.dark [data-sonner-toast][data-type="success"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.28 0.04 45),
+    oklch(0.34 0.05 305)
+  ) !important;
+}
+
+.dark [data-sonner-toast][data-type="error"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.26 0.05 22),
+    oklch(0.32 0.06 15)
+  ) !important;
+}
+
+.dark [data-sonner-toast][data-type="warning"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.28 0.04 85),
+    oklch(0.34 0.05 65)
+  ) !important;
+}
+
+.dark [data-sonner-toast][data-type="info"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.24 0.035 250),
+    oklch(0.3 0.045 285)
+  ) !important;
+}
+
+.dark [data-sonner-toast][data-type="loading"] {
+  background: linear-gradient(
+    135deg,
+    oklch(0.22 0.04 260),
+    oklch(0.29 0.055 310)
+  ) !important;
 }
