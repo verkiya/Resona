@@ -21,7 +21,7 @@ export const env = createEnv({
 
     // AI
     CHATTERBOX_API_KEY: z.string().min(1),
-    CHATTERBOX_API_URL: z.string().url(),
+    CHATTERBOX_API_URL: z.url(),
 
     // Billing
     POLAR_ACCESS_TOKEN: z.string().min(1),
