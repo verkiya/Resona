@@ -13,12 +13,13 @@ function resolveThemeColor(cssVariable: string, fallback: string): string {
 
   if (!rootValue) return fallback;
 
-  // Convert tokens like oklch(...) into a canvas-safe computed color string.
   const probe = document.createElement("span");
   probe.style.color = rootValue;
   probe.style.display = "none";
   document.body.appendChild(probe);
+
   const resolved = getComputedStyle(probe).color;
+
   probe.remove();
 
   return resolved || fallback;
@@ -47,7 +48,7 @@ export function useWaveSurfer({
   autoplay,
   onReady,
   onError,
-}: UseWaveSurferOptions) {
+}: UseWaveSurferOptions): UseWaveSurferReturn {
   const containerRef = useRef<HTMLDivElement>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const isMobile = useIsMobile();
@@ -60,7 +61,6 @@ export function useWaveSurfer({
   useEffect(() => {
     if (!containerRef.current || !url) return;
 
-    // Reset UI state for each new source to avoid stale elapsed/duration values.
     setIsReady(false);
     setIsPlaying(false);
     setCurrentTime(0);
@@ -73,21 +73,27 @@ export function useWaveSurfer({
 
     let destroyed = false;
 
-    const waveColor = resolveThemeColor("--muted-foreground", "#C89D95");
-    const progressColor = resolveThemeColor("--primary", "#B16051");
-    const cursorColor = resolveThemeColor("--ring", "#B16051");
+    const waveColor = resolveThemeColor("--border", "#E9D8D0");
+    const progressColor = "#E38B63";
+    const cursorColor = resolveThemeColor("--ring", "#D97757");
 
     const ws = WaveSurfer.create({
       container: containerRef.current,
+
       waveColor,
       progressColor,
       cursorColor,
-      cursorWidth: 2,
-      barWidth: 2,
-      barGap: 2,
-      barRadius: 2,
-      barMinHeight: 4,
-      height: "auto",
+
+      cursorWidth: isMobile ? 1 : 1.5,
+
+      barWidth: isMobile ? 2 : 3,
+      barGap: isMobile ? 1.5 : 3,
+      barRadius: 999,
+      barMinHeight: 3,
+
+      height: isMobile ? 72 : 110,
+
+      dragToSeek: true,
       normalize: true,
     });
 
@@ -99,25 +105,44 @@ export function useWaveSurfer({
       setCurrentTime(0);
       ws.seekTo(0);
 
-      // Catch NotAllowedError when browser blocks autoplay without user interaction
-      if (autoplay) ws.play().catch(() => {});
+      if (autoplay) {
+        ws.play().catch(() => {});
+      }
+
       onReady?.();
     });
 
     ws.on("play", () => setIsPlaying(true));
+
     ws.on("pause", () => setIsPlaying(false));
-    ws.on("finish", () => setIsPlaying(false));
-    ws.on("timeupdate", (time) => setCurrentTime(time));
+
+    ws.on("finish", () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+      ws.seekTo(0);
+    });
+
+    ws.on("timeupdate", (time) => {
+      setCurrentTime(time);
+    });
 
     ws.on("error", (error) => {
       if (destroyed) return;
-      console.error("WaveSurfer error:", error);
+
+      if (process.env.NODE_ENV === "development") {
+        console.error("WaveSurfer error:", error);
+      }
+
       onError?.(new Error(String(error)));
     });
 
     ws.load(url).catch((error) => {
       if (destroyed) return;
-      console.error("WaveSurfer load error:", error);
+
+      if (process.env.NODE_ENV === "development") {
+        console.error("WaveSurfer load error:", error);
+      }
+
       onError?.(new Error(String(error)));
     });
 

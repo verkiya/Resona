@@ -6,7 +6,7 @@ import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/trpc/routers/_app";
 
 type TTSVoiceItem =
-  inferRouterOutputs<AppRouter>["voices"]["getAll"]["custom"][number];
+  inferRouterOutputs<AppRouter>["voices"]["getAll"]["system"][number];
 
 interface TTSVoicesContextValue {
   customVoices: TTSVoiceItem[];

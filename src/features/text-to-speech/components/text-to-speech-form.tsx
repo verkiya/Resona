@@ -69,8 +69,9 @@ export function TextToSpeechForm({
 
         if (message === "SUBSCRIPTION_REQUIRED") {
           toast.error("Subscription required", {
+            description: "Upgrade to continue generating premium AI voices.",
             action: {
-              label: "Subscribe",
+              label: "✨ Upgrade",
               onClick: () => checkout(),
             },
           });

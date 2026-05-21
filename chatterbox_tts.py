@@ -12,7 +12,9 @@ Optional for S3-compatible providers (for example, Cloudflare R2):
 Create the storage secret on Modal (name defaults to aws-storage):
     modal secret create aws-storage \
         AWS_ACCESS_KEY_ID=<access-key-id> \
-        AWS_SECRET_ACCESS_KEY=<secret-access-key>
+        AWS_SECRET_ACCESS_KEY=<secret-access-key> \
+        AWS_BUCKET_NAME=<bucket-name> \
+        AWS_REGION=<region>
 
 Create API key secret:
     modal secret create chatterbox-api-key \
@@ -49,177 +51,96 @@ if load_dotenv is not None:
 # Operations Runbook (comments only)
 # -----------------------------------------------------------------------------
 # This section captures the exact workflow used to get this app deployed.
-# It is safe to keep in source for future debugging and redeploys.
+# Safe to keep for future debugging/redeploys.
 #
-# FRESH START (delete old Modal secrets/tokens and start over)
+# FRESH START
 # -----------------------------------------------------------------------------
-# 0) Generate fresh credentials first:
-#    - New Hugging Face token.
-#    - New API key for CHATTERBOX_API_KEY.
+# 0) Generate fresh credentials:
+#    - New Hugging Face token
+#    - New CHATTERBOX_API_KEY
 #
-# 1) Install and authenticate Modal CLI:
+# 1) Install/auth Modal CLI:
 #    pip install modal
 #    python -m modal setup
 #
-# 2) Create required Modal secrets (exact names used by this script):
+# 2) Create secrets:
 #    python -m modal secret create hf-token HF_TOKEN=<NEW_HF_TOKEN>
+#
 #    python -m modal secret create chatterbox-api-key \
 #      CHATTERBOX_API_KEY=<NEW_API_KEY>
 #
-#    # Storage secret used by CloudBucketMount and runtime env:
 #    python -m modal secret create aws-storage \
 #      AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
 #      AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
-#      AWS_BUCKET_NAME=resona-507673060976-us-east-1-an \
-#      AWS_REGION=us-east-1
+#      AWS_BUCKET_NAME=<BUCKET_NAME> \
+#      AWS_REGION=<REGION>
 #
-#    # Optional for R2/custom endpoint mode:
-#    # AWS_S3_ENDPOINT_URL=https://<accountid>.r2.cloudflarestorage.com
+#    Optional:
+#      AWS_S3_ENDPOINT_URL=https://<accountid>.r2.cloudflarestorage.com
 #
-# 3) Set local deploy-time env vars in PowerShell (same terminal session):
-#    $env:AWS_BUCKET_NAME = "resona-507673060976-us-east-1-an"
-#    $env:AWS_REGION = "us-east-1"
+# 3) Local deploy-time env vars (PowerShell):
+#    $env:AWS_BUCKET_NAME = "<BUCKET_NAME>"
+#    $env:AWS_REGION = "<REGION>"
 #
-#    # Optional if using non-default secret name:
-#    # $env:AWS_MODAL_SECRET_NAME = "aws-storage"
-#
-#    # Optional for custom endpoint:
-#    # $env:AWS_S3_ENDPOINT_URL = "https://<accountid>.r2.cloudflarestorage.com"
+#    Optional:
+#    $env:AWS_MODAL_SECRET_NAME = "aws-storage"
+#    $env:AWS_S3_ENDPOINT_URL = "https://<accountid>.r2.cloudflarestorage.com"
 #
 # 4) Deploy:
 #    python -m modal deploy chatterbox_tts.py
 #
-# 5) Smoke test endpoint:
+# 5) Smoke test:
 #    curl -X POST "https://<your-modal-endpoint>/generate" \
 #      -H "Content-Type: application/json" \
-#      -H "x-api-key: <NEW_API_KEY>" \
-#      -d '{"prompt":"Hello from Chatterbox [chuckle].","voice_key":"voices/system/<voice-id>.wav"}' \
+#      -H "x-api-key: <API_KEY>" \
+#      -d '{"prompt":"Hello","voice_key":"voices/system/default.wav"}' \
 #      --output output.wav
 #
-# 6) If it fails with "AWS_BUCKET_NAME is required":
-#    - Local deploy failure: set $env:AWS_BUCKET_NAME in your shell.
-#    - Runtime crash-loop: ensure aws-storage secret includes AWS_BUCKET_NAME.
+# 6) Common failures:
+#    - "modal not recognized" -> use python -m modal
+#    - AWS_BUCKET_NAME missing -> set env var / secret
+#    - 403 -> wrong x-api-key
+#    - voice missing -> bad storage key
 #
-# ORIGINAL R2 / TESTING NOTES
+# SECURITY NOTES
 # -----------------------------------------------------------------------------
-# Use this to add R2 tokens:
-#   modal secret create cloudflare-r2 \
-#     AWS_ACCESS_KEY_ID=<r2-access-key-id> \
-#     AWS_SECRET_ACCESS_KEY=<r2-secret-access-key>
+# - Storage mount is read-only.
+# - API is protected via x-api-key.
+# - Voice paths are sanitized to prevent traversal.
+# - Internal exceptions are not leaked to clients.
 #
-# R2 cloud bucket mount (read-only, replaces Modal Volume):
-#   R2_BUCKET_NAME = "resonance-app"
-#   R2_ACCOUNT_ID = "ea63931e6e8ff54c5be60feacd3026d6"
-#   R2_MOUNT_PATH = "/r2"
-#   r2_bucket = modal.CloudBucketMount(
-#       R2_BUCKET_NAME,
-#       bucket_endpoint_url=f"https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com",
-#       secret=modal.Secret.from_name("cloudflare-r2"),
-#       read_only=True,
-#   )
-#
-# Use this to test locally:
-#   modal run chatterbox_tts.py \
-#     --prompt "Hello from Chatterbox [chuckle]." \
-#     --voice-key "voices/system/<voice-id>.wav"
-#
-# Use this to test CURL:
-#   curl -X POST "https://<your-modal-endpoint>/generate" \
-#     -H "Content-Type: application/json" \
-#     -H "X-Api-Key: <your-api-key>" \
-#     -d '{"prompt": "Hello from Chatterbox [chuckle].", "voice_key": "voices/system/<voice-id>.wav"}' \
-#     --output output.wav
+# PET PROJECT NOTES
 # -----------------------------------------------------------------------------
+# Current tradeoffs intentionally accepted:
+# - wildcard CORS
+# - shared API key auth
+# - no rate limiting
 #
-# 1) Why we use "python -m modal" on Windows:
-#    - If "modal" is not on PATH, "modal ..." fails with "not recognized".
-#    - "python -m modal ..." runs Modal's CLI module from the active Python.
-#
-# 2) One-time Modal auth:
-#    python -m modal setup
-#
-# 3) Create required secrets:
-#    python -m modal secret create hf-token HF_TOKEN=<your-hf-token>
-#    python -m modal secret create chatterbox-api-key CHATTERBOX_API_KEY=<api-key>
-#
-#    Storage/runtime secret (name must match STORAGE_SECRET_NAME).
-#    Include AWS_BUCKET_NAME so container imports can resolve bucket config:
-#    python -m modal secret create aws-storage \
-#        AWS_ACCESS_KEY_ID=<access-key-id> \
-#        AWS_SECRET_ACCESS_KEY=<secret-access-key> \
-#        AWS_BUCKET_NAME=resona-507673060976-us-east-1-an \
-#        AWS_REGION=us-east-1
-#
-#    Optional for R2/custom endpoint mode:
-#        AWS_S3_ENDPOINT_URL=https://<accountid>.r2.cloudflarestorage.com
-#
-# 4) Set deploy-time environment variables in PowerShell (same shell session).
-#    These are required because _build_bucket_mount() executes at import time locally:
-#    $env:AWS_BUCKET_NAME = "resona-507673060976-us-east-1-an"
-#    $env:AWS_REGION = "us-east-1"
-#
-#    Alternative: put these keys in a local .env file in this repo root.
-#    The script auto-loads .env for local deploy/run:
-#      AWS_BUCKET_NAME=resona-507673060976-us-east-1-an
-#      AWS_REGION=us-east-1
-#      AWS_MODAL_SECRET_NAME=aws-storage
-#
-#    Script fallback behavior:
-#    - If AWS_BUCKET_NAME is missing, code falls back to
-#      DEFAULT_AWS_BUCKET_NAME in this file.
-#    - Override by setting AWS_BUCKET_NAME in local shell or Modal secret.
-#
-#    Optional for R2/custom S3 endpoint:
-#    $env:AWS_S3_ENDPOINT_URL = "https://<accountid>.r2.cloudflarestorage.com"
-#
-#    Optional if using a non-default storage secret name:
-#    $env:AWS_MODAL_SECRET_NAME = "aws-storage"
-#
-# 5) Deploy:
-#    python -m modal deploy chatterbox_tts.py
-#
-# 6) Local function test (writes a wav file):
-#    python -m modal run chatterbox_tts.py \
-#        --prompt "Hello from Chatterbox [chuckle]." \
-#        --voice-key "voices/system/<voice-id>.wav"
-#
-# 7) Endpoint test with curl:
-#    curl -X POST "https://<your-modal-endpoint>/generate" \
-#      -H "Content-Type: application/json" \
-#      -H "x-api-key: <your-api-key>" \
-#      -d '{"prompt":"Hello from Chatterbox [chuckle].","voice_key":"voices/system/<voice-id>.wav"}' \
-#      --output output.wav
-#
-# 8) Common failures and fixes:
-#    - "modal: not recognized": use "python -m modal ...".
-#    - "AWS_BUCKET_NAME is required" during deploy: set $env:AWS_BUCKET_NAME.
-#    - "AWS_BUCKET_NAME is required" in Modal logs/crash-looping: add
-#      AWS_BUCKET_NAME to the aws-storage secret and redeploy.
-#    - 403 Invalid API key: verify x-api-key header matches CHATTERBOX_API_KEY.
-#    - Voice not found: verify object key exists under /storage/<voice_key>.
-#
-# 9) Rotate credentials if leaked in logs/chat history:
-#    - Regenerate HF token and API key.
-#    - Recreate corresponding Modal secrets with new values.
-# -----------------------------------------------------------------------------
+# Fine for hobby/internal use. Revisit for production SaaS.
 
 
-# Storage configuration (aligned with the existing app env contract)
+# -----------------------------------------------------------------------------
+# Storage configuration
+# -----------------------------------------------------------------------------
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL", "")
-R2_MOUNT_PATH = "/storage"
+BUCKET_MOUNT_PATH = "/storage"
 STORAGE_SECRET_NAME = os.environ.get("AWS_MODAL_SECRET_NAME", "aws-storage")
-# Non-secret fallback used to avoid container import crash loops.
+
+# Non-secret fallback to avoid import-time crash loops.
 DEFAULT_AWS_BUCKET_NAME = "resona-507673060976-us-east-1-an"
 
 
 def _resolve_bucket_name() -> str:
-    # Read env at call time (not only at module import), then fall back.
+    # Read env at call time, not just import time.
     bucket = os.environ.get("AWS_BUCKET_NAME", "").strip() or AWS_BUCKET_NAME.strip()
+
     if not bucket:
         bucket = DEFAULT_AWS_BUCKET_NAME
+
     if bucket:
         return bucket
+
     raise ValueError(
         "AWS_BUCKET_NAME is required. Set it in your environment or Modal secrets."
     )
@@ -236,12 +157,15 @@ def _build_bucket_mount() -> modal.CloudBucketMount:
     )
 
 
+# -----------------------------------------------------------------------------
 # Modal setup
+# -----------------------------------------------------------------------------
 image = modal.Image.debian_slim(python_version="3.10").uv_pip_install(
     "chatterbox-tts==0.1.6",
     "fastapi[standard]==0.124.4",
     "peft==0.18.0",
 )
+
 app = modal.App("chatterbox-tts", image=image)
 
 
@@ -266,8 +190,10 @@ with image.imports():
 
     def verify_api_key(x_api_key: str | None = Security(api_key_scheme)):
         expected = os.environ.get("CHATTERBOX_API_KEY", "")
+
         if not expected or x_api_key != expected:
             raise HTTPException(status_code=403, detail="Invalid API key")
+
         return x_api_key
 
     class TTSRequest(BaseModel):
@@ -290,9 +216,9 @@ with image.imports():
         modal.Secret.from_name("chatterbox-api-key"),
         modal.Secret.from_name(STORAGE_SECRET_NAME),
     ],
-    volumes={R2_MOUNT_PATH: _build_bucket_mount()},
+    volumes={BUCKET_MOUNT_PATH: _build_bucket_mount()},
 )
-@modal.concurrent(max_inputs=10)
+@modal.concurrent(max_inputs=3)
 class Chatterbox:
     @modal.enter()
     def load_model(self):
@@ -306,6 +232,7 @@ class Chatterbox:
             docs_url="/docs",
             dependencies=[Depends(verify_api_key)],
         )
+
         web_app.add_middleware(
             CORSMiddleware,
             allow_origins=["*"],
@@ -316,7 +243,16 @@ class Chatterbox:
 
         @web_app.post("/generate", responses={200: {"content": {"audio/wav": {}}}})
         def generate_speech(request: TTSRequest):
-            voice_path = Path(R2_MOUNT_PATH) / request.voice_key
+            voice_key = Path(request.voice_key)
+
+            if voice_key.is_absolute() or ".." in voice_key.parts:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid voice path",
+                )
+
+            voice_path = Path(BUCKET_MOUNT_PATH) / voice_key
+
             if not voice_path.exists():
                 raise HTTPException(
                     status_code=400,
@@ -333,14 +269,16 @@ class Chatterbox:
                     request.repetition_penalty,
                     request.norm_loudness,
                 )
+
                 return StreamingResponse(
                     io.BytesIO(audio_bytes),
                     media_type="audio/wav",
                 )
-            except Exception as e:
+
+            except Exception:
                 raise HTTPException(
                     status_code=500,
-                    detail=f"Failed to generate audio: {e}",
+                    detail="Failed to generate audio",
                 )
 
         return web_app
@@ -386,7 +324,9 @@ def test(
     import pathlib
 
     chatterbox = Chatterbox()
-    audio_prompt_path = f"{R2_MOUNT_PATH}/{voice_key}"
+
+    audio_prompt_path = f"{BUCKET_MOUNT_PATH}/{voice_key}"
+
     audio_bytes = chatterbox.generate.remote(
         prompt=prompt,
         audio_prompt_path=audio_prompt_path,
@@ -400,4 +340,5 @@ def test(
     output_file = pathlib.Path(output_path)
     output_file.parent.mkdir(parents=True, exist_ok=True)
     output_file.write_bytes(audio_bytes)
+
     print(f"Audio saved to {output_file}")
