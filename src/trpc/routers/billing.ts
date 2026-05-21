@@ -7,7 +7,7 @@ export const billingRouter = createTRPCRouter({
   createCheckout: orgProcedure.mutation(async ({ ctx }) => {
     const result = await polar.checkouts.create({
       products: [env.POLAR_PRODUCT_ID],
-      externalCustomerId: ctx.orgId,
+      externalCustomerId: ctx.orgId, //multitenant app so we use organization ID, otherwise we'd use a userid for a single tenant app
       successUrl: process.env.APP_URL,
     });
 

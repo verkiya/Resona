@@ -1,83 +1,191 @@
-"use client";
-
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+  Play,
+  Trash2,
+  Sparkles,
+  Mic,
+  ArrowRight,
+  Settings,
+} from "lucide-react";
 
-export default function TestPage() {
+const variants = [
+  "default",
+  "ctaGlow",
+  "softGradient",
+  "accentFill",
+  "subtleCta",
+  "outlineAccent",
+  "glassCta",
+  "success",
+  "successSoft",
+  "warning",
+  "premiumDark",
+  "neonAi",
+  "royal",
+  "sunset",
+  "aiPulse",
+  "softPrimary",
+  "outlinePrimary",
+  "darkGlass",
+  "activeSidebar",
+  "sidebarActive",
+  "pillGradient",
+  "dangerOutline",
+  "subtleDanger",
+  "dangerGlow",
+  "iconMuted",
+  "minimalGhost",
+  "purpleGhost",
+  "editorTab",
+  "audioControl",
+  "shimmerCta",
+  "loading",
+  "destructive",
+  "outline",
+  "secondary",
+  "ghost",
+  "link",
+] as const;
+
+const sizes = ["xs", "sm", "default", "lg", "xl"] as const;
+
+export default function ButtonLabPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background p-8">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Sonner Toast Test
-      </h1>
+    <div className="min-h-screen bg-background p-8">
+      <div className="mx-auto max-w-7xl space-y-12">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold tracking-tight">Button Lab</h1>
+          <p className="text-muted-foreground">
+            Visual testbed for all button variants
+          </p>
+        </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Button
-          onClick={() =>
-            toast("Default toast", {
-              description: "This is the default Resona notification.",
-            })
-          }
-        >
-          Default
-        </Button>
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold">Variants</h2>
 
-        <Button
-          onClick={() =>
-            toast.success("Voice generated successfully", {
-              description: "Your studio-quality speech is ready.",
-            })
-          }
-        >
-          Success
-        </Button>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {variants.map((variant) => (
+              <div
+                key={variant}
+                className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-5 backdrop-blur-sm"
+              >
+                <div>
+                  <p className="font-medium tracking-tight">{variant}</p>
+                  <p className="text-xs text-muted-foreground">
+                    Button variant preview
+                  </p>
+                </div>
 
-        <Button
-          onClick={() =>
-            toast.error("Generation failed", {
-              description: "Something went wrong while synthesizing audio.",
-            })
-          }
-        >
-          Error
-        </Button>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant={variant}>
+                    <Sparkles />
+                    Action
+                  </Button>
 
-        <Button
-          onClick={() =>
-            toast.warning("Credits running low", {
-              description: "Top up soon to keep generating.",
-            })
-          }
-        >
-          Warning
-        </Button>
+                  <Button variant={variant}>
+                    Continue
+                    <ArrowRight />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <Button
-          onClick={() =>
-            toast.info("New voice pack available", {
-              description: "Fresh premium voices have been added.",
-            })
-          }
-        >
-          Info
-        </Button>
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold">Sizes</h2>
 
-        <Button
-          onClick={() =>
-            toast.loading("Synthesizing voice...", {
-              description: "This may take a few seconds.",
-            })
-          }
-        >
-          Loading
-        </Button>
+          <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
+            <div className="flex flex-wrap items-center gap-4">
+              {sizes.map((size) => (
+                <Button key={size} size={size} variant="royal">
+                  <Mic />
+                  {size}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <Button
-          onClick={() => toast.dismiss()}
-          variant="outline"
-          className="col-span-2"
-        >
-          Dismiss All
-        </Button>
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold">Icon Sizes</h2>
+
+          <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
+            <div className="flex flex-wrap items-center gap-4">
+              <Button size="icon-xs" variant="iconMuted">
+                <Play />
+              </Button>
+
+              <Button size="icon-sm" variant="audioControl">
+                <Play />
+              </Button>
+
+              <Button size="icon" variant="royal">
+                <Sparkles />
+              </Button>
+
+              <Button size="icon-lg" variant="dangerGlow">
+                <Trash2 />
+              </Button>
+
+              <Button size="icon-xl" variant="ctaGlow">
+                <Settings />
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold">Real-world Examples</h2>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6">
+              <p className="font-medium">Primary CTA</p>
+              <Button variant="ctaGlow" size="lg">
+                <Sparkles />
+                Generate Voice
+              </Button>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6">
+              <p className="font-medium">Danger Action</p>
+              <Button variant="dangerGlow" size="lg">
+                <Trash2 />
+                Delete Project
+              </Button>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6">
+              <p className="font-medium">AI Feature</p>
+              <Button variant="aiPulse" size="lg">
+                <Sparkles />
+                AI Enhance
+              </Button>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6">
+              <p className="font-medium">Audio Control</p>
+              <Button variant="audioControl" size="icon-lg">
+                <Play />
+              </Button>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6">
+              <p className="font-medium">Sidebar Active</p>
+              <Button variant="sidebarActive">
+                <Mic />
+                Text to Speech
+              </Button>
+            </div>
+
+            <div className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-6">
+              <p className="font-medium">Loading State</p>
+              <Button variant="loading" size="lg">
+                Processing...
+              </Button>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

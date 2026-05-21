@@ -28,6 +28,7 @@ import { VOICE_CATEGORY_LABELS } from "@/features/voices/data/voice-categories";
 import { useAudioPlayback } from "@/hooks/use-audio-playback";
 import { useTRPC } from "@/trpc/client";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export type VoiceItem =
   inferRouterOutputs<AppRouter>["voices"]["getAll"]["custom"][number];
@@ -60,6 +61,7 @@ export function VoiceCard({ voice }: VoiceCardProps) {
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+
   const deleteMutation = useMutation(
     trpc.voices.delete.mutationOptions({
       onSuccess: () => {
@@ -75,24 +77,31 @@ export function VoiceCard({ voice }: VoiceCardProps) {
   );
 
   return (
-    <div className="flex items-center gap-1 overflow-hidden rounded-xl border pr-3 lg:pr-6">
+    <div
+      className={cn(
+        "flex items-center gap-1 overflow-hidden rounded-2xl bg-card/70 pr-3 shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md lg:pr-6",
+        isPlaying && "border-primary/30 shadow-md shadow-primary/10",
+      )}
+    >
       <div className="relative h-24 w-20 shrink-0 lg:h-30 lg:w-24">
-        <div className="absolute left-0 top-0 h-24 w-10 border-r bg-muted/50 lg:h-30 lg:w-12" />
+        <div className="absolute left-0 top-0 h-24 w-10 border-r bg-gradient-to-b from-primary/12 via-primary/6 to-transparent lg:h-30 lg:w-12" />
 
         <div className="absolute inset-0 flex items-center justify-center">
           <VoiceAvatar
             seed={voice.id}
             name={voice.name}
-            className="size-14 border-[1.5px] border-white shadow-xs lg:size-18"
+            className="size-14 border border-white/70 shadow-md ring-1 ring-white/40 lg:size-18"
           />
         </div>
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5 lg:gap-3">
+      <div className="flex min-w-0 flex-1 flex-col gap-2 lg:gap-3">
         <div className="flex items-center gap-1.5 line-clamp-1 text-sm font-medium tracking-tight">
           {voice.name}
+
           <span className="size-1 shrink-0 rounded-full bg-muted-foreground/50" />
-          <span className="text-[#327c88]">
+
+          <span className="text-primary/80">
             {VOICE_CATEGORY_LABELS[voice.category]}
           </span>
         </div>
@@ -109,39 +118,69 @@ export function VoiceCard({ voice }: VoiceCardProps) {
 
       <div className="ml-1 flex shrink-0 items-center gap-1 lg:ml-3 lg:gap-2">
         <Button
-          variant="outline"
+          variant="default"
           size="icon-sm"
-          className="rounded-full"
+          className="cursor-pointer rounded-full shadow-sm"
           onClick={togglePlay}
           disabled={isLoading}
         >
           {isLoading ? (
             <Spinner className="size-4" />
           ) : isPlaying ? (
-            <Pause className="size-4" />
+            <Pause className="size-4 fill-background" />
           ) : (
-            <Play className="size-4" />
+            <Play className="size-4 fill-background" />
           )}
         </Button>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon-sm" className="rounded-full">
+            <Button
+              variant="outlineAccent"
+              size="icon-sm"
+              className="cursor-pointer rounded-full hover:bg-muted/80 text-gray-700 focus-visible:ring-0 focus-visible:border-transparent focus:outline-none"
+            >
               <MoreHorizontal className="size-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link href={`/text-to-speech?voiceId=${voice.id}`}>
-                <Mic className="size-4 text-foreground" />
+
+          <DropdownMenuContent
+            align="end"
+            className="border-border/50 bg-background/95 backdrop-blur-xl"
+          >
+            <DropdownMenuItem
+              asChild
+              className="
+                cursor-pointer
+                text-primary
+                focus:bg-primary/10
+                focus:text-primary
+                data-[highlighted]:bg-primary/10
+                data-[highlighted]:text-primary
+              "
+            >
+              <Link
+                href={`/text-to-speech?voiceId=${voice.id}`}
+                className="flex items-center gap-2"
+              >
+                <Mic className="size-4 text-primary" />
                 <span className="font-medium">Use this voice</span>
               </Link>
             </DropdownMenuItem>
+
             {voice.variant === "CUSTOM" && (
               <DropdownMenuItem
                 onClick={() => setShowDeleteDialog(true)}
-                className="text-destructive focus:text-destructive"
+                className="
+                  cursor-pointer
+                  text-[oklch(0.62_0.19_20)]
+                  focus:bg-[oklch(0.62_0.19_20/.10)]
+                  focus:text-[oklch(0.62_0.19_20)]
+                  data-[highlighted]:bg-[oklch(0.62_0.19_20/.10)]
+                  data-[highlighted]:text-[oklch(0.62_0.19_20)]
+                "
               >
-                <Trash2 className="size-4 text-destructive" />
+                <Trash2 className="size-4 text-[oklch(0.62_0.19_20)]" />
                 <span className="font-medium">Delete voice</span>
               </DropdownMenuItem>
             )}
@@ -156,23 +195,30 @@ export function VoiceCard({ voice }: VoiceCardProps) {
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete voice</AlertDialogTitle>
+
                 <AlertDialogDescription>
                   Are you sure you want to delete &quot;{voice.name}&quot;? This
                   action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
+
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={deleteMutation.isPending}>
+                <AlertDialogCancel className="cursor-pointer" variant="softPrimary"  disabled={deleteMutation.isPending}>
                   Cancel
                 </AlertDialogCancel>
+
                 <AlertDialogAction
-                  variant="destructive"
+                  variant="default"
+                  className="cursor-pointer"
                   disabled={deleteMutation.isPending}
                   onClick={(e) => {
                     e.preventDefault();
+
                     deleteMutation.mutate(
                       { id: voice.id },
-                      { onSuccess: () => setShowDeleteDialog(false) },
+                      {
+                        onSuccess: () => setShowDeleteDialog(false),
+                      },
                     );
                   }}
                 >

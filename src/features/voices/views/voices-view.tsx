@@ -16,7 +16,7 @@ function VoicesContent() {
   return (
     <>
       <VoicesList title="Team Voices" voices={data.custom} />
-      <VoicesList title="Built-in Voices" voices={data.system} />
+      <VoicesList title="Resona Voices" voices={data.system} />
     </>
   );
 }

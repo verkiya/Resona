@@ -116,7 +116,7 @@ function FileDropzone({
 
         <Button
           type="button"
-          variant="ghost"
+          variant="softPrimary"
           size="icon-sm"
           onClick={togglePlay}
         >
@@ -126,9 +126,10 @@ function FileDropzone({
             <Play className="size-4" />
           )}
         </Button>
+
         <Button
           type="button"
-          variant="ghost"
+          variant="softPrimary"
           size="icon-sm"
           onClick={() => onFileChange(null)}
         >
@@ -151,8 +152,9 @@ function FileDropzone({
       )}
     >
       <input {...getInputProps()} />
+
       <div className="flex size-12 items-center justify-center rounded-xl bg-muted">
-        <AudioLines className="size-5 text-muted-foreground" />
+        <AudioLines className="size-5 text-primary brightness-105" />
       </div>
 
       <div className="flex flex-col items-center gap-1.5">
@@ -165,7 +167,12 @@ function FileDropzone({
         </p>
       </div>
 
-      <Button type="button" variant="outline" size="sm">
+      <Button
+        className="cursor-pointer"
+        type="button"
+        variant="default"
+        size="sm"
+      >
         <FolderOpen className="size-3.5" />
         Upload file
       </Button>
@@ -192,12 +199,12 @@ function LanguageCombobox({
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           role="combobox"
           aria-expanded={open}
           aria-invalid={isInvalid}
           className={cn(
-            "h-9 w-full justify-between font-normal",
+            "h-9 w-full justify-between cursor-pointer  border-0 bg-transparent font-normal shadow-none hover:bg-primary/12 hover:text-foreground focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0",
             !value && "text-muted-foreground",
           )}
         >
@@ -205,9 +212,11 @@ function LanguageCombobox({
             <Globe className="size-4 shrink-0 text-muted-foreground" />
             {value ? selectedLabel : "Select language..."}
           </div>
+
           <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
+
       <PopoverContent
         align="start"
         className="w-[var(--radix-popover-trigger-width)] max-w-[var(--radix-popover-trigger-width)] p-0"
@@ -215,23 +224,33 @@ function LanguageCombobox({
       >
         <Command>
           <CommandInput placeholder="Search language..." />
+
           <CommandList className="overscroll-contain">
             <CommandEmpty>No language found.</CommandEmpty>
+
             <CommandGroup>
               {LANGUAGE_OPTIONS.map((lang) => (
                 <CommandItem
                   key={lang.value}
                   value={lang.label}
-                  className="max-w-full"
+                  className="
+    max-w-full
+    cursor-pointer
+    hover:!bg-primary/12
+    data-[selected=true]:!bg-primary/12
+    aria-selected:!bg-primary/12
+    data-[selected=true]:!text-foreground
+  "
                   onSelect={() => {
                     onChange(lang.value);
                     setOpen(false);
                   }}
                 >
                   <span className="min-w-0 flex-1 truncate">{lang.label}</span>
+
                   <Check
                     className={cn(
-                      "ml-2 size-4 shrink-0",
+                      "ml-2 size-4 shrink-0 text-primary",
                       value === lang.value ? "opacity-100" : "opacity-0",
                     )}
                   />
@@ -278,6 +297,7 @@ export function VoiceCreateForm({
         category,
         language,
       });
+
       if (description) {
         params.set("description", description);
       }
@@ -319,9 +339,11 @@ export function VoiceCreateForm({
         });
 
         toast.success("Voice created successfully!");
+
         queryClient.invalidateQueries({
           queryKey: trpc.voices.getAll.queryKey(),
         });
+
         form.reset();
       } catch (error) {
         const message =
@@ -359,16 +381,17 @@ export function VoiceCreateForm({
             return (
               <Field data-invalid={isInvalid}>
                 <Tabs defaultValue="upload">
-                  <TabsList className="h-11! w-full">
-                    <TabsTrigger value="upload">
-                      <Upload className="size-3.5" />
+                  <TabsList className="h-12! w-full">
+                    <TabsTrigger className="cursor-pointer" value="upload">
+                      <Upload className="size-4" />
                       Upload
                     </TabsTrigger>
-                    <TabsTrigger value="record">
-                      <Mic className="size-3.5" />
-                      Record
+                    <TabsTrigger className="cursor-pointer" value="record">
+                      <Mic className="size-4" />
+                      Record Your Voice
                     </TabsTrigger>
                   </TabsList>
+
                   <TabsContent value="upload">
                     <FileDropzone
                       file={field.state.value}
@@ -376,6 +399,7 @@ export function VoiceCreateForm({
                       isInvalid={isInvalid}
                     />
                   </TabsContent>
+
                   <TabsContent value="record">
                     <VoiceRecorder
                       file={field.state.value}
@@ -384,6 +408,7 @@ export function VoiceCreateForm({
                     />
                   </TabsContent>
                 </Tabs>
+
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
@@ -401,6 +426,7 @@ export function VoiceCreateForm({
                   <div className="pointer-events-none absolute left-0 flex h-full w-11 items-center justify-center">
                     <Tag className="size-4 text-muted-foreground" />
                   </div>
+
                   <Input
                     id={field.name}
                     placeholder="Voice Label"
@@ -408,9 +434,10 @@ export function VoiceCreateForm({
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    className="pl-10"
+                    className="border-0 bg-transparent pl-10 shadow-none hover:bg-primary/12 focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                 </div>
+
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
@@ -424,26 +451,55 @@ export function VoiceCreateForm({
 
             return (
               <Field data-invalid={isInvalid}>
-                <div className="relative flex items-center">
-                  <div className="pointer-events-none absolute left-0 flex h-full w-11 items-center justify-center">
-                    <Layers className="size-4 text-muted-foreground" />
+                <div className="relative flex items-center cursor-pointer">
+                  <div className="absolute left-0 flex h-full w-11 items-center justify-center">
+                    <Layers className="size-4 " />
                   </div>
+
                   <Select
                     value={field.state.value}
                     onValueChange={field.handleChange}
                   >
-                    <SelectTrigger className="w-full pl-10">
+                    <SelectTrigger
+                      className="
+    w-full
+    border-0
+    bg-transparent
+    cursor-pointer
+    pl-10
+    shadow-none
+    hover:bg-primary/12
+    hover:text-foreground
+    focus:ring-0
+    focus:ring-offset-0
+  "
+                    >
                       <SelectValue placeholder="Select category..." />
                     </SelectTrigger>
+
                     <SelectContent>
                       {VOICE_CATEGORIES.map((cat) => (
-                        <SelectItem key={cat} value={cat}>
+                        <SelectItem
+                          key={cat}
+                          value={cat}
+                          className="
+  max-w-full
+  cursor-pointer
+  hover:!bg-primary/12
+  hover:!text-inherit
+  data-[selected=true]:!bg-primary/12
+  data-[selected=true]:!text-inherit
+  aria-selected:!bg-primary/12
+  aria-selected:!text-inherit
+"
+                        >
                           {VOICE_CATEGORY_LABELS[cat]}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
+
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
@@ -454,6 +510,7 @@ export function VoiceCreateForm({
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
+
             return (
               <Field data-invalid={isInvalid}>
                 <LanguageCombobox
@@ -478,6 +535,7 @@ export function VoiceCreateForm({
                   <div className="pointer-events-none absolute left-0 flex h-full w-11 items-center justify-center">
                     <AlignLeft className="size-4 text-muted-foreground" />
                   </div>
+
                   <Textarea
                     id={field.name}
                     placeholder="Describe this voice..."
@@ -489,6 +547,7 @@ export function VoiceCreateForm({
                     rows={3}
                   />
                 </div>
+
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
@@ -504,9 +563,9 @@ export function VoiceCreateForm({
             const submitButton = (
               <Button
                 type="submit"
-                variant={isSubmitting ? "loading" : "softGradient"}
+                variant={isSubmitting ? "shimmerCta" : "pillGradient"}
                 disabled={isSubmitting}
-                className="mb-4"
+                className="mb-4 cursor-pointer rounded-2xl!"
               >
                 {isSubmitting ? "Creating..." : "Create Voice"}
               </Button>
