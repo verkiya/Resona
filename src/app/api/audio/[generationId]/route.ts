@@ -1,3 +1,4 @@
+// AI explanation: Authenticated audio proxy — verifies org owns the generation, then streams from S3 via a short-lived signed URL.
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { getSignedAudioUrl } from "@/lib/aws_s3";
@@ -36,7 +37,8 @@ export async function GET(
   return new Response(audioResponse.body, {
     headers: {
       "Content-Type": "audio/wav",
-      "Cache-Control": "private, max-age=3600", // 1 hour
+      // AI explanation: private cache because generations are org-scoped and may be deleted or replaced.
+      "Cache-Control": "private, max-age=3600",
     },
   });
 }

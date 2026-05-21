@@ -1,3 +1,4 @@
+// AI explanation: Next.js config — Sentry wrapper and build settings for the Resona app.
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 

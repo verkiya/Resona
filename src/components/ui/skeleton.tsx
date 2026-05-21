@@ -1,3 +1,4 @@
+// AI explanation: shadcn/ui presentational primitive; Resona product behavior lives in src/features and src/app.
 import { cn } from "@/lib/utils";
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {

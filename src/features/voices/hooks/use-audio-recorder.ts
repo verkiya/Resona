@@ -1,3 +1,4 @@
+// AI explanation: Record/stop/cleanup hook backing VoiceRecorder (stream, timer, blob output).
 import { useState, useRef, useCallback, useEffect } from "react";
 import type RecordRTCType from "recordrtc";
 import WaveSurfer from "wavesurfer.js";

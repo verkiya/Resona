@@ -1,3 +1,4 @@
+// AI explanation: Starts Polar checkout via billing.createCheckout and redirects the browser.
 import { useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";

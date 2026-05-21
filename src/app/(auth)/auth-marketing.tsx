@@ -1,3 +1,4 @@
+// AI explanation: Marketing copy and visuals beside Clerk auth forms.
 import Image from "next/image";
 import Link from "next/link";
 import { AudioWaveform, BookOpen, Mic2, ShieldCheck, Zap } from "lucide-react";

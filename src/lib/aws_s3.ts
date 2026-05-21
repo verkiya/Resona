@@ -1,3 +1,4 @@
+// AI explanation: Object storage for voice samples and generated audio; keys are validated before every upload, delete, or signed read.
 import {
   S3Client,
   PutObjectCommand,
@@ -22,6 +23,7 @@ type UploadAudioOptions = {
 };
 
 function validateKey(key: string) {
+  // AI explanation: every S3 operation goes through this guard so a malformed key cannot escape the expected storage prefix.
   if (!key || key.includes("..")) {
     throw new Error("Invalid key");
   }

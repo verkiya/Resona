@@ -1,3 +1,4 @@
+// AI explanation: Clerk-hosted sign-up route.
 import { SignUp } from "@clerk/nextjs";
 
 export default function SignUpPage() {

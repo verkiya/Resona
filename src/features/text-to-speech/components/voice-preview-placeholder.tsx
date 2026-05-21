@@ -1,3 +1,4 @@
+// AI explanation: Empty state shown before the first generation exists on the new-TTS page.
 import Link from "next/link";
 import { AudioLines, AudioWaveformIcon, BookOpen, Mic, MicIcon, Sparkles, Volume2 } from "lucide-react";
 

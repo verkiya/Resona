@@ -1,3 +1,4 @@
+// AI explanation: shadcn sidebar primitives (provider, rail, menu); app navigation is composed in dashboard-sidebar.tsx.
 /* eslint-disable react-hooks/purity */
 "use client";
 
@@ -83,7 +84,7 @@ function SidebarProvider({
         _setOpen(openState);
       }
 
-      // This sets the cookie to keep the sidebar state.
+      // AI explanation: persists collapsed/expanded sidebar in a cookie read by dashboard layout defaultOpen.
       document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
     },
     [setOpenProp, open],

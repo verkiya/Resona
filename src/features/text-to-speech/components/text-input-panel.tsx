@@ -1,3 +1,4 @@
+// AI explanation: Main prompt textarea and character limit UI inside the TTS form.
 "use client";
 
 import { useStore } from "@tanstack/react-form";

@@ -1,3 +1,4 @@
+// AI explanation: Top bar for dashboard sub-pages (title area / actions).
 "use client";
 
 import { useUser } from "@clerk/nextjs";

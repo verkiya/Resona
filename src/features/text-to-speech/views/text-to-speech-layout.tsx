@@ -1,3 +1,4 @@
+// AI explanation: Full-height layout wrapper for TTS routes.
 import { PageHeader } from "@/components/page-header";
 export function TextToSpeechLayout({
   children,

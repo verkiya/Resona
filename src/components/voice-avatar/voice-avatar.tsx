@@ -1,3 +1,4 @@
+// AI explanation: Deterministic avatar image for a voice id via useVoiceAvatar (Dicebear/multiavatar).
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

@@ -1,3 +1,4 @@
+// AI explanation: Internal/dev test page (not part of production user flows).
 import { Button } from "@/components/ui/button";
 import {
   Play,

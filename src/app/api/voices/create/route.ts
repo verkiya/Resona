@@ -1,3 +1,4 @@
+// AI explanation: REST endpoint for custom voice creation — validates subscription, audio metadata, uploads to S3, then persists objectKey on the Voice row.
 import { auth } from "@clerk/nextjs/server";
 import { parseBuffer } from "music-metadata";
 import { z } from "zod";
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
   if (!userId || !orgId) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
-  // Check for active subscription before voice creation
+  // AI explanation: voice creation is gated behind an active org subscription because this is a paid feature.
   try {
     const customerState = await polar.customers.getStateExternal({
       externalId: orgId,
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "SUBSCRIPTION_REQUIRED" }, { status: 403 });
     }
   } catch {
-    // Customer doesn't exist in Polar yet -> no subscription
+    // AI explanation: no Polar customer record yet is treated as no subscription.
     return Response.json({ error: "SUBSCRIPTION_REQUIRED" }, { status: 403 });
   }
   const url = new URL(request.url);
@@ -85,7 +86,7 @@ export async function POST(request: Request) {
   const normalizedContentType =
     contentType.split(";")[0]?.trim() || "audio/wav";
 
-  // Validate audio format and duration
+  // AI explanation: the upload is rejected early unless we can prove the file is a real audio file with enough duration to be useful.
   let duration: number;
   try {
     const metadata = await parseBuffer(
@@ -146,6 +147,7 @@ export async function POST(request: Request) {
     });
   } catch {
     if (createdVoiceId) {
+      // AI explanation: if upload or metadata persistence fails, we delete the partially created voice so the database does not keep a broken record.
       await prisma.voice
         .delete({
           where: {
@@ -160,7 +162,7 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
-  // Ingest usage event to Polar (fire-and-forget, don't block response)
+  // AI explanation: metering is fire-and-forget so billing telemetry cannot slow down or fail the voice creation response.
   polar.events
     .ingest({
       events: [
@@ -173,7 +175,7 @@ export async function POST(request: Request) {
       ],
     })
     .catch(() => {
-      // Silently fail - don't break the user experience for metering errors
+      // AI explanation: metering failures are intentionally ignored here because they should not block the user flow.
     });
   return Response.json(
     { name, message: "Voice created successfully" },

@@ -1,3 +1,4 @@
+// AI explanation: Sidebar billing widget — subscription status, estimated usage cost, upgrade/portal actions.
 import { useCallback } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Crown, Activity, Sparkles, ArrowUpRight } from "lucide-react";
@@ -146,6 +147,7 @@ export function UsageContainer() {
 
   return (
     <div className="group-data-[collapsible=icon]:hidden rounded-2xl border border-border/60 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:shadow-md">
+      {/* AI explanation: subscribed orgs see Polar meter estimate; others see UpgradeCard → createCheckout. */}
       {data?.hasActiveSubscription ? (
         <UsageCard estimatedCostCents={data.estimatedCostCents} />
       ) : (

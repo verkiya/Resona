@@ -1,3 +1,4 @@
+// AI explanation: Sliders for temperature, topP, topK, and repetition penalty bound to the TTS form.
 "use client";
 
 import { useStore } from "@tanstack/react-form";

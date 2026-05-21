@@ -26,6 +26,8 @@ Example local test:
     --voice-key "voices/system/<voice-id>.wav"
 """
 
+# AI explanation: Modal-deployed TTS service (/generate) — clones voice from S3 voice_key; consumed by src/lib/chatterbox-client.ts.
+
 from __future__ import annotations
 
 import os

@@ -1,3 +1,4 @@
+// AI explanation: Renders one custom voice with preview playback (/api/voices/:id) and delete via voices.delete mutation.
 import Link from "next/link";
 import { Mic, MoreHorizontal, Pause, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -43,6 +44,7 @@ function parseLanguage(locale: string) {
   const [, country] = locale.split("-");
   if (!country) return { flag: "", region: locale };
 
+  // AI explanation: the flag is derived from the region code using Unicode regional indicator symbols, which keeps locale display compact without extra lookup data.
   const flag = [...country.toUpperCase()]
     .map((c) => String.fromCodePoint(0x1f1e6 + c.charCodeAt(0) - 65))
     .join("");
