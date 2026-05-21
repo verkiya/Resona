@@ -203,12 +203,13 @@ export function VoiceCard({ voice }: VoiceCardProps) {
               </AlertDialogHeader>
 
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={deleteMutation.isPending}>
+                <AlertDialogCancel className="cursor-pointer" variant="softPrimary"  disabled={deleteMutation.isPending}>
                   Cancel
                 </AlertDialogCancel>
 
                 <AlertDialogAction
-                  variant="destructive"
+                  variant="default"
+                  className="cursor-pointer"
                   disabled={deleteMutation.isPending}
                   onClick={(e) => {
                     e.preventDefault();

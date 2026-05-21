@@ -7,7 +7,10 @@ export const env = createEnv({
     CLERK_SECRET_KEY: z.string().min(1),
 
     // Database
-    DATABASE_URL: z.string().startsWith("postgres://"),
+    DATABASE_URL: z.string().refine((v) =>
+      v.startsWith("postgres://") || v.startsWith("postgresql://"),
+      { message: "DATABASE_URL must start with 'postgres://' or 'postgresql://'" },
+    ),
 
     // App
     APP_URL: z.string().url(),
@@ -17,7 +20,7 @@ export const env = createEnv({
     AWS_SECRET_ACCESS_KEY: z.string().min(1),
     AWS_REGION: z.string().min(1),
     AWS_BUCKET_NAME: z.string().min(1),
-    AWS_MODAL_SECRET_NAME: z.string().min(1),
+    AWS_MODAL_SECRET_NAME: z.string().min(1).optional(),
 
     // AI
     CHATTERBOX_API_KEY: z.string().min(1),
@@ -38,6 +41,8 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1),
     NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: z.string().min(1),
     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: z.string().min(1),
+    NEXT_PUBLIC_APP_URL: z.string().min(1).optional(),
+    NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
   },
 
   experimental__runtimeEnv: {
@@ -53,6 +58,8 @@ export const env = createEnv({
 
     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL:
       process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

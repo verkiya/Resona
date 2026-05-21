@@ -459,9 +459,21 @@ export function VoiceCreateForm({
                   <Select
                     value={field.state.value}
                     onValueChange={field.handleChange}
-
                   >
-                    <SelectTrigger className="w-full border-0 cursor-pointer pl-10 shadow-none focus:ring-0 focus:ring-offset-0">
+                    <SelectTrigger
+                      className="
+    w-full
+    border-0
+    bg-transparent
+    cursor-pointer
+    pl-10
+    shadow-none
+    hover:bg-primary/12
+    hover:text-foreground
+    focus:ring-0
+    focus:ring-offset-0
+  "
+                    >
                       <SelectValue placeholder="Select category..." />
                     </SelectTrigger>
 
