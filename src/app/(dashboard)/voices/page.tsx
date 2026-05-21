@@ -1,3 +1,4 @@
+// AI explanation: RSC entry for voices library — parses nuqs search, prefetches voices.getAll.
 import type { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
 

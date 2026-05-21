@@ -1,3 +1,4 @@
+// AI explanation: Mobile drawer for generation history.
 import { History } from "lucide-react";
 
 import { Button } from "@/components/ui/button";

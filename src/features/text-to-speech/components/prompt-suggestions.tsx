@@ -1,3 +1,4 @@
+// AI explanation: Clickable sample prompts that prefill the TTS text field.
 "use client";
 
 import {

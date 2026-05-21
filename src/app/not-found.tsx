@@ -1,3 +1,4 @@
+// AI explanation: App-wide 404 page.
 import Link from "next/link";
 import { Home, Sparkles } from "lucide-react";
 

@@ -1,3 +1,4 @@
+// AI explanation: Shared page title/subtitle header used by dashboard feature views.
 import { cn } from "@/lib/utils";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Button } from "./ui/button";

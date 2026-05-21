@@ -1,3 +1,4 @@
+// AI explanation: Animated simplex-noise canvas background for marketing/auth visuals; custom, not a stock shadcn export.
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable no-var */
 /* eslint-disable @typescript-eslint/no-explicit-any */

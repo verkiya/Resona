@@ -1,3 +1,4 @@
+// AI explanation: Shared className merge (cn) and small formatting helpers used across UI.
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

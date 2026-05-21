@@ -1,3 +1,4 @@
+// AI explanation: Public learning/docs page (whitelisted in proxy.ts).
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -18,18 +19,9 @@ import { Button } from "@/components/ui/button";
 
 export default function LearningsPage() {
   return (
-    <main className="min-h-screen cursor-[url('/resona.png')_0_0,pointer] bg-background text-foreground">
+    <main className="min-h-screen cursor-[url('/resona.png')_0_0,pointer] bg-background text-foreground pb-28 md:pb-32">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
-        <Button
-          asChild
-          variant="softGradient"
-          className="mb-8 inline-flex items-center gap-2 text-sm"
-        >
-          <Link href="/">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Home</span>
-          </Link>
-        </Button>
+        
         {/* Hero */}
         <section className="mb-16">
           <h1 className="mt-6 text-5xl font-semibold tracking-tight lg:text-7xl">
@@ -319,6 +311,22 @@ export default function LearningsPage() {
             differ from prototype demos.
           </p>
         </section>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/85 px-4 py-4 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
+        <div className="mx-auto flex max-w-7xl justify-center">
+          <Button
+            asChild
+            variant="pillGradient"
+            size="lg"
+            className="shadow-xl shadow-primary/10"
+          >
+            <Link href="/" aria-label="Go back to home">
+              <ArrowLeft className="h-4 w-4" />
+              <span>Go back to home</span>
+            </Link>
+          </Button>
+        </div>
       </div>
     </main>
   );

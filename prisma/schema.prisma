@@ -1,5 +1,4 @@
-// This is your Prisma schema file
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// AI explanation: Postgres schema for multi-tenant voices (SYSTEM/CUSTOM) and TTS generations; objectKey points at S3/R2 blobs.
 
 generator client {
   provider = "prisma-client"
@@ -43,9 +42,9 @@ model Voice {
 
   variant VoiceVariant
 
-  objectKey String?   // storage-agnostic key
+  objectKey String? // AI explanation: S3 key for the reference audio clip used by Chatterbox cloning.
 
-  generations Generation[] // A voice can have many generations, but a generation can have only one voice
+  generations Generation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,12 +61,12 @@ model Generation {
   orgId String
 
   voiceId String?
-  voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull) //SetNull because we don't want to delete all the voice generations related to a deleted voice; a generation can only have one voice
+  voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull) // AI explanation: SetNull preserves generation history after a voice is deleted, so past outputs remain queryable instead of cascading away.
 
   voiceName String
   text String
 
-  objectKey String?   // storage-agnostic key, we display the files once it's been uploaded and ready to listen to
+  objectKey String? // AI explanation: S3 key for the synthesized WAV; null until upload completes (API returns 409).
 
   temperature Float
   topP Float

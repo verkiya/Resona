@@ -1,3 +1,4 @@
+// AI explanation: Mobile drawer exposing settings when the desktop right rail is hidden.
 import { Settings } from "lucide-react";
 
 import { Button } from "@/components/ui/button";

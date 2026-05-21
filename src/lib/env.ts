@@ -1,3 +1,4 @@
+// AI explanation: Validates server and client environment variables at build/runtime via @t3-oss/env-nextjs.
 import { z } from "zod";
 import { createEnv } from "@t3-oss/env-nextjs";
 

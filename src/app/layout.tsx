@@ -1,3 +1,4 @@
+// AI explanation: Root HTML shell — Clerk, tRPC, nuqs, fonts, toaster, and Vercel analytics.
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -6,9 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Analytics } from "@vercel/analytics/next";
-/* =========================
-   Fonts
-========================= */
+
 const outfit = Outfit({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -21,9 +20,6 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-/* =========================
-   Metadata
-========================= */
 export const metadata: Metadata = {
   title: {
     default: "Resona",
@@ -35,9 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* =========================
-   Root Layout
-========================= */
 export default function RootLayout({
   children,
 }: Readonly<{

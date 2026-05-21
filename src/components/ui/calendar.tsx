@@ -1,3 +1,4 @@
+// AI explanation: shadcn/ui presentational primitive; Resona product behavior lives in src/features and src/app.
 "use client";
 
 import * as React from "react";

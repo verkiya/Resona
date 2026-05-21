@@ -1,3 +1,4 @@
+// AI explanation: Pass-through layout for the voices route segment.
 import { VoicesLayout } from "@/features/voices/views/voices-layout";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

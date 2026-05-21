@@ -1,3 +1,4 @@
+// AI explanation: Compact trigger that opens the voice selector on smaller layouts.
 "use client";
 
 import { ChevronDown } from "lucide-react";

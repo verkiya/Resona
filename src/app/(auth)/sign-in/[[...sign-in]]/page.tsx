@@ -1,3 +1,4 @@
+// AI explanation: Clerk-hosted sign-in route.
 import { SignIn } from "@clerk/nextjs";
 
 export default function SignInPage() {

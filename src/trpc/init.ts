@@ -1,17 +1,11 @@
+// AI explanation: tRPC bootstrap — baseProcedure adds Sentry; authProcedure and orgProcedure layer Clerk checks for user and organization scope.
 import { auth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { cache } from "react";
 import * as Sentry from "@sentry/node";
 import superjson from "superjson";
 export const createTRPCContext = cache(async () => {});
-// Avoid exporting the entire t-object
-// since it's not very descriptive.
-// For instance, the use of a t variable
-// is common in i18n libraries.
 const t = initTRPC.create({
-  /**
-   * @see https://trpc.io/docs/server/data-transformers
-   */
   transformer: superjson,
 });
 
@@ -20,11 +14,11 @@ const sentryMiddleware = t.middleware(
     attachRpcInput: true,
   }),
 );
-// Base router and procedure helpers
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const baseProcedure = t.procedure.use(sentryMiddleware)
-//Authenticated procedure - we call auth() only when needed
+export const baseProcedure = t.procedure.use(sentryMiddleware);
+
+// AI explanation: requires a signed-in Clerk user; used when org scope is not needed.
 export const authProcedure = baseProcedure.use(async ({ next }) => {
   const { userId } = await auth();
   if (!userId) {
@@ -36,8 +30,8 @@ export const authProcedure = baseProcedure.use(async ({ next }) => {
   });
 });
 
-// Organization procedure - requires userId and orgId
-export const orgProcedure =baseProcedure.use(async ({ next }) => {
+// AI explanation: requires userId and orgId — all tenant-owned data (voices, generations, billing) uses this.
+export const orgProcedure = baseProcedure.use(async ({ next }) => {
   const { userId, orgId } = await auth();
   if (!userId) {
     throw new TRPCError({ code: "UNAUTHORIZED" });

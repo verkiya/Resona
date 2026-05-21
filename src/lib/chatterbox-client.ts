@@ -1,3 +1,4 @@
+// AI explanation: Typed HTTP client for the external Chatterbox TTS service (Modal); generation requests go through POST /generate.
 import createClient from "openapi-fetch";
 import type { paths } from "@/types/chatterbox-api";
 import { env } from "./env";

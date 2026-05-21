@@ -1,3 +1,4 @@
+// AI explanation: shadcn/ui presentational primitive; Resona product behavior lives in src/features and src/app.
 import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
 

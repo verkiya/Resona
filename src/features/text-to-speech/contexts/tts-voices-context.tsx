@@ -1,4 +1,5 @@
 "use client";
+// AI explanation: Shares the voices list from the page loader with nested TTS components so selectors do not each refetch voices.getAll.
 
 import { createContext, useContext } from "react";
 import type { inferRouterOutputs } from "@trpc/server";

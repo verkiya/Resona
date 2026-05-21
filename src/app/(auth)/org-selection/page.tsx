@@ -1,3 +1,4 @@
+// AI explanation: Clerk organization picker — required before org-scoped dashboard routes (see proxy.ts).
 import { OrganizationList } from "@clerk/nextjs";
 
 export default function OrgSelectionPage() {

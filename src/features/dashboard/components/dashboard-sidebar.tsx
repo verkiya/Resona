@@ -1,3 +1,4 @@
+// AI explanation: Primary app nav, org switcher, voice create entry, and billing usage footer.
 "use client";
 
 import Image from "next/image";

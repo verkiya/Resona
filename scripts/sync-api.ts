@@ -1,13 +1,4 @@
-/**
- * Fetches the OpenAPI spec from the Chatterbox TTS API and generates TypeScript types.
- *
- * Usage:
- *   CHATTERBOX_API_URL=https://your-api-url npm run sync-api
- *
- * Or with .env file:
- *   npm run sync-api
- */
-
+// AI explanation: Dev script — fetches Chatterbox OpenAPI and regenerates src/types/chatterbox-api.d.ts (requires CHATTERBOX_API_URL).
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

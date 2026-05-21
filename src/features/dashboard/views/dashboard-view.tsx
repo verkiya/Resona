@@ -1,3 +1,4 @@
+// AI explanation: Dashboard home — quick actions and entry points into TTS and voices.
 import { PageHeader } from "@/components/page-header";
 import { HeroPattern } from "../components/hero-pattern";
 import { DashboardHeader } from "../components/dashboard-header";
