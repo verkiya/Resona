@@ -204,7 +204,7 @@ function LanguageCombobox({
           aria-expanded={open}
           aria-invalid={isInvalid}
           className={cn(
-            "h-9 w-full justify-between border-0 bg-transparent font-normal shadow-none hover:bg-primary/12 hover:text-foreground focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0",
+            "h-9 w-full justify-between cursor-pointer  border-0 bg-transparent font-normal shadow-none hover:bg-primary/12 hover:text-foreground focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0",
             !value && "text-muted-foreground",
           )}
         >
@@ -451,7 +451,7 @@ export function VoiceCreateForm({
 
             return (
               <Field data-invalid={isInvalid}>
-                <div className="relative flex items-center">
+                <div className="relative flex items-center cursor-pointer">
                   <div className="absolute left-0 flex h-full w-11 items-center justify-center">
                     <Layers className="size-4 " />
                   </div>
@@ -459,8 +459,9 @@ export function VoiceCreateForm({
                   <Select
                     value={field.state.value}
                     onValueChange={field.handleChange}
+
                   >
-                    <SelectTrigger className="w-full border-0  pl-10 shadow-none  focus:ring-0 focus:ring-offset-0">
+                    <SelectTrigger className="w-full border-0 cursor-pointer pl-10 shadow-none focus:ring-0 focus:ring-offset-0">
                       <SelectValue placeholder="Select category..." />
                     </SelectTrigger>
 

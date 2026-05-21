@@ -62,7 +62,7 @@ export function VoiceRecorder({
         <p className="text-center text-sm text-destructive">{error}</p>
         <Button
           type="button"
-          variant="outline"
+          variant="default"
           size="sm"
           onClick={resetRecording}
         >
@@ -91,7 +91,7 @@ export function VoiceRecorder({
 
         <Button
           type="button"
-          variant="ghost"
+          variant="softPrimary"
           size="icon-sm"
           onClick={togglePlay}
           title={isPlaying ? "Pause" : "Play"}
@@ -104,7 +104,7 @@ export function VoiceRecorder({
         </Button>
         <Button
           type="button"
-          variant="ghost"
+          variant="softPrimary"
           size="icon-sm"
           onClick={handleReRecord}
           title="Re-record"
@@ -113,7 +113,7 @@ export function VoiceRecorder({
         </Button>
         <Button
           type="button"
-          variant="ghost"
+          variant="softPrimary"
           size="icon-sm"
           onClick={handleReRecord}
           title="Remove"
@@ -132,7 +132,7 @@ export function VoiceRecorder({
           <p className="text-[28px] font-semibold leading-[1.2] tracking-tight">
             {formatTime(elapsedTime)}
           </p>
-          <Button type="button" variant="destructive" onClick={handleStop}>
+          <Button type="button" variant="default" className="cursor-pointer" onClick={handleStop}>
             <Square className="size-3" />
             Stop
           </Button>
@@ -162,7 +162,8 @@ export function VoiceRecorder({
       </div>
       <Button
         type="button"
-        variant="outline"
+        variant="default"
+        className="cursor-pointer"
         size="sm"
         onClick={startRecording}
       >
