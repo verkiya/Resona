@@ -149,7 +149,7 @@ export function VoiceRecorder({
       )}
     >
       <div className="flex size-12 items-center justify-center rounded-xl bg-muted">
-        <Mic className="size-5 text-muted-foreground" />
+        <Mic className="size-5 text-primary" />
       </div>
 
       <div className="flex flex-col items-center gap-1.5">

@@ -14,7 +14,7 @@ const createVoiceSchema = z.object({
 });
 
 const MAX_UPLOAD_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
-const MIN_AUDIO_DURATION_SECONDS = 10;
+const MIN_AUDIO_DURATION_SECONDS = 5;
 
 export async function POST(request: Request) {
   const { userId, orgId } = await auth();
