@@ -79,7 +79,7 @@ export function VoiceCard({ voice }: VoiceCardProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-1 overflow-hidden rounded-2xl bg-card/70 pr-3 shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md lg:pr-6",
+        "flex items-center gap-1 overflow-hidden rounded-2xl bg-card/80 pr-3 shadow-sm transition-shadow duration-200 hover:shadow-md lg:pr-6",
         isPlaying && "border-primary/30 shadow-md shadow-primary/10",
       )}
     >

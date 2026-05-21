@@ -43,15 +43,13 @@ export function DashboardHeader() {
           href="https://github.com/verkiya/Resona"
           target="_blank"
           rel="noopener noreferrer"
-          className="group cursor-[url('/resona.png')_16_16,pointer] elevated flex items-center gap-2 rounded-2xl border border-border/60  px-4 py-2 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg "
+          className="group elevated flex items-center gap-2 rounded-2xl border border-border/60 bg-card/70 px-4 py-2 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg  cursor-[url('/resona.png')_0_0,pointer]"
         >
-          <FaGithub
-            className="h-5 w-5 transition-all duration-500 ease-out group-hover:-translate-y-0.5
-group-hover:rotate-12
-group-hover:scale-110  "
-          />
+          <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-[18deg] group-hover:scale-110 group-hover:text-primary" />
 
-          <span className="text-sm font-medium">Source Code</span>
+          <span className=" text-sm font-medium sm:block">
+            Source Code
+          </span>
         </Link>
       </div>
     </div>
