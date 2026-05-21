@@ -84,7 +84,11 @@ export function VoiceSelector() {
           </SelectValue>
         </SelectTrigger>
 
-        <SelectContent className="rounded-2xl border border-border/50 bg-card/95 shadow-2xl backdrop-blur-xl animate-in fade-in-0 zoom-in-95 duration-150">
+        <SelectContent
+          position="popper"
+          align="start"
+          className="max-h-[min(16rem,calc(100dvh-18rem))] rounded-2xl border border-border/30 bg-card/95 shadow-2xl backdrop-blur-xl animate-in fade-in-0 zoom-in-95 duration-150"
+        >
           {hasMissingSelectedVoice && currentVoice && (
             <>
               <SelectGroup>

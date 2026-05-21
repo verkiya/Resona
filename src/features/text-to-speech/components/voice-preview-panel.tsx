@@ -22,6 +22,7 @@ function formatTime(seconds: number): string {
   const secs = Math.floor(safeSeconds % 60)
     .toString()
     .padStart(2, "0");
+
   return `${minutes}:${secs}`;
 }
 
@@ -35,6 +36,7 @@ export function VoicePreviewPanel({
   text: string;
 }) {
   const [isDownloading, setIsDownloading] = useState(false);
+
   const selectedVoiceName = voice?.name ?? null;
   const selectedVoiceSeed = voice?.id ?? null;
 
@@ -49,8 +51,9 @@ export function VoicePreviewPanel({
     seekForward,
   } = useWaveSurfer({
     url: audioUrl,
-    autoplay: true,
+    autoplay: sessionStorage.getItem("autoplay-audio") === "true",
   });
+
   const handleDownload = () => {
     setIsDownloading(true);
 
@@ -65,6 +68,7 @@ export function VoicePreviewPanel({
     const link = document.createElement("a");
     link.href = audioUrl;
     link.download = `${safeName}.wav`;
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -73,53 +77,75 @@ export function VoicePreviewPanel({
   };
 
   return (
-    <div className="h-full gap-8 flex-col border-t hidden flex-1 lg:flex">
+    <div className="hidden h-full flex-1 flex-col border-t border-border/40 bg-card/30 backdrop-blur-xl lg:flex">
       {/* Header */}
-      <div className="p-6 pb-0">
-        <h3 className="font-semibold text-foreground">Voice preview</h3>
+      <div className="border-b border-border/30 px-6 py-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          Resona Playback
+        </p>
+        <h3 className="mt-1 text-lg font-semibold tracking-tight text-foreground">
+          Voice Preview
+        </h3>
       </div>
 
-      {/* Content */}
-      <div className="relative flex flex-1 items-center justify-center">
+      {/* Waveform */}
+      <div className="relative flex flex-1 items-center justify-center px-6 py-8">
         {!isReady && (
           <div className="absolute inset-0 z-10 flex items-center justify-center">
             <Badge
               variant="outline"
-              className="gap-2 bg-background/90 px-3 py-1.5 text-sm text-muted-foreground shadow-sm"
+              className="
+                gap-2 rounded-2xl border border-border/40
+                bg-background/80 px-4 py-2
+                text-sm text-muted-foreground
+                shadow-xl backdrop-blur-xl
+              "
             >
               <Spinner className="size-4" />
-              <span>Loading audio...</span>
+              <span>Preparing waveform...</span>
             </Badge>
           </div>
         )}
+
         <div
-          ref={containerRef}
-          className={cn(
-            "w-full cursor-pointer transition-opacity duration-200",
-            !isReady && "opacity-0",
-          )}
-        />
+          className="
+            w-full rounded-3xl border border-border/30
+            bg-[radial-gradient(circle_at_center,oklch(0.97_0.01_40),transparent)]
+            bg-background/40 p-5 shadow-inner
+          "
+        >
+          <div
+            ref={containerRef}
+            className={cn(
+              "w-full cursor-pointer transition-opacity duration-300",
+              !isReady && "opacity-0",
+            )}
+          />
+        </div>
       </div>
-      {/* Time display */}
-      <div className="flex items-center justify-center">
-        <p className="text-3xl font-semibold tabular-nums tracking-tight text-foreground">
-          {formatTime(currentTime)}&nbsp;
+
+      {/* Time */}
+      <div className="flex items-center justify-center px-6">
+        <p className="text-2xl font-semibold tabular-nums tracking-tight text-foreground">
+          {formatTime(currentTime)}
           <span className="text-muted-foreground">
-            /&nbsp;{formatTime(duration)}
+            &nbsp;/ {formatTime(duration)}
           </span>
         </p>
       </div>
 
       {/* Footer */}
-      <div className="flex flex-col items-center p-6">
-        <div className="grid w-full grid-cols-3">
+      <div className="p-6">
+        <div className="grid w-full grid-cols-3 items-center gap-6">
+          {" "}
           {/* Metadata */}
-          <div className="flex min-w-0 flex-col gap-0.5">
-            <p className="truncate text-sm font-medium text-foreground">
+          <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/20 p-2 shadow-sm backdrop-blur-sm ">
+            <p className="line-clamp-2 truncate text-sm font-medium text-foreground">
               {text}
             </p>
+
             {selectedVoiceName && (
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                 <VoiceAvatar
                   seed={selectedVoiceSeed ?? selectedVoiceName}
                   name={selectedVoiceName}
@@ -129,55 +155,74 @@ export function VoicePreviewPanel({
               </div>
             )}
           </div>
-
-          {/* Player controls */}
-          <div className="flex items-center justify-center gap-3">
+          {/* Controls */}
+          <div className="flex items-center justify-center gap-3 ">
             <Button
               variant="ghost"
               size="icon-lg"
-              className="flex-col"
+              className="
+                cursor-pointer rounded-2xl border bg-primary/50 border-border/30
+                 hover:bg-primary/70
+              "
               onClick={() => seekBackward(10)}
               disabled={!isReady}
             >
-              <Undo className="size-4 -mb-1" />
-              <span className="text-[10px] font-medium">10</span>
+              <div className="flex flex-col items-center">
+                <Undo className="size-4 -mb-1" />
+                <span className="text-[10px] font-medium">10</span>
+              </div>
             </Button>
 
             <Button
-              variant="default"
               size="icon-lg"
-              className="rounded-full"
+              variant="neonAi"
+              className="
+                h-16 w-16 cursor-pointer rounded-full
+
+
+                hover:scale-105
+              "
               onClick={togglePlayPause}
+              disabled={!isReady}
             >
               {isPlaying ? (
-                <Pause className="fill-background" />
+                <Pause className="size-5 fill-white text-white" />
               ) : (
-                <Play className="fill-background" />
+                <Play className="size-5 fill-white text-white" />
               )}
             </Button>
 
             <Button
               variant="ghost"
               size="icon-lg"
-              className="flex-col"
+              className="
+               cursor-pointer rounded-2xl border bg-primary/50 border-border/30
+                 hover:bg-primary/70
+              "
               onClick={() => seekForward(10)}
               disabled={!isReady}
             >
-              <Redo className="size-4 -mb-1" />
-              <span className="text-[10px] font-medium">10</span>
+              <div className="flex flex-col items-center">
+                <Redo className="size-4 -mb-1" />
+                <span className="text-[10px] font-medium">10</span>
+              </div>
             </Button>
           </div>
-
           {/* Download */}
           <div className="flex justify-end">
             <Button
-              variant="outline"
+              variant="pillGradient"
               size="sm"
               onClick={handleDownload}
               disabled={isDownloading}
+              className="
+                cursor-pointer rounded-2xl border border-border/40
+                bg-background/40 px-4 shadow-sm
+                hover:bg-background/70
+              "
             >
               <Download className="size-4" />
-              Download
+              {isDownloading ? "Downloading..." : "Download"}
             </Button>
           </div>
         </div>

@@ -38,7 +38,7 @@ export const quickActions: QuickAction[] = [
     title: "Open a Viral Podcast",
     description: "Craft energetic intros designed to hook listeners fast",
     gradient: "from-teal-200 via-cyan-100 to-zinc-50",
-    href: "/text-to-speech?text=Welcome back to Signal & Static, the show where we unpack the strange stories shaping technology, culture, and the future. Today, we're diving into the billion-dollar startup that nearly collapsed because of a single overlooked email. Trust me, this one gets wild fast.",
+    href: "/text-to-speech?text=Welcome back to Signal and Static, the show where we unpack the strange stories shaping technology, culture, and the future. Today, we're diving into the billion-dollar startup that nearly collapsed because of a single overlooked email. Trust me, this one gets wild fast.",
   },
 
   {
