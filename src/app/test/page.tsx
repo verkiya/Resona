@@ -1,3 +1,4 @@
+"use client"
 // AI explanation: Internal/dev test page (not part of production user flows).
 import { Button } from "@/components/ui/button";
 import {
@@ -8,6 +9,7 @@ import {
   ArrowRight,
   Settings,
 } from "lucide-react";
+import { toast } from "sonner";
 
 const variants = [
   "default",
@@ -135,7 +137,100 @@ export default function ButtonLabPage() {
             </div>
           </div>
         </section>
+        <div className="flex min-h-screen items-center justify-center bg-background p-8">
+          <div className="grid w-full max-w-3xl grid-cols-2 gap-4 md:grid-cols-3">
+            <Button
+              onClick={() =>
+                toast("Default toast", {
+                  description: "Standard Resona notification.",
+                })
+              }
+            >
+              Default
+            </Button>
 
+            <Button
+              onClick={() =>
+                toast.success("Voice generated", {
+                  description: "Your audio is ready for playback.",
+                })
+              }
+            >
+              Success
+            </Button>
+
+            <Button
+              onClick={() =>
+                toast.error("Generation failed", {
+                  description: "Something went wrong while creating speech.",
+                })
+              }
+            >
+              Error
+            </Button>
+
+            <Button
+              onClick={() =>
+                toast.warning("Usage limit approaching", {
+                  description: "You are nearing your billing cap.",
+                })
+              }
+            >
+              Warning
+            </Button>
+
+            <Button
+              onClick={() =>
+                toast.info("New feature available", {
+                  description: "Custom voice cloning just got faster.",
+                })
+              }
+            >
+              Info
+            </Button>
+
+            <Button
+              onClick={() =>
+                toast.loading("Generating voice...", {
+                  description: "Rendering speech in progress.",
+                })
+              }
+            >
+              Loading
+            </Button>
+
+            <Button
+              onClick={() =>
+                toast("Action toast", {
+                  description: "Try the action button styling.",
+                  action: {
+                    label: "Retry",
+                    onClick: () => console.log("retry"),
+                  },
+                })
+              }
+            >
+              Action
+            </Button>
+
+            <Button
+              onClick={() =>
+                toast.promise(
+                  new Promise((resolve) =>
+                    setTimeout(() => resolve("done"), 2500),
+                  ),
+                  {
+                    loading: "Generating voice...",
+                    success: "Voice generated successfully",
+                    error: "Generation failed",
+                  },
+                )
+              }
+            >
+              Promise
+            </Button>
+          </div>
+        </div>
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold">Real-world Examples</h2>
 

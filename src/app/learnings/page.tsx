@@ -1,318 +1,498 @@
-// AI explanation: Public learning/docs page (whitelisted in proxy.ts).
+"use client";
+
 import Link from "next/link";
 import {
   ArrowLeft,
-  AudioWaveform,
   ShieldCheck,
   Database,
   CreditCard,
   HardDrive,
   Bug,
-  Workflow,
   Mic2,
   Zap,
-  Layers3,
   Server,
   Code2,
+  Lock,
+  Wrench,
+  Layers3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Root page
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function LearningsPage() {
   return (
-    <main className="min-h-screen cursor-[url('/resona.png')_0_0,pointer] bg-background text-foreground pb-28 md:pb-32">
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
-        
-        {/* Hero */}
-        <section className="mb-16">
-          <h1 className="mt-6 text-5xl font-semibold tracking-tight lg:text-7xl">
-            What I Learned Building Resona
-          </h1>
+    <main className="relative min-h-screen overflow-hidden cursor-[url('/resona.png')_0_0,pointer] bg-background pb-28 text-foreground md:pb-32">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.13_25/0.14),transparent_42%),radial-gradient(circle_at_top_right,oklch(0.75_0.15_300/0.12),transparent_38%)]" />
+      <div className="mx-auto max-w-5xl px-6 py-16 lg:px-10">
 
-          <p className="mt-6 max-w-5xl text-lg leading-relaxed text-muted-foreground lg:text-xl">
-            Resona is a production-oriented AI voice generation SaaS platform
-            built around self-hosted text-to-speech infrastructure, custom voice
-            cloning workflows, secure multi-tenant architecture, usage-based
-            billing, observability, and deployment-ready engineering practices.
+        <section className="mb-16 space-y-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground shadow-sm backdrop-blur-sm">
+            Engineering breakdown
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
+            <div>
+              <h1 className="max-w-3xl text-5xl font-semibold tracking-tight lg:text-[5.5rem] lg:leading-[1.02]">
+                Building
+                <span className="block text-primary">Resona</span>
+              </h1>
+
+              <p className="mt-6 max-w-2xl border-l-2 border-primary/70 pl-4 text-base leading-relaxed text-muted-foreground lg:text-lg">
+                A full-stack AI voice product built to study the hard parts of
+                shipping software: orchestration, tenancy, media delivery,
+                billing, and the operational edges that prototypes usually skip.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+              <HeroStat label="Inference" value="Self-hosted" />
+              <HeroStat label="Tenancy" value="Org-scoped" />
+              <HeroStat label="Delivery" value="Signed URLs" />
+            </div>
+          </div>
+        </section>
+
+        {/* ── Why I built this ── */}
+        <Block label="00" title="Why I Built This">
+          <p className="text-muted-foreground leading-relaxed">
+            Most AI side projects stop at a model call wrapped in a form. I
+            wanted to build something that forced me to understand the pieces
+            that make a product durable: identity, org boundaries, data flow,
+            storage, billing, and deployment. The interesting work was never the
+            prompt-to-audio path by itself, but everything around it.
           </p>
-        </section>
+          <p className="text-muted-foreground leading-relaxed mt-4">
+            Resona became a vehicle for that investigation. Voice generation was
+            the domain; production engineering was the subject.
+          </p>
+        </Block>
 
-        {/* Overview */}
-        <section className="mb-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          <FeatureCard
-            icon={<Mic2 className="h-5 w-5 text-primary" />}
-            title="Voice Cloning"
-            description="Reusable custom AI voices through uploaded samples or browser recording."
-          />
+        {/* ── Architecture Diagram ── */}
+        <Block label="01" title="System Architecture">
+          <p className="text-muted-foreground leading-relaxed mb-8">
+            The application is easiest to understand if you split it into two
+            flows: the interactive dashboard and the generation pipeline. They
+            share the same product boundary, but they fail and scale for very
+            different reasons.
+          </p>
 
-          <FeatureCard
-            icon={<Zap className="h-5 w-5 text-primary" />}
-            title="Text-to-Speech"
-            description="Natural speech generation with interactive playback workflows."
-          />
-
-          <FeatureCard
-            icon={<ShieldCheck className="h-5 w-5 text-primary" />}
-            title="Multi-Tenant SaaS"
-            description="Organization-aware authentication, routing, and isolated product workflows."
-          />
-
-          <FeatureCard
-            icon={<CreditCard className="h-5 w-5 text-primary" />}
-            title="Monetization"
-            description="Subscriptions, metered usage, premium feature enforcement, and upgrade flows."
-          />
-        </section>
-
-        {/* Project Scope */}
-        <Section title="Project Scope">
-          <Bullet>
-            Self-hosted Chatterbox text-to-speech inference pipeline
-          </Bullet>
-          <Bullet>Custom voice cloning through uploaded audio samples</Bullet>
-          <Bullet>Browser-based voice recording and upload workflows</Bullet>
-          <Bullet>
-            Interactive audio waveform playback, seeking, and downloads
-          </Bullet>
-          <Bullet>Voice management CRUD workflows</Bullet>
-          <Bullet>Secure multi-tenant SaaS architecture</Bullet>
-          <Bullet>Subscription billing and usage metering</Bullet>
-          <Bullet>Production observability and deployment workflows</Bullet>
-        </Section>
-
-        {/* Architecture */}
-        <Section title="Architecture Overview">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <ArchitectureCard
-              icon={<Layers3 className="h-5 w-5 text-primary" />}
-              title="Frontend"
-              description="Next.js App Router application powering dashboards, forms, audio workflows, and responsive user interaction."
-            />
-
-            <ArchitectureCard
-              icon={<Server className="h-5 w-5 text-primary" />}
-              title="Application Layer"
-              description="Type-safe tRPC APIs connecting frontend workflows to business logic."
-            />
-
-            <ArchitectureCard
-              icon={<Database className="h-5 w-5 text-primary" />}
-              title="Persistence"
-              description="Prisma ORM with PostgreSQL for relational domain modeling and durable storage."
-            />
-
-            <ArchitectureCard
-              icon={<HardDrive className="h-5 w-5 text-primary" />}
-              title="Media Storage"
-              description="Cloudflare R2 object storage with signed URL delivery for uploaded and generated audio."
-            />
-
-            <ArchitectureCard
-              icon={<ShieldCheck className="h-5 w-5 text-primary" />}
-              title="Identity"
-              description="Clerk authentication, sessions, organizations, and middleware-driven route protection."
-            />
-
-            <ArchitectureCard
-              icon={<Bug className="h-5 w-5 text-primary" />}
-              title="Observability"
-              description="Sentry monitoring, runtime diagnostics, logs, stack traces, and debugging context."
-            />
-          </div>
-        </Section>
-
-        {/* Technical Stack */}
-        <Section title="Technical Stack">
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <StackCard
-              title="Frontend"
-              items={[
-                "Next.js",
-                "React",
-                "Tailwind CSS",
-                "ShadCN UI",
-                "TanStack React Form",
-                "Nuqs",
-                "WaveSurfer.js",
-              ]}
-            />
-
-            <StackCard
-              title="Backend"
-              items={["tRPC", "Prisma ORM", "PostgreSQL"]}
-            />
-
-            <StackCard
-              title="Storage"
-              items={["Cloudflare R2", "AWS S3-compatible SDK"]}
-            />
-
-            <StackCard title="Authentication" items={["Clerk"]} />
-
-            <StackCard title="Billing" items={["Polar SDK"]} />
-
-            <StackCard
-              title="Monitoring"
-              items={["Sentry", "Structured Debugging"]}
-            />
-          </div>
-        </Section>
-
-        {/* Engineering Learnings */}
-        <Section title="Key Engineering Learnings">
-          <div className="space-y-5">
-            <LearningBlock
-              title="Owning the AI Pipeline Changes Product Economics"
-              content="Self-hosting the text-to-speech model fundamentally changes platform economics. Instead of paying per request to a third-party API, inference ownership gives direct control over deployment, scaling, infrastructure decisions, and cost behavior."
-            />
-
-            <LearningBlock
-              title="Multi-Tenancy Should Be Designed Early"
-              content="Organizations, authentication boundaries, route protection, and isolated workflows are foundational architecture concerns. Retrofitting tenancy later creates complexity and product inconsistency."
-            />
-
-            <LearningBlock
-              title="Type Safety Reduces Fullstack Friction"
-              content="Using TypeScript, Prisma, and tRPC significantly reduces coordination overhead between frontend and backend. Shared contracts improve refactoring confidence and reduce runtime mismatch failures."
-            />
-
-            <LearningBlock
-              title="Billing Is Not a UI Feature"
-              content="Usage metering, subscriptions, feature gating, checkout workflows, and premium enforcement belong in system architecture, not as superficial product additions."
-            />
-
-            <LearningBlock
-              title="Media Security Matters"
-              content="Signed URLs provide controlled access to private generated audio instead of exposing assets publicly. This becomes critical when user-generated media is part of the product."
-            />
-
-            <LearningBlock
-              title="Observability Should Exist Before Production"
-              content="Monitoring, logs, stack traces, and debugging context reduce production debugging time dramatically. Waiting until incidents happen is poor engineering discipline."
-            />
-          </div>
-        </Section>
-
-        {/* Product Features */}
-        <Section title="Product Capabilities">
           <div className="grid gap-6 md:grid-cols-2">
-            <CapabilityCard
-              title="Voice Management"
-              points={[
-                "Upload custom voice samples",
-                "Record audio directly in browser",
-                "Preview uploaded audio",
-                "Search and browse voices",
-                "Delete voice assets",
-                "Reusable voice library workflows",
-              ]}
-            />
+            {/* Web app flow */}
+            <div>
+              <p className="text-xs tracking-widest uppercase text-primary mb-4">
+                Web Application Flow
+              </p>
+              <div className="space-y-1">
+                {[
+                  { label: "Browser (Next.js / React)", note: "Client" },
+                  { label: "Clerk Middleware", note: "Auth + org check" },
+                  { label: "tRPC API Layer", note: "Type-safe RPC" },
+                  { label: "Business Logic", note: "Validation + checks" },
+                  { label: "Prisma ORM", note: "Relational queries" },
+                  { label: "PostgreSQL", note: "Persistence" },
+                ].map((step, i, arr) => (
+                  <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
+                ))}
+              </div>
+            </div>
 
-            <CapabilityCard
-              title="Audio Experience"
-              points={[
-                "Waveform visualization",
-                "Playback controls",
-                "Seek controls",
-                "Download generated outputs",
-                "Responsive desktop/mobile audio UX",
-              ]}
-            />
+            {/* Voice gen pipeline */}
+            <div>
+              <p className="text-xs tracking-widest uppercase text-primary mb-4">
+                Voice Generation Pipeline
+              </p>
+              <div className="space-y-1">
+                {[
+                  { label: "tRPC mutation triggered", note: "Frontend action" },
+                  { label: "Billing check", note: "Usage enforced" },
+                  { label: "Next.js backend", note: "Orchestration" },
+                  { label: "FastAPI service", note: "Inference layer" },
+                  { label: "Chatterbox TTS", note: "Self-hosted model" },
+                  { label: "AWS S3", note: "Audio stored" },
+                  { label: "Signed URL returned", note: "Secure delivery" },
+                  { label: "WaveSurfer.js", note: "Client playback" },
+                ].map((step, i, arr) => (
+                  <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
+                ))}
+              </div>
+            </div>
+          </div>
 
-            <CapabilityCard
-              title="Authentication & Access"
-              points={[
-                "User authentication",
-                "Organization membership",
-                "Protected routes",
-                "Organization selection workflows",
-                "Secure access boundaries",
-              ]}
-            />
+          {/* Deployment topology */}
+          <div className="mt-10">
+            <p className="text-xs tracking-widest uppercase text-primary mb-4">
+              Deployment Topology
+            </p>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+              {[
+                { service: "Frontend / API", host: "Vercel" },
+                { service: "Inference", host: "Railway + FastAPI" },
+                { service: "Database", host: "PostgreSQL" },
+                { service: "Object Storage", host: "AWS S3" },
+                { service: "Auth", host: "Clerk" },
+                { service: "Billing", host: "Polar SDK" },
+                { service: "Error Monitoring", host: "Sentry" },
+                { service: "CI / CD", host: "GitHub Actions" },
+              ].map((t) => (
+                <div key={t.service} className="rounded-lg border bg-card p-3">
+                  <p className="text-[11px] text-muted-foreground mb-1">{t.service}</p>
+                  <p className="text-sm font-semibold text-primary">{t.host}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Block>
 
-            <CapabilityCard
-              title="Monetization"
-              points={[
-                "Usage-based billing",
-                "Subscription management",
-                "Premium feature enforcement",
-                "Upgrade workflows",
-                "Billing portal integration",
-              ]}
+        {/* ── Database Schema ── */}
+        <Block label="02" title="Database Schema">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            The schema is intentionally small and opinionated. Each entity owns a
+            single concern, and organization scope is the default context rather
+            than an afterthought.
+          </p>
+          <div className="rounded-xl border bg-card p-5 overflow-x-auto">
+            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`User
+ └── belongs to Organization (via Clerk)
+
+Organization
+ ├── Voices[]         // uploaded + cloned voice samples
+ │    └── Generations[] // TTS outputs per voice
+ ├── UsageEvents[]    // metered billing events
+ └── Subscription     // Polar subscription record
+
+Generation
+ ├── text             // input prompt
+ ├── audioUrl         // S3-backed proxy URL
+ ├── voiceId          // FK → Voice
+ └── organizationId   // FK → Organization (tenant scope)`}</pre>
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            The important part is the shape of the relationships, not just the
+            fields: generation history hangs off voices, usage hangs off the org,
+            and access control is always resolved before the query reaches the
+            database.
+          </p>
+        </Block>
+
+        {/* ── Technical Decisions ── */}
+        <Block label="03" title="Technical Decisions & Tradeoffs">
+          <div className="space-y-6">
+            <TradeoffCard
+              question="Why self-host inference instead of an API?"
+              answer="Third-party voice APIs charge per character or per request, which turns usage into a direct tax on growth. Self-hosting Chatterbox TTS shifts the cost model, removes quota ceilings, and lets the product own latency, scaling, and deployment behavior. The tradeoff is operational work, but that work is part of the product rather than a dependency you cannot influence."
+              icon={<Zap className="h-4 w-4 text-primary" />}
+            />
+            <TradeoffCard
+              question="Why Clerk instead of rolling auth?"
+              answer="Rolling auth from scratch would mean building and maintaining the whole security surface: sessions, password flows, OAuth, org switching, and edge cases around route protection. Clerk removes that maintenance burden and gives a mature organization model that fits the product's tenancy requirements without custom security plumbing."
+              icon={<Lock className="h-4 w-4 text-primary" />}
+            />
+            <TradeoffCard
+              question="Why tRPC instead of REST?"
+              answer="tRPC keeps the request and response contract in one place, so refactors surface as compiler errors instead of runtime surprises. That matters in a codebase where the frontend, API layer, and database schema evolve together. Prisma reinforces the same pattern by making the data model itself type-aware."
+              icon={<Server className="h-4 w-4 text-primary" />}
+            />
+            <TradeoffCard
+              question="Why AWS S3 for storage?"
+              answer="S3 is the standard object store for voice samples and generated WAVs in this stack. The AWS SDK handles uploads and short-lived signed URLs, so buckets stay private while the app serves audio through authenticated routes."
+              icon={<HardDrive className="h-4 w-4 text-primary" />}
+            />
+            <TradeoffCard
+              question="Why Polar for billing?"
+              answer="Polar gives the project metered billing without rebuilding a full payments and webhook stack from scratch. The useful part is not only checkout, but the ability to emit usage from business logic and keep subscription state in the server layer where enforcement actually matters."
+              icon={<CreditCard className="h-4 w-4 text-primary" />}
             />
           </div>
-        </Section>
+        </Block>
 
-        {/* Deployment */}
-        <Section title="Production Readiness">
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p>
-              Resona was built with production deployment concerns in mind
-              rather than purely demo-focused implementation.
-            </p>
-
-            <p>
-              This includes CI/CD workflows, deployment automation, environment
-              variable management, observability integration, consistent build
-              behavior, and deployment-ready infrastructure decisions.
-            </p>
-
-            <p>
-              Production readiness also means accounting for operational issues
-              like database connection lifecycle management, secure media
-              access, failure monitoring, and predictable infrastructure
-              behavior.
-            </p>
+        {/* ── Billing Flow ── */}
+        <Block label="04" title="Billing Architecture">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            Billing is a state machine, not a button. The important part is the
+            order of events: verify access, attempt generation, record usage only
+            after success, and expose the portal as a management surface rather
+            than the source of truth.
+          </p>
+          <div className="space-y-1 mb-8">
+            {[
+              { label: "User triggers speech generation", note: "tRPC mutation" },
+              { label: "Subscription check", note: "Active plan verified" },
+              { label: "Usage limit check", note: "Quota enforced server-side" },
+              { label: "Generation proceeds", note: "Inference + S3 upload" },
+              { label: "Usage event emitted", note: "Polar meter updated" },
+              { label: "UI reflects updated usage", note: "Transparent to user" },
+              { label: "Billing portal available", note: "Polar-hosted management" },
+            ].map((step, i, arr) => (
+              <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
+            ))}
           </div>
-        </Section>
+          <div className="rounded-xl border bg-card p-5">
+            <p className="text-xs tracking-widest uppercase text-primary mb-3">
+              Protected premium actions
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                "AI speech generation",
+                "Custom voice creation",
+                "Voice cloning uploads",
+                "Org-wide shared voices",
+              ].map((action) => (
+                <div key={action} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                  {action}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Block>
 
-        {/* DX */}
-        <Section title="Developer Experience Learnings">
+        {/* ── Security ── */}
+        <Block label="05" title="Security Considerations">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            The security model is layered, with controls split between routing,
+            storage, validation, and billing enforcement. That keeps the product
+            safe even when a user bypasses the normal UI flow.
+          </p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {[
+              {
+                title: "Tenant Isolation",
+                desc: "All database queries are scoped to organizationId. No query touches data from another organization without an explicit org boundary check.",
+              },
+              {
+                title: "Signed URL Delivery",
+                desc: "Audio assets in S3 are never publicly accessible. Signed URLs expire after a short window, preventing unauthorized hotlinking or enumeration.",
+              },
+              {
+                title: "Middleware Route Protection",
+                desc: "Clerk middleware enforces authentication and organization selection on all protected routes before any page or API handler runs.",
+              },
+              {
+                title: "Upload Validation",
+                desc: "MIME type, file size (~20MB cap), and audio duration are validated both client-side and server-side. Server validation is the authoritative check.",
+              },
+              {
+                title: "Premium Enforcement",
+                desc: "Feature gates run server-side in tRPC procedures — not just in the UI. Bypassing the frontend doesn't bypass billing enforcement.",
+              },
+              {
+                title: "Error Monitoring",
+                desc: "Sentry captures failures with org/voice/request context attached. Sensitive values are never logged — only opaque identifiers.",
+              },
+              {
+                title: "Environment Isolation",
+                desc: "All secrets are environment-scoped. No credentials are hardcoded or committed. CI/CD pipelines use encrypted secret storage.",
+              },
+              {
+                title: "Webhook Verification",
+                desc: "Billing webhooks from Polar are signature-verified before any subscription state is mutated.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border bg-card p-5">
+                <div className="flex items-center gap-2 mb-2">
+                  <ShieldCheck className="h-4 w-4 text-primary flex-shrink-0" />
+                  <h3 className="font-semibold text-sm">{item.title}</h3>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Block>
+
+        {/* ── Multi-tenancy deep dive ── */}
+        <Block label="06" title="Multi-Tenancy in Practice">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            Multi-tenancy is mostly about discipline. The code has to carry the
+            organization boundary everywhere, and the easiest place to lose that
+            boundary is in the edge cases.
+          </p>
+          <div className="rounded-xl border bg-card p-5 mb-5 overflow-x-auto">
+            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`// Every org operates in isolated scope.
+// This pattern is applied across all domain models.
+
+const voices = await db.voice.findMany({
+  where: {
+    organizationId: ctx.auth.orgId,  // ← always scoped
+  },
+});
+
+// Middleware blocks access if no org is selected.
+// Users with multiple orgs must explicitly switch context.
+// Cross-tenant data leaks are structurally impossible.`}</pre>
+          </div>
+          <div className="space-y-3">
+            {[
+              "Organization selection is enforced before page or API logic runs",
+              "Session context carries orgId into every tRPC procedure",
+              "Database reads are always filtered by an explicit organization boundary",
+              "Org switching updates the active context instead of reusing stale state",
+              "Voice and generation records are only visible inside the owning org",
+            ].map((point) => (
+              <div key={point} className="flex items-start gap-3 text-sm text-muted-foreground">
+                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                {point}
+              </div>
+            ))}
+          </div>
+        </Block>
+
+        {/* ── Challenges ── */}
+        <Block label="07" title="Challenges I Solved">
+          <div className="space-y-6">
+            <ChallengeCard
+              title="Prisma connection exhaustion in development"
+              description="Next.js hot reload recreates module instances on every save. Without a singleton pattern, each reload spawns a new Prisma client and a new database connection pool, which quietly exhausts local resources. The fix is to reuse the existing client from a process-level singleton whenever it already exists."
+              code={`// lib/db.ts
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+export const db = globalForPrisma.prisma ?? new PrismaClient();
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;`}
+            />
+            <ChallengeCard
+              title="Next.js route groups and layout confusion"
+              description="Route groups affect layout organization, not URL structure. Misunderstanding that distinction can accidentally attach an authenticated layout to a public route or expose a protected route in the wrong shell. The fix was to treat route groups as structure only and keep access control in middleware."
+            />
+            <ChallengeCard
+              title="Signed URL expiry during long playback sessions"
+              description="Audio signed URLs have a limited TTL for security. If a user starts playback near expiry, the URL can become invalid mid-session, which feels like a broken player. Generating fresh URLs at playback time keeps security intact without degrading the listening experience."
+            />
+            <ChallengeCard
+              title="Browser recording compatibility"
+              description="MediaRecorder behavior differs across browsers, especially around supported MIME types and blob handling. RecordRTC hides a lot of that variance, but upload handling still needs MIME normalization so the server can treat every recording consistently before it reaches storage."
+            />
+            <ChallengeCard
+              title="Metered billing accuracy"
+              description="Usage events must be emitted after successful generation, not before. If the generation fails but the meter fires, the user gets charged for nothing. Emitting the event only after the S3 upload confirmation keeps billing aligned with actual output."
+            />
+          </div>
+        </Block>
+
+        {/* ── Key Engineering Learnings ── */}
+        <Block label="08" title="Key Engineering Learnings">
           <div className="space-y-5">
-            <DXCard
-              title="Prisma Singleton Pattern"
-              description="Next.js hot reload can repeatedly recreate Prisma clients in development, causing database connection exhaustion. Global singleton reuse avoids this."
-            />
-
-            <DXCard
-              title="Route Group Semantics"
-              description="Next.js route groups affect layout organization, not URL structure. Misunderstanding this creates access control mistakes."
-            />
-
-            <DXCard
-              title="Middleware Discipline"
-              description="Authentication middleware logic must align precisely with routing structure, protected boundaries, and organization-aware workflows."
-            />
-
-            <DXCard
-              title="Type-Safe Contracts"
-              description="Shared API contracts improve iteration speed, autocomplete quality, and confidence during architectural refactors."
-            />
+            {[
+              {
+                title: "Owning inference changes the economics",
+                body: "Self-hosting TTS removes per-request cost, eliminates vendor quota risk, and gives infrastructure-level control. The operational complexity is real, but the leverage is larger because the product owns the entire cost curve.",
+              },
+              {
+                title: "Multi-tenancy has to be foundational",
+                body: "Retrofitting tenant isolation into an existing codebase is painful. If organizations are part of the product, they need to be treated as a first-class database, routing, and middleware concern from day one.",
+              },
+              {
+                title: "Type safety is a productivity multiplier",
+                body: "tRPC + Prisma + TypeScript means a schema change propagates visibly through the entire stack at compile time. Refactors that would take days of cross-referencing become manageable because the compiler points to the breakage immediately.",
+              },
+              {
+                title: "Billing is architecture, not UI",
+                body: "Feature gates, usage metering, and subscription enforcement belong in the application layer. If they exist only in the frontend, they are not policy — they are decoration.",
+              },
+              {
+                title: "Observability before production, not after",
+                body: "Sentry was set up before the first deployment. When things broke, the stack traces, org context, and request metadata were already there, which made debugging a fast exercise instead of a forensic one.",
+              },
+              {
+                title: "Signed URLs are the correct default for private media",
+                body: "Public buckets are the wrong default for any user-generated content. Time-limited signed URLs give controlled access without the overhead of a full proxy layer or the risk of permanent public access.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="border-l-2 border-primary pl-4">
+                <h3 className="font-semibold mb-1">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
+              </div>
+            ))}
           </div>
-        </Section>
+        </Block>
 
-        {/* Closing */}
-        <section className="elevated rounded-3xl border p-10 mt-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Code2 className="h-6 w-6 text-primary" />
-            <h2 className="text-3xl font-semibold tracking-tight">
+        {/* ── Performance ── */}
+        <Block label="09" title="Performance Considerations">
+          <div className="grid gap-4 md:grid-cols-2">
+            {[
+              {
+                label: "Signed URL delivery",
+                desc: "S3 holds private blobs; signed URLs and app proxies gate playback so the bucket never needs to be public.",
+              },
+              {
+                label: "Loading skeletons",
+                desc: "Skeleton states prevent layout shift and communicate progress during async operations instead of making the page feel frozen.",
+              },
+              {
+                label: "React Server Components",
+                desc: "Data-fetching components run server-side where possible, reducing client-side JS and avoiding extra waterfall requests.",
+              },
+              {
+                label: "Debounced search",
+                desc: "Voice search is debounced so typing does not trigger a tRPC query on every keystroke.",
+              },
+              {
+                label: "Nuqs for URL state",
+                desc: "Filter and search state lives in the URL, which keeps it bookmarkable, shareable, and cheaper than mirroring everything in component state.",
+              },
+              {
+                label: "Streamed audio previews",
+                desc: "WaveSurfer.js streams audio progressively rather than waiting for the full file to download before playback starts.",
+              },
+            ].map((item) => (
+              <div key={item.label} className="rounded-xl border bg-card p-4">
+                <p className="text-sm font-semibold mb-1">{item.label}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Block>
+
+        {/* ── Future Improvements ── */}
+        <Block label="10" title="Future Improvements">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            These are the next real gaps to close if the product grows, not a
+            generic backlog of nice-to-haves.
+          </p>
+          <div className="grid gap-3 md:grid-cols-2">
+            {[
+              { item: "Background job queue for voice generation", reason: "Moves inference out of the HTTP request lifecycle and removes timeout pressure." },
+              { item: "Redis caching for org/subscription state", reason: "Cuts repeated lookups on authenticated requests that do the same checks over and over." },
+              { item: "Webhook retry strategy", reason: "Prevents billing state drift when provider events arrive late or fail once." },
+              { item: "Granular RBAC within orgs", reason: "Separates member and admin powers without widening the auth model everywhere." },
+              { item: "Usage analytics dashboards", reason: "Gives organizations visibility into what they are consuming and when." },
+              { item: "Rate limiting per org", reason: "Adds a safety valve against runaway usage and accidental abuse." },
+              { item: "API key system", reason: "Would let external developers access the inference pipeline directly." },
+              { item: "Distributed inference workers", reason: "Extends horizontal scaling beyond a single Railway process." },
+            ].map((f) => (
+              <div key={f.item} className="rounded-xl border bg-card p-4">
+                <p className="text-sm font-semibold mb-1">{f.item}</p>
+                <p className="text-xs text-muted-foreground">{f.reason}</p>
+              </div>
+            ))}
+          </div>
+        </Block>
+
+        {/* ── Closing ── */}
+        <section className="rounded-2xl border bg-card p-8 mt-6">
+          <div className="flex items-center gap-3 mb-5">
+            <Code2 className="h-5 w-5 text-primary" />
+            <h2 className="text-2xl font-bold tracking-tight">
               Closing Thoughts
             </h2>
           </div>
-
-          <p className="leading-relaxed text-muted-foreground text-lg">
-            Resona was a practical exercise in building a modern AI SaaS product
-            with production-oriented engineering decisions.
+          <p className="leading-relaxed text-muted-foreground mb-4">
+            The hardest parts of Resona had little to do with AI itself. They
+            were the same hard parts any production product faces: clear
+            boundaries, reliable billing, private media handling, and making
+            failures visible early enough to act on them.
           </p>
-
-          <p className="leading-relaxed text-muted-foreground text-lg mt-5">
-            The strongest lessons came from infrastructure ownership, type-safe
-            fullstack architecture, authentication boundaries, billing design,
-            observability discipline, and understanding how real product systems
-            differ from prototype demos.
+          <p className="leading-relaxed text-muted-foreground">
+            Inference ownership is a meaningful architectural choice, but it is
+            only one part of the system. The product becomes real when tenancy,
+            billing, and observability work together without leaking complexity
+            back into the user experience.
           </p>
         </section>
+
       </div>
 
+      {/* ── Fixed bottom bar (unchanged) ── */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/85 px-4 py-4 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
         <div className="mx-auto flex max-w-7xl justify-center">
           <Button
@@ -332,127 +512,117 @@ export default function LearningsPage() {
   );
 }
 
-function Section({
+// ─────────────────────────────────────────────────────────────────────────────
+// Sub-components
+// ─────────────────────────────────────────────────────────────────────────────
+
+function Block({
+  label,
   title,
   children,
 }: {
+  label: string;
   title: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="mb-16">
-      <h2 className="mb-6 text-3xl font-semibold tracking-tight">{title}</h2>
-      <div className="elevated rounded-3xl border p-8">{children}</div>
+    <section className="mb-16 scroll-mt-24">
+      <div className="mb-5 flex items-center gap-3">
+        <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-semibold tracking-[0.2em] text-primary">
+          {label}
+        </span>
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground lg:text-[2rem]">
+          {title}
+        </h2>
+      </div>
+      <div className="rounded-2xl border border-border/60 bg-card/60 p-6 shadow-sm backdrop-blur-sm md:p-8">
+        {children}
+      </div>
     </section>
   );
 }
 
-function FeatureCard({
-  icon,
-  title,
-  description,
+function FlowStep({
+  step,
+  last,
 }: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
+  step: { label: string; note: string };
+  last: boolean;
 }) {
   return (
-    <div className="elevated rounded-2xl border p-6 transition hover:-translate-y-1 hover:shadow-lg">
-      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-muted">
-        {icon}
+    <div className="flex items-stretch gap-3">
+      <div className="flex flex-col items-center">
+        <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+        {!last && <div className="mt-0.5 w-px flex-1 bg-border" />}
       </div>
-      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
-      <p className="text-sm leading-relaxed text-muted-foreground">
-        {description}
+      <div className="pb-3">
+        <span className="text-sm font-medium text-foreground">{step.label}</span>
+        <span className="ml-2 text-xs text-muted-foreground">{step.note}</span>
+      </div>
+    </div>
+  );
+}
+
+function TradeoffCard({
+  question,
+  answer,
+  icon,
+}: {
+  question: string;
+  answer: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-xl border border-border/60 bg-background/40 p-5 transition-shadow hover:shadow-sm">
+      <div className="mb-3 flex items-start gap-3">
+        <div className="mt-0.5 flex-shrink-0">{icon}</div>
+        <h3 className="text-sm font-semibold leading-snug text-foreground">
+          {question}
+        </h3>
+      </div>
+      <p className="pl-7 text-sm leading-relaxed text-muted-foreground">
+        {answer}
       </p>
     </div>
   );
 }
 
-function ArchitectureCard({
-  icon,
+function ChallengeCard({
   title,
   description,
+  code,
 }: {
-  icon: React.ReactNode;
   title: string;
   description: string;
+  code?: string;
 }) {
   return (
-    <div className="rounded-2xl border bg-card p-6">
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
-        {icon}
+    <div className="rounded-xl border border-border/60 bg-background/40 p-5 transition-shadow hover:shadow-sm">
+      <div className="mb-3 flex items-center gap-2">
+        <Wrench className="h-4 w-4 text-primary flex-shrink-0" />
+        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       </div>
-      <h3 className="mb-2 font-semibold">{title}</h3>
-      <p className="text-sm leading-relaxed text-muted-foreground">
+      <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
         {description}
       </p>
+      {code && (
+        <pre className="overflow-x-auto whitespace-pre rounded-lg border border-border/60 bg-background p-3 text-xs leading-relaxed text-muted-foreground">
+          {code}
+        </pre>
+      )}
     </div>
   );
 }
 
-function StackCard({ title, items }: { title: string; items: string[] }) {
+function HeroStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border bg-card p-6">
-      <h3 className="mb-4 font-semibold">{title}</h3>
-      <div className="space-y-2">
-        {items.map((item) => (
-          <p key={item} className="text-sm text-muted-foreground">
-            • {item}
-          </p>
-        ))}
-      </div>
+    <div className="rounded-2xl border border-border/60 bg-card/70 p-4 shadow-sm backdrop-blur-sm">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+        {label}
+      </p>
+      <p className="mt-2 text-lg font-semibold tracking-tight text-foreground">
+        {value}
+      </p>
     </div>
-  );
-}
-
-function LearningBlock({ title, content }: { title: string; content: string }) {
-  return (
-    <div>
-      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
-      <p className="leading-relaxed text-muted-foreground">{content}</p>
-    </div>
-  );
-}
-
-function CapabilityCard({
-  title,
-  points,
-}: {
-  title: string;
-  points: string[];
-}) {
-  return (
-    <div className="rounded-2xl border bg-card p-6">
-      <h3 className="mb-4 text-lg font-semibold">{title}</h3>
-      <div className="space-y-2">
-        {points.map((point) => (
-          <p key={point} className="text-sm text-muted-foreground">
-            • {point}
-          </p>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DXCard({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div>
-      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
-      <p className="leading-relaxed text-muted-foreground">{description}</p>
-    </div>
-  );
-}
-
-function Bullet({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 leading-relaxed text-muted-foreground">• {children}</p>
   );
 }

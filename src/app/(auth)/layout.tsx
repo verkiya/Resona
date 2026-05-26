@@ -14,15 +14,15 @@ export default function AuthLayout({
         <nav className="flex items-center gap-3">
           <Button
             asChild
-            variant="softGradient"
-            className="surface-hover cursor-pointer rounded-xl border bg-card px-4 py-2 text-sm font-medium shadow-sm"
+            variant="pillGradient"
+            className="surface-hover cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium shadow-sm"
           >
             <Link href="/sign-in">Sign In</Link>
           </Button>
           <Button
             asChild
-            variant="ctaGlow"
-            className="rounded-xl cursor-pointer bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90"
+            variant="pillGradient"
+            className="rounded-xl cursor-pointer px-4 py-2 text-sm font-medium shadow-sm transition hover:opacity-90"
           >
             <Link href="/sign-up">Get Started</Link>
           </Button>
