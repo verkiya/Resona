@@ -206,7 +206,11 @@
   * {
     @apply border-border outline-ring/50;
   }
-
+  button:not(:disabled),
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
   body {
     @apply bg-background text-foreground font-sans;
     -webkit-font-smoothing: antialiased;
@@ -412,4 +416,23 @@
     oklch(0.22 0.04 260),
     oklch(0.29 0.055 310)
   ) !important;
+}
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-20px, 15px, 0) scale(1.05);
+  }
+}
+
+@keyframes floatSlowReverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(20px, -15px, 0) scale(1.04);
+  }
 }

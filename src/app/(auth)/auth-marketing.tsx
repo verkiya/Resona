@@ -1,4 +1,5 @@
 // AI explanation: Marketing copy and visuals beside Clerk auth forms.
+
 import Image from "next/image";
 import Link from "next/link";
 import { AudioWaveform, BookOpen, Mic2, ShieldCheck, Zap } from "lucide-react";
@@ -24,7 +25,7 @@ export function AuthMarketing() {
           <div>
             <p className="text-xl font-semibold tracking-tight">Resona</p>
             <p className="text-sm text-muted-foreground">
-              AI Voice Generation SaaS
+              Production Voice AI Platform
             </p>
           </div>
         </div>
@@ -33,25 +34,23 @@ export function AuthMarketing() {
           href="https://github.com/verkiya/Resona"
           target="_blank"
           rel="noopener noreferrer"
-          className="group cursor-[url('/resona.png')_0_0,pointer] elevated flex items-center gap-2 rounded-2xl border px-4 py-2 transition hover:scale-105"
+          className="group cursor-pointer! elevated flex items-center gap-2 rounded-2xl border px-4 py-2 transition hover:scale-105"
         >
-          <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-[18deg] group-hover:scale-110 group-hover:text-primary" />
+          <FaGithub className="h-5 w-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:text-primary" />
           <span className="text-sm font-medium">Source Code</span>
         </Link>
       </div>
 
       {/* Hero */}
       <div className="max-w-xl">
-
-
         <h1 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
           Build, clone, and generate AI voices at scale.
         </h1>
 
         <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground xl:text-lg">
-          Resona is a full-stack AI voice generation platform with secure
-          authentication, team workspaces, text-to-speech generation, voice
-          cloning workflows, and scalable SaaS billing infrastructure.
+          Create custom AI voices, generate realistic speech, and manage
+          everything inside secure team workspaces built for modern voice
+          products.
         </p>
       </div>
 
@@ -60,42 +59,43 @@ export function AuthMarketing() {
         <FeatureCard
           icon={<Mic2 className="h-5 w-5 text-primary" />}
           title="Voice Cloning"
-          description="Upload recordings and create reusable custom AI voices."
+          description="Create reusable AI voices from uploaded recordings."
         />
 
         <FeatureCard
           icon={<Zap className="h-5 w-5 text-primary" />}
           title="Text-to-Speech"
-          description="Generate natural speech instantly with playback support."
+          description="Generate realistic speech instantly with live playback."
         />
 
         <FeatureCard
           icon={<ShieldCheck className="h-5 w-5 text-primary" />}
-          title="Multi-Tenant SaaS"
-          description="Secure organization workspaces with role-based access."
+          title="Team Workspaces"
+          description="Secure organization-based access with tenant isolation."
         />
 
         <FeatureCard
           icon={<AudioWaveform className="h-5 w-5 text-primary" />}
           title="Usage Billing"
-          description="Built for subscriptions, quotas, and scalable monetization."
+          description="Metered subscriptions built for scalable monetization."
         />
       </div>
+
       <Button
         asChild
-        variant="ctaGlow"
-        className="absolute bottom-4 left-1/2 flex mt-4 -translate-x-1/2 items-center gap-2 rounded-2xl border bg-primary px-5 py-3 text-sm font-medium shadow-lg transition hover:-translate-x-1/2 hover:scale-105 hover:text-muted"
+        variant="shimmerCta"
+        className="absolute bottom-4 left-1/2 mt-4 flex -translate-x-1/2 items-center gap-2 rounded-2xl border bg-primary px-5 py-3 text-sm font-medium shadow-lg transition hover:-translate-x-1/2 hover:scale-105 hover:text-muted"
       >
         <Link href="/learnings">
           <BookOpen className="h-4 w-4 text-muted" />
           What I Learned Building Resona
         </Link>
       </Button>
+
       {/* Footer */}
       <div className="mt-6 border-t pt-5">
         <p className="text-sm text-muted-foreground">
-          Built with Next.js, Clerk, tRPC, Prisma, PostgreSQL, and modern AI
-          infrastructure.
+          Built for creators, teams, and production-grade AI voice workflows.
         </p>
       </div>
     </div>

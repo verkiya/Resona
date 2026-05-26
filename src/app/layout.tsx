@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     default: "Resona",
     template: "%s | Resona",
   },
-  description: "Generate studio-quality AI voices in seconds",
+  description: "Generate studio-quality AI voices with custom cloning",
   icons: {
     icon: "/resona.svg",
   },
@@ -46,7 +46,16 @@ export default function RootLayout({
         <ClerkProvider>
           <TRPCReactProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
-            <Toaster closeButton /> <Analytics />
+            <Toaster
+              closeButton
+              
+              richColors
+                duration={3000}
+
+              position="bottom-right"
+              theme="system"
+            />
+            <Analytics />
           </TRPCReactProvider>
         </ClerkProvider>
       </body>
