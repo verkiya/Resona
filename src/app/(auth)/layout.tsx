@@ -29,7 +29,7 @@ export default function AuthLayout({
         </nav>
       </header>
 
-      <div className="grid h-full lg:grid-cols-2">
+      <div className="grid h-full lg:grid-cols-[3fr_1fr]">
         <section className="hidden h-full border-r bg-muted/30 lg:block">
           <AuthMarketing />
         </section>

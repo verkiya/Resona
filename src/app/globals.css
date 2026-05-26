@@ -423,7 +423,7 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(-20px, 15px, 0) scale(1.05);
+    transform: translate3d(-24px, 18px, 0) scale(1.06);
   }
 }
 
@@ -433,6 +433,29 @@
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(20px, -15px, 0) scale(1.04);
+    transform: translate3d(28px, -20px, 0) scale(1.05);
+  }
+}
+.wave-line {
+  stroke-dasharray: 12 8;
+  animation: waveMove 12s linear infinite;
+}
+
+.wave-delay {
+  animation-delay: -4s;
+}
+
+.wave-slow {
+  animation-duration: 18s;
+}
+
+@keyframes waveMove {
+  from {
+    stroke-dashoffset: 0;
+    transform: translateX(0);
+  }
+  to {
+    stroke-dashoffset: -120;
+    transform: translateX(-20px);
   }
 }
