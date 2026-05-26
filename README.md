@@ -1,122 +1,363 @@
-# Resona
+# Resona 🎙️
+### Production-Grade AI Voice Generation SaaS Platform
 
-> AI voice generation SaaS with self-hosted inference, organization-aware auth, metered billing, and private audio delivery.
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs" />
+  <img src="https://img.shields.io/badge/React-19-20232A?logo=react" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" />
+  <img src="https://img.shields.io/badge/Tailwind-v4-38B2AC?logo=tailwindcss" />
+  <img src="https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql" />
+  <img src="https://img.shields.io/badge/tRPC-TypeSafe-2596BE" />
+  <img src="https://img.shields.io/badge/Clerk-Auth-6C47FF?logo=clerk" />
+  <img src="https://img.shields.io/badge/Polar-Billing-000000" />
+  <img src="https://img.shields.io/badge/Sentry-Monitoring-362D59?logo=sentry" />
+</p>
 
-## Overview
+<p align="center">
+  <strong>AI voice generation, custom voice cloning, multi-tenant SaaS billing, and production-grade deployment infrastructure.</strong>
+</p>
 
-Resona is a production-minded AI voice platform for creating custom voices, generating speech from text, and managing those assets inside secure organization workspaces.
+---
 
-The project was built to study the parts of a real SaaS product that prototypes usually skip: tenancy, billing, storage, observability, deployment, and the edges around media handling.
+## ✨ Overview
 
-## Why It Exists
+**Resona** is a full-stack AI-powered voice generation SaaS platform built for real production use.
 
-- 🧠 To own the full text-to-speech pipeline instead of depending on a paid third-party API.
-- 🔐 To model authentication, organization boundaries, and protected routes as first-class product concerns.
-- 💳 To treat billing and usage metering as architecture, not UI decoration.
-- 📦 To keep audio private while still making playback fast and reliable.
+It enables users and teams to:
 
-## System Architecture
+- 🎤 Generate realistic AI speech from text
+- 🧬 Clone and manage custom voices
+- 🏢 Operate inside secure organization workspaces
+- 💳 Manage subscriptions with metered billing
+- 📊 Track usage transparently
+- ☁️ Store and stream generated audio securely
+- 📱 Use a polished responsive audio UX across devices
 
-Resona is split into two main flows:
+Unlike many demo AI projects, Resona is built as a **real SaaS product**, not a toy prototype.
 
-### 1. Web Application Flow
+It owns the inference pipeline end-to-end.
 
-1. Browser app built with Next.js and React
-2. Clerk middleware handles auth and organization selection
-3. tRPC exposes type-safe API procedures
-4. Business logic enforces validation, quotas, and feature gates
-5. Prisma queries PostgreSQL
+---
 
-### 2. Voice Generation Pipeline
+# 🚀 Core Features
 
-1. User submits text-to-speech generation
-2. Billing and usage checks run server-side
-3. A FastAPI inference layer runs self-hosted Chatterbox TTS
-4. Generated audio is stored in AWS S3
-5. Short-lived signed URLs are returned for secure playback
-6. WaveSurfer.js powers waveform preview and scrubbing in the UI
+---
 
-## Core Features
+## 🎙️ AI Voice Generation Pipeline
 
-- 🎙️ Self-hosted AI voice generation
-- 👤 Custom voice creation and voice cloning
-- 🌊 Waveform playback, scrubbing, and seeking
-- 🏢 Organization-based workspaces and tenant isolation
-- 💰 Subscription billing and usage metering with Polar
-- 🔒 Private audio storage with signed URL delivery
-- 📈 Sentry-backed production observability
+Production text-to-speech generation powered by a self-hosted inference stack.
 
-## Database Model
+### Capabilities
 
-The schema is intentionally small and opinionated:
+- Self-hosted Chatterbox TTS inference
+- No dependency on expensive third-party voice APIs
+- Real-time text-to-speech generation
+- Interactive playback
+- Waveform scrubbing + seeking
+- Downloadable generated audio
+- Secure signed URL delivery
 
-- `User` belongs to an organization through Clerk
-- `Organization` owns voices, generations, usage events, and subscriptions
-- `Voice` stores reusable custom voices and uploaded samples
-- `Generation` stores text input, audio output, and tenant scope
-- `UsageEvent` tracks metered billing activity
-- `Subscription` stores the active billing state
+### Why this matters
 
-The important part is the shape of the relationships: organization scope is always explicit, and generation history hangs off the voice and org that created it.
+Owning inference means:
 
-## Technical Decisions
+✅ lower long-term costs  
+✅ no vendor lock-in  
+✅ infrastructure control  
+✅ scalable deployment flexibility
 
-### 🧩 Self-hosted inference
+---
 
-Owning the model pipeline removes vendor lock-in and recurring per-request costs. The tradeoff is operational work, but that work stays inside the product boundary instead of living in someone else’s API.
+## 🧬 Custom Voice Cloning
 
-### 🔐 Clerk for auth and tenancy
+Users can create reusable custom AI voices.
 
-Clerk handles sessions, org membership, and route protection without custom security plumbing. That keeps organization switching and protected access consistent across the app.
+### Supported workflows
 
-### 🧪 tRPC + Prisma + TypeScript
+- Upload voice samples
+- Record directly in-browser
+- Preview recordings before upload
+- Validate duration constraints
+- Enforce file-size limits
+- Generate unique voice avatars
+- Share voices across organizations
 
-The backend and frontend share types end to end, so schema changes surface as compiler errors instead of runtime surprises. Prisma keeps the relational model clear and maintainable.
+### Voice management
 
-### 📦 AWS S3 for private audio
+- Create
+- Browse
+- Search
+- Preview
+- Delete
 
-Audio is kept private and delivered with short-lived signed URLs. That gives secure access without exposing buckets publicly or adding unnecessary proxy complexity.
+Voice identities are enhanced with autogenerated avatars.
 
-### 💳 Polar for billing
+---
 
-Polar handles subscriptions and usage-based billing while the application layer enforces feature access. Billing remains a server-side policy, not just a UI state.
+## 🔊 Real-Time Audio Experience
 
-## Security Considerations
+Audio UX is treated as a first-class product feature.
 
-- 🛡️ All queries are scoped to organization ID.
-- 🛡️ Protected routes are enforced before page logic runs.
-- 🛡️ Audio assets are never public by default.
-- 🛡️ Uploads are validated on both the client and server.
-- 🛡️ Premium actions are enforced in server procedures, not only in the UI.
-- 🛡️ Webhooks are verified before subscription state changes.
+### Includes
 
-## Performance Notes
+- WaveSurfer.js waveform rendering
+- Scrubbing support
+- Playback controls
+- Seek controls
+- Live audio previews
+- Mobile audio player
+- Desktop audio player
+- Download support
 
-- ⚡ Server-rendered components reduce client-side JavaScript where possible.
-- ⚡ Search and filter state is kept in the URL with Nuqs.
-- ⚡ Voice search is debounced to avoid unnecessary API calls.
-- ⚡ Audio previews use waveform-based playback instead of static downloads.
-- ⚡ Loading skeletons reduce layout shift and make async states feel intentional.
+This creates a true production media experience instead of static file downloads.
 
-## Deployment & Ops
+---
 
-- 🚀 Next.js App Router for the web application and server routes
-- 🚀 Railway for inference and application hosting
-- 🚀 GitHub Actions for CI/CD and validation
-- 🚀 Sentry for error tracking and debugging context
-- 🚀 Environment-scoped secrets and production-safe configuration
+## 🏢 Multi-Tenant SaaS Architecture
 
-## Validation Rules
+Resona is designed as a true SaaS platform with tenant isolation.
 
-- File upload size is capped at roughly 20MB
-- Minimum audio duration is validated at roughly 10 seconds
-- Validation runs both client-side and server-side
-- Premium actions are blocked when billing state is inactive
+### Features
 
-## Tech Stack
+- Organization-based workspaces
+- Tenant data isolation
+- Role-aware access control
+- Protected routes
+- Session-aware middleware
+- Organization switching workflows
 
-### Frontend
+Powered by:
 
+- Clerk authentication
+- Clerk organizations
+- Middleware route protection
+- Session state management
+
+---
+
+## 💳 Subscription Billing & Monetization
+
+Production-grade billing infrastructure included.
+
+### Billing capabilities
+
+- Subscription management
+- Pay-as-you-go metered billing
+- Usage event tracking
+- Checkout flows
+- Upgrade prompts
+- Billing portal access
+- Premium feature gating
+- Subscription enforcement
+
+Powered by:
+
+**Polar SDK**
+
+### Protected premium actions
+
+- AI speech generation
+- Custom voice creation
+
+Usage is transparently metered and enforced.
+
+---
+
+# 🖥️ Frontend Experience
+
+Modern production frontend architecture.
+
+### Stack
+
+- Next.js App Router
+- React 19
+- Tailwind CSS v4
+- ShadCN UI
+- TanStack React Form
+- Nuqs
+- WaveSurfer.js
+- RecordRTC
+- React Dropzone
+- DiceBear avatars
+
+### UI features
+
+- SaaS dashboards
+- Responsive layouts
+- Sidebar navigation
+- Voice selectors
+- Prompt suggestions
+- History views
+- Loading skeletons
+- Mobile-first responsiveness
+- Desktop optimized workflows
+
+Design goal:
+
+**Production usability over demo aesthetics.**
+
+---
+
+# ⚙️ Backend Architecture
+
+Built for scale and maintainability.
+
+### Stack
+
+- Next.js server architecture
+- tRPC
+- Prisma ORM
+- PostgreSQL
+- OpenAPI TypeScript generation
+
+### Capabilities
+
+- End-to-end type safety
+- Shared server/client contracts
+- Relational schema modeling
+- Indexed queries
+- Enum-driven domain modeling
+- Scalable persistence architecture
+
+### Core domain models
+
+- Users
+- Organizations
+- Voices
+- Generations
+- Subscriptions
+- Usage Events
+
+---
+
+# ☁️ Storage Infrastructure
+
+Audio assets are stored using cloud object storage.
+
+### Implementation
+
+- Cloudflare R2
+- AWS S3-compatible SDK
+- Signed URL delivery
+- Secure temporary asset access
+
+### Used for
+
+- Uploaded voice samples
+- Generated speech
+- Voice previews
+- Streaming playback
+
+---
+
+# 📊 Observability & Monitoring
+
+Production debugging infrastructure included from day one.
+
+### Monitoring stack
+
+- Sentry error tracking
+- Session replay
+- Structured logging
+- Stack traces
+- Context-aware debugging
+
+### Tracked metadata
+
+- Organization ID
+- Voice ID
+- Request metadata
+- Text length
+- Generation context
+- API failures
+
+Integrated directly via backend middleware.
+
+---
+
+# 🚢 Deployment & CI/CD
+
+Resona is deployment-ready.
+
+### Infrastructure
+
+- Railway deployment
+- GitHub Actions
+- Automated CI pipelines
+- Pull request validation
+- Preview environments
+- Build automation
+- Lint enforcement
+- Production deployment workflows
+
+---
+
+# 🧠 Developer Experience
+
+Built for speed and maintainability.
+
+### Tooling
+
+- Strict TypeScript
+- Prisma schema-driven development
+- Shared API typing
+- OpenAPI-generated client types
+- Predictable environment configuration
+- AI-friendly architecture
+
+### Benefits
+
+- Fewer runtime bugs
+- Better autocomplete
+- Safer refactors
+- Faster iteration
+- Strong maintainability
+
+---
+
+# 🧠 Architecture Highlights
+
+## Self-Hosted Inference
+Owning inference removes dependency risk and gives full operational control.
+
+---
+
+## End-to-End Type Safety
+tRPC + Prisma + TypeScript eliminate contract drift.
+
+---
+
+## Multi-Tenancy by Design
+Organizations are a foundational architectural primitive.
+
+---
+
+## Monetization-First SaaS Design
+Billing and usage tracking are built into the platform—not bolted on later.
+
+---
+
+## Production Observability
+Monitoring exists from the start, not as an afterthought.
+
+---
+
+# 🔒 Validation Rules
+
+Platform constraints include:
+
+- ~20MB upload limits
+- Minimum audio duration validation
+- Client-side validation
+- Server-side validation
+- Premium workflow enforcement
+
+---
+
+# 🧰 Technical Stack
+
+## Frontend
 - Next.js 16
 - React 19
 - Tailwind CSS v4
@@ -124,44 +365,48 @@ Polar handles subscriptions and usage-based billing while the application layer 
 - TanStack React Form
 - Nuqs
 - WaveSurfer.js
+- DiceBear
 - React Dropzone
 - RecordRTC
-- DiceBear
 
-### Backend
-
+## Backend
 - tRPC
 - Prisma
 - PostgreSQL
-- FastAPI for the AI inference layer
+- OpenAPI TypeScript
+- FastAPI inference layer
 
-### Infrastructure
-
-- AWS S3
+## Infrastructure
+- Cloudflare R2
 - Railway
 - GitHub Actions
 - Sentry
 
-### Auth & Billing
-
+## Authentication & Billing
 - Clerk
 - Polar SDK
 
-### AI
+## AI
+- Self-hosted Chatterbox TTS
 
-- Self-hosted Chatterbox TTS model
+---
 
-## Project Goal
+# 🎯 Project Goal
 
-Resona is meant to demonstrate how a modern AI SaaS can be built as a real product architecture rather than a demo:
+Resona demonstrates how to build a modern AI SaaS product with:
 
 - custom inference ownership
-- secure multi-tenant access
-- private media delivery
-- metered monetization
+- scalable SaaS architecture
+- secure authentication
+- subscription monetization
 - production observability
-- polished user experience
+- CI/CD automation
+- polished product UX
 
-## Closing Thought
+---
 
-The hardest parts of the project are not the model call itself. They are the systems around it: tenancy, billing, storage, and making failures visible early enough to fix.
+# Final Philosophy
+
+Resona is intentionally built as:
+
+> **a real production SaaS platform—not an AI demo project.**
