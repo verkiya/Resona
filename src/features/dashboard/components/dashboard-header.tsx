@@ -13,7 +13,7 @@ export function DashboardHeader() {
     <div className="flex items-start justify-between">
       <div className="space-y-1">
         <p className="text-sm text-muted-foreground">Nice to see you</p>
-        <h1 className="text-2xl lg:text-3xl font-semibold tracking-tight relative h-[40px]">
+        <h1 className="text-2xl lg:text-3xl font-semibold tracking-tight relative h-10">
           <span
             className={`absolute left-0 whitespace-nowrap transition-all duration-300 ease-out ${
               isLoaded
@@ -33,7 +33,7 @@ export function DashboardHeader() {
             <span className="w-4 h-4 rounded-full bg-[oklch(0.75_0.15_300)] animate-bounce [animation-delay:-0.1s]" />
             <span className="w-4 h-4 rounded-full bg-[oklch(0.72_0.13_25)] animate-bounce" />
           </span>
-        </h1>{" "}
+        </h1>
         <p className="text-sm text-muted-foreground">
           Ready to generate something new?
         </p>
@@ -46,7 +46,7 @@ export function DashboardHeader() {
           rel="noopener noreferrer"
           className="group elevated flex items-center gap-2 rounded-2xl border border-border/60 bg-card/70 px-4 py-2 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg  cursor-[url('/resona.png')_0_0,pointer]"
         >
-          <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-[18deg] group-hover:scale-110 group-hover:text-primary" />
+          <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-18 group-hover:scale-110 group-hover:text-primary" />
 
           <span className=" text-sm font-medium sm:block">
             Source Code

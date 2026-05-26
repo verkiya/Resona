@@ -13,8 +13,7 @@ export function AuthMarketing() {
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="elevated cursor-pointer flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border">
-            <Link href="/" >
-
+            <Link href="/">
               <Image
                 src="/resona.svg"
                 alt="Resona"
@@ -31,15 +30,15 @@ export function AuthMarketing() {
             </p>
           </div>
         </div>
-
         <Link
           href="https://github.com/verkiya/Resona"
           target="_blank"
           rel="noopener noreferrer"
-          className="group cursor-pointer! elevated flex items-center gap-2 rounded-2xl border px-4 py-2 transition hover:scale-105"
+          className="group elevated flex items-center gap-2 rounded-2xl border border-border/60 bg-card/70 px-4 py-2 shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg  cursor-pointer"
         >
-          <FaGithub className="h-5 w-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:text-primary" />
-          <span className="text-sm font-medium">Source Code</span>
+          <FaGithub className="h-5 w-5 transition-all duration-500 ease-out group-hover:rotate-[18deg] group-hover:scale-110 group-hover:text-primary" />
+
+          <span className=" text-sm font-medium sm:block">Source Code</span>
         </Link>
       </div>
 

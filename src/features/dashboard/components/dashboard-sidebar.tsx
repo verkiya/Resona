@@ -76,7 +76,7 @@ function NavSection({ label, items, pathname }: NavSectionProps) {
                 onClick={item.onClick}
                 tooltip={item.title}
                 className={cn(
-                  "h-10 cursor-pointer px-3 py-2 text-[13px] tracking-tight font-medium border border-transparent transition-all duration-200 ease-out",
+                  "h-10 cursor-pointer px-3 py-2 text-[13px] tracking-tight font-medium border border-transparent ",
 
                   item.variant === "cta"
                     ? [
@@ -187,8 +187,8 @@ export function DashboardSidebar() {
       variant: "cta",
     },
     {
-      title: "Help and support",
-      url: "https://github.com/verkiya",
+      title: "Help & Support",
+      url: "mailto:hiverkiya@gmail.com",
       icon: Headphones,
       external: true,
     },
@@ -215,7 +215,7 @@ export function DashboardSidebar() {
                 esona
               </span>
             </Link>
-            <SidebarTrigger className="ml-auto  mr-2 size-8 cursor-pointer rounded-xl border border-transparent bg-card shadow-sm transition-all duration-200 hover:scale-105 hover:bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] hover:text-white hover:shadow-lg active:scale-95 group-data-[collapsible=icon]:ml-0" />
+            <SidebarTrigger className="ml-auto  mr-2 size-8 cursor-pointer rounded-xl border border-transparent bg-card shadow-sm transition-all duration-100 ease-in-out  hover:scale-105 hover:bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] hover:text-white hover:shadow-lg active:scale-95 group-data-[collapsible=icon]:ml-0" />
           </div>
 
           <SidebarMenu>
@@ -253,7 +253,11 @@ export function DashboardSidebar() {
           <div className="h-px rounded-full bg-[linear-gradient(90deg,transparent,oklch(0.72_0.13_25),oklch(0.75_0.15_300),transparent)] shadow-[0_0_12px_oklch(0.75_0.15_300/.25)]" />
         </div>
         <SidebarContent>
-          <NavSection items={mainMenuItems} pathname={pathname} />
+          <NavSection
+            label="Voice Studio"
+            items={mainMenuItems}
+            pathname={pathname}
+          />
           <div className="px-3">
             <div className="h-px rounded-full bg-[linear-gradient(90deg,transparent,oklch(0.72_0.13_25),oklch(0.75_0.15_300),transparent)] shadow-[0_0_12px_oklch(0.75_0.15_300/.25)]" />
           </div>
@@ -295,7 +299,7 @@ export function DashboardSidebar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
-        <SidebarRail />
+        <SidebarRail  />
       </Sidebar>
     </>
   );
