@@ -80,7 +80,7 @@ export async function getSignedAudioUrl(key: string): Promise<string> {
       ResponseCacheControl: "public, max-age=3600",
     });
 
-    return getSignedUrl(s3, command, { expiresIn: 3600 });
+    return getSignedUrl(s3, command, { expiresIn: 3600 }); // 1 hour
   } catch (error) {
     console.error("S3 signed URL failed", error);
     throw new Error("Failed to generate signed URL");
