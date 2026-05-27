@@ -1,4 +1,4 @@
-// AI explanation: Sentry demo page for manual error reporting tests.
+// Sentry demo page for manual error reporting tests.
 "use client";
 
 import * as Sentry from "@sentry/nextjs";

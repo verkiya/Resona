@@ -1,4 +1,4 @@
-// AI explanation: Marketing copy and visuals beside Clerk auth forms.
+// Marketing copy and visuals beside Clerk auth forms.
 
 import Image from "next/image";
 import Link from "next/link";

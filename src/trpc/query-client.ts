@@ -1,4 +1,4 @@
-// AI explanation: TanStack Query defaults (superjson dehydrate/hydrate) shared by server and browser clients.
+// TanStack Query defaults (superjson dehydrate/hydrate) shared by server and browser clients.
 import {
   defaultShouldDehydrateQuery,
   QueryClient,

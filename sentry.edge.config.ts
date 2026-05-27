@@ -1,4 +1,4 @@
-// AI explanation: Sentry initialization for Next.js edge/middleware runtimes.
+// Sentry initialization for Next.js edge/middleware runtimes.
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({

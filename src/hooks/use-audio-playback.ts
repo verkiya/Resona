@@ -1,4 +1,4 @@
-// AI explanation: Lightweight HTMLAudioElement play/pause for file previews (voice upload form, cards).
+// Lightweight HTMLAudioElement play/pause for file previews (voice upload form, cards).
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";

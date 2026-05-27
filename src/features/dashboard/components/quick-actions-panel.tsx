@@ -1,4 +1,4 @@
-// AI explanation: Grid of QuickActionCard links on the dashboard home.
+// Grid of QuickActionCard links on the dashboard home.
 import { quickActions } from "@/features/dashboard/data/quick-actions";
 import { QuickActionCard } from "./quick-action-card";
 

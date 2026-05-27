@@ -1,4 +1,4 @@
-// AI explanation: Lists past generations for the org with links to detail routes.
+// Lists past generations for the org with links to detail routes.
 "use client";
 
 import { VoiceAvatar } from "@/components/voice-avatar/voice-avatar";

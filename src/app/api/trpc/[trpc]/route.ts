@@ -1,4 +1,4 @@
-// AI explanation: HTTP adapter that exposes the app router at /api/trpc for client mutations and queries.
+// HTTP adapter that exposes the app router at /api/trpc for client mutations and queries.
 import { createTRPCContext } from '@/trpc/init';
 import { appRouter } from '@/trpc/routers/_app';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';

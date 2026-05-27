@@ -1,4 +1,4 @@
-// AI explanation: Sentry demo route that throws intentionally for integration testing.
+// Sentry demo route that throws intentionally for integration testing.
 import * as Sentry from "@sentry/nextjs";
 export const dynamic = "force-dynamic";
 

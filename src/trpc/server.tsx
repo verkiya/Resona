@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// AI explanation: Server-side tRPC helpers for RSC — one React-cached query client per request for prefetch/dehydrate.
+// Server-side tRPC helpers for RSC — one React-cached query client per request for prefetch/dehydrate.
 import "server-only";
 import {
   createTRPCOptionsProxy,
@@ -10,7 +10,7 @@ import { createTRPCContext } from "./init";
 import { makeQueryClient } from "./query-client";
 import { appRouter } from "./routers/_app";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-// AI explanation: cache() keeps the same QueryClient for the whole server render so prefetches and HydrationBoundary share state.
+// cache() keeps the same QueryClient for the whole server render so prefetches and HydrationBoundary share state.
 export const getQueryClient = cache(makeQueryClient);
 export const trpc = createTRPCOptionsProxy({
   ctx: createTRPCContext,

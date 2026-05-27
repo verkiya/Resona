@@ -1,4 +1,4 @@
-// AI explanation: Shared page title/subtitle header used by dashboard feature views.
+// Shared page title/subtitle header used by dashboard feature views.
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";

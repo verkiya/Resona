@@ -1,4 +1,4 @@
-// AI explanation: shadcn chart helpers around Recharts theming; used where charts are rendered in the app.
+// shadcn chart helpers around Recharts theming; used where charts are rendered in the app.
 "use client";
 
 import * as React from "react";
@@ -7,7 +7,7 @@ import type { TooltipValueType } from "recharts";
 
 import { cn } from "@/lib/utils";
 
-// AI explanation: maps chart color tokens to light vs .dark DOM selectors for Recharts CSS variables.
+// maps chart color tokens to light vs .dark DOM selectors for Recharts CSS variables.
 const THEMES = { light: "", dark: ".dark" } as const;
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const;
@@ -328,7 +328,7 @@ function ChartLegendContent({
   );
 }
 
-// AI explanation: resolves chart config (label/color) from a Recharts tooltip/legend payload entry.
+// resolves chart config (label/color) from a Recharts tooltip/legend payload entry.
 function getPayloadConfigFromPayload(
   config: ChartConfig,
   payload: unknown,

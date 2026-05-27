@@ -1,4 +1,4 @@
-// AI explanation: Root HTML shell — Clerk, tRPC, nuqs, fonts, toaster, and Vercel analytics.
+// Root HTML shell — Clerk, tRPC, nuqs, fonts, toaster, and Vercel analytics.
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";

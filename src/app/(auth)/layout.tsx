@@ -1,4 +1,4 @@
-// AI explanation: Split auth layout — Clerk sign-in/up forms plus AuthMarketing panel.
+// Split auth layout — Clerk sign-in/up forms plus AuthMarketing panel.
 import Link from "next/link";
 import { AuthMarketing } from "./auth-marketing";
 import { Button } from "@/components/ui/button";

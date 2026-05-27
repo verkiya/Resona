@@ -1,4 +1,4 @@
-// AI explanation: shadcn/ui presentational primitive; Resona product behavior lives in src/features and src/app.
+// shadcn/ui presentational primitive; Resona product behavior lives in src/features and src/app.
 import * as React from "react";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { Slot } from "radix-ui";

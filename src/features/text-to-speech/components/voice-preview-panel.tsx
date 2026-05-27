@@ -1,5 +1,5 @@
 "use client";
-// AI explanation: Desktop playback UI for a saved generation — audioUrl points at /api/audio/:id and WaveSurfer handles waveform + transport.
+// Desktop playback UI for a saved generation — audioUrl points at /api/audio/:id and WaveSurfer handles waveform + transport.
 
 import { useState } from "react";
 import { Pause, Play, Download, Redo, Undo } from "lucide-react";

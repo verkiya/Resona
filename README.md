@@ -222,12 +222,10 @@ Built for scale and maintainability.
 
 ### Core domain models
 
-- Users
-- Organizations
-- Voices
-- Generations
-- Subscriptions
-- Usage Events
+- **Clerk** — users and organizations (not stored in Postgres)
+- **Voice** — system presets and org-scoped custom clones (`objectKey` → S3 reference audio)
+- **Generation** — TTS output metadata and settings (`objectKey` → S3 synthesized WAV)
+- **Polar** — subscriptions and metered usage (external; no local billing tables)
 
 ---
 
@@ -237,10 +235,10 @@ Audio assets are stored using cloud object storage.
 
 ### Implementation
 
-- Cloudflare R2
-- AWS S3-compatible SDK
-- Signed URL delivery
-- Secure temporary asset access
+- AWS S3 object storage
+- AWS SDK (`@aws-sdk/client-s3`)
+- Signed URL delivery for server-side fetches
+- App proxies (`/api/audio/:id`, `/api/voices/:id`) so browsers never see raw keys
 
 ### Used for
 
@@ -282,7 +280,8 @@ Resona is deployment-ready.
 
 ### Infrastructure
 
-- Railway deployment
+- **Vercel** — Next.js app, API routes, and tRPC
+- **Modal** — Chatterbox TTS inference (`chatterbox_tts.py`, FastAPI)
 - GitHub Actions
 - Automated CI pipelines
 - Pull request validation
@@ -377,8 +376,9 @@ Platform constraints include:
 - FastAPI inference layer
 
 ## Infrastructure
-- Cloudflare R2
-- Railway
+- Vercel (Next.js + API)
+- Modal (TTS inference)
+- AWS S3
 - GitHub Actions
 - Sentry
 

@@ -1,4 +1,4 @@
-// AI explanation: Slider metadata (min/max/step/labels) for TTS inference parameters.
+// Slider metadata (min/max/step/labels) for TTS inference parameters.
 interface Slider {
   id: "temperature" | "topP" | "topK" | "repetitionPenalty";
   label: string;

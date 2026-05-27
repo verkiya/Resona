@@ -1,5 +1,5 @@
 "use client";
-// AI explanation: WaveSurfer lifecycle for TTS playback — recreates the instance when audioUrl changes and tears down on unmount.
+// WaveSurfer lifecycle for TTS playback — recreates the instance when audioUrl changes and tears down on unmount.
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
@@ -72,7 +72,7 @@ export function useWaveSurfer({
       wavesurferRef.current = null;
     }
 
-    // AI explanation: ignores async load/error callbacks after cleanup so a stale request cannot update state after url changes.
+    // ignores async load/error callbacks after cleanup so a stale request cannot update state after url changes.
     let destroyed = false;
 
     const waveColor = resolveThemeColor("--border", "#E9D8D0");

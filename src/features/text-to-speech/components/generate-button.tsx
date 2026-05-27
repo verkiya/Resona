@@ -1,4 +1,4 @@
-// AI explanation: Submit control with rotating loading copy while generations.create runs.
+// Submit control with rotating loading copy while generations.create runs.
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 

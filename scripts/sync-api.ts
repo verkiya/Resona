@@ -1,4 +1,4 @@
-// AI explanation: Dev script — fetches Chatterbox OpenAPI and regenerates src/types/chatterbox-api.d.ts (requires CHATTERBOX_API_URL).
+// Dev script — fetches Chatterbox OpenAPI and regenerates src/types/chatterbox-api.d.ts (requires CHATTERBOX_API_URL).
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

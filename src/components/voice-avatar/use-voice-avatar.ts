@@ -1,4 +1,4 @@
-// AI explanation: Picks a stable avatar style/seed from the voice id for list and preview UI.
+// Picks a stable avatar style/seed from the voice id for list and preview UI.
 import { useMemo } from "react";
 import { micah } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";

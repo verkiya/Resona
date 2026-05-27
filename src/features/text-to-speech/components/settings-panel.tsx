@@ -1,4 +1,4 @@
-// AI explanation: Right rail combining generation settings and history on desktop.
+// Right rail combining generation settings and history on desktop.
 import { History, Settings } from "lucide-react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

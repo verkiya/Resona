@@ -1,4 +1,4 @@
-// AI explanation: Clerk-hosted sign-up route with custom premium Resona styling.
+// Clerk-hosted sign-up route with custom premium Resona styling.
 
 import { SignUp } from "@clerk/nextjs";
 

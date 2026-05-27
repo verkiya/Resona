@@ -1,4 +1,4 @@
-// AI explanation: Voices page shell — toolbar, list, and empty states for custom/system voices.
+// Voices page shell — toolbar, list, and empty states for custom/system voices.
 "use client";
 
 import { useTRPC } from "@/trpc/client";

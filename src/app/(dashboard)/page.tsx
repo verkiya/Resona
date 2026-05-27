@@ -1,4 +1,4 @@
-// AI explanation: Home route — redirects unauthenticated users and renders DashboardView.
+// Home route — redirects unauthenticated users and renders DashboardView.
 import { DashboardView } from "@/features/dashboard/views/dashboard-view";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

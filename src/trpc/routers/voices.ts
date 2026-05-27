@@ -1,4 +1,4 @@
-// AI explanation: Voice catalog and deletion — lists SYSTEM + org CUSTOM voices; delete removes DB row and best-effort S3 cleanup.
+// Voice catalog and deletion — lists SYSTEM + org CUSTOM voices; delete removes DB row and best-effort S3 cleanup.
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "@/lib/db";
@@ -93,7 +93,7 @@ export const voicesRouter = createTRPCRouter({
       await prisma.voice.delete({ where: { id: voice.id } });
 
       if (voice.objectKey) {
-        // AI explanation: S3 delete is best-effort so a storage failure does not block removing the voice from the app.
+        // S3 delete is best-effort so a storage failure does not block removing the voice from the app.
         await deleteAudio(voice.objectKey).catch(() => {});
       }
 

@@ -1,4 +1,4 @@
-// AI explanation: Next.js global error boundary UI when the root layout throws.
+// Next.js global error boundary UI when the root layout throws.
 "use client";
 
 import * as Sentry from "@sentry/nextjs";

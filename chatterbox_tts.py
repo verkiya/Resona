@@ -26,7 +26,7 @@ Example local test:
     --voice-key "voices/system/<voice-id>.wav"
 """
 
-# AI explanation: Modal-deployed TTS service (/generate) — clones voice from S3 voice_key; consumed by src/lib/chatterbox-client.ts.
+# Modal-deployed TTS service (/generate) — clones voice from S3 voice_key; consumed by src/lib/chatterbox-client.ts.
 
 from __future__ import annotations
 
@@ -49,81 +49,12 @@ if load_dotenv is not None:
         load_dotenv(dotenv_path=env_file)
 
 
-# -----------------------------------------------------------------------------
-# Operations Runbook (comments only)
-# -----------------------------------------------------------------------------
-# This section captures the exact workflow used to get this app deployed.
-# Safe to keep for future debugging/redeploys.
-#
-# FRESH START
-# -----------------------------------------------------------------------------
-# 0) Generate fresh credentials:
-#    - New Hugging Face token
-#    - New CHATTERBOX_API_KEY
-#
-# 1) Install/auth Modal CLI:
-#    pip install modal
-#    python -m modal setup
-#
-# 2) Create secrets:
-#    python -m modal secret create hf-token HF_TOKEN=<NEW_HF_TOKEN>
-#
-#    python -m modal secret create chatterbox-api-key \
-#      CHATTERBOX_API_KEY=<NEW_API_KEY>
-#
-#    python -m modal secret create aws-storage \
-#      AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> \
-#      AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> \
-#      AWS_BUCKET_NAME=<BUCKET_NAME> \
-#      AWS_REGION=<REGION>
-#
-#    Optional:
-#      AWS_S3_ENDPOINT_URL=https://<accountid>.r2.cloudflarestorage.com
-#
-# 3) Local deploy-time env vars (PowerShell):
-#    $env:AWS_BUCKET_NAME = "<BUCKET_NAME>"
-#    $env:AWS_REGION = "<REGION>"
-#
-#    Optional:
-#    $env:AWS_MODAL_SECRET_NAME = "aws-storage"
-#    $env:AWS_S3_ENDPOINT_URL = "https://<accountid>.r2.cloudflarestorage.com"
-#
-# 4) Deploy:
-#    python -m modal deploy chatterbox_tts.py
-#
-# 5) Smoke test:
-#    curl -X POST "https://<your-modal-endpoint>/generate" \
-#      -H "Content-Type: application/json" \
-#      -H "x-api-key: <API_KEY>" \
-#      -d '{"prompt":"Hello","voice_key":"voices/system/default.wav"}' \
-#      --output output.wav
-#
-# 6) Common failures:
-#    - "modal not recognized" -> use python -m modal
-#    - AWS_BUCKET_NAME missing -> set env var / secret
-#    - 403 -> wrong x-api-key
-#    - voice missing -> bad storage key
-#
-# SECURITY NOTES
-# -----------------------------------------------------------------------------
-# - Storage mount is read-only.
-# - API is protected via x-api-key.
-# - Voice paths are sanitized to prevent traversal.
-# - Internal exceptions are not leaked to clients.
-#
-# PET PROJECT NOTES
-# -----------------------------------------------------------------------------
-# Current tradeoffs intentionally accepted:
-# - wildcard CORS
-# - shared API key auth
-# - no rate limiting
-#
-# Fine for hobby/internal use. Revisit for production SaaS.
+# Modal deploy runbook — create hf-token, chatterbox-api-key, and aws-storage secrets; then `python -m modal deploy chatterbox_tts.py`.
+# POST /generate expects JSON { prompt, voice_key } with header x-api-key; voice_key is an S3 key under the read-only bucket mount (see module docstring).
+# Hobby tradeoffs: wildcard CORS, shared API key, no rate limiting — tighten before public production.
 
 
-# -----------------------------------------------------------------------------
-# Storage configuration
-# -----------------------------------------------------------------------------
+# Storage configuration — bucket name from env/Modal secret; optional AWS_S3_ENDPOINT_URL for S3-compatible providers.
 AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL", "")
 BUCKET_MOUNT_PATH = "/storage"
@@ -134,7 +65,7 @@ DEFAULT_AWS_BUCKET_NAME = "resona-507673060976-us-east-1-an"
 
 
 def _resolve_bucket_name() -> str:
-    # Read env at call time, not just import time.
+    # Read AWS_BUCKET_NAME at call time so Modal secret injection after import still works.
     bucket = os.environ.get("AWS_BUCKET_NAME", "").strip() or AWS_BUCKET_NAME.strip()
 
     if not bucket:
@@ -159,9 +90,7 @@ def _build_bucket_mount() -> modal.CloudBucketMount:
     )
 
 
-# -----------------------------------------------------------------------------
-# Modal setup
-# -----------------------------------------------------------------------------
+# Modal image and app — GPU class mounts the S3 bucket read-only and exposes FastAPI at /generate.
 image = modal.Image.debian_slim(python_version="3.10").uv_pip_install(
     "chatterbox-tts==0.1.6",
     "fastapi[standard]==0.124.4",

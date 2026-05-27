@@ -1,4 +1,4 @@
-// AI explanation: Postgres schema for multi-tenant voices (SYSTEM/CUSTOM) and TTS generations; objectKey points at S3/R2 blobs.
+// Postgres schema for multi-tenant voices (SYSTEM/CUSTOM) and TTS generations; objectKey points at AWS S3 blobs.
 
 generator client {
   provider = "prisma-client"
@@ -42,7 +42,7 @@ model Voice {
 
   variant VoiceVariant
 
-  objectKey String? // AI explanation: S3 key for the reference audio clip used by Chatterbox cloning.
+  objectKey String? // S3 key for the reference audio clip used by Chatterbox cloning.
 
   generations Generation[]
 
@@ -51,8 +51,8 @@ model Voice {
 
   @@index([variant])
   @@index([orgId])
-  @@index([objectKey])         // useful for lookups
-  @@unique([name, variant])    // prevents duplicate SYSTEM voices
+  @@index([objectKey])         // speeds up S3 key lookups when resolving voice audio.
+  @@unique([name, variant])    // one SYSTEM row per preset name; CUSTOM names are scoped per org in app logic.
 }
 
 model Generation {
@@ -61,12 +61,12 @@ model Generation {
   orgId String
 
   voiceId String?
-  voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull) // AI explanation: SetNull preserves generation history after a voice is deleted, so past outputs remain queryable instead of cascading away.
+  voice Voice? @relation(fields: [voiceId], references: [id], onDelete: SetNull) // SetNull keeps generation history when a voice is deleted.
 
   voiceName String
   text String
 
-  objectKey String? // AI explanation: S3 key for the synthesized WAV; null until upload completes (API returns 409).
+  objectKey String? // S3 key for the synthesized WAV; null until upload completes (API returns 409).
 
   temperature Float
   topP Float
@@ -78,5 +78,5 @@ model Generation {
 
   @@index([orgId])
   @@index([voiceId])
-  @@index([objectKey])   //  optional but useful
+  @@index([objectKey])   // optional index for generation audio proxy lookups by S3 key.
 }
