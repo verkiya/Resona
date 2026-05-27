@@ -1,4 +1,4 @@
-// Marketing copy and visuals beside Clerk auth forms.
+// Auth marketing panel: static product narrative used by the auth layout to contextualize sign-in/up.
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 export function AuthMarketing() {
   return (
     <div className="flex h-full flex-col overflow-hidden px-10 py-8 lg:px-14">
-      {/* Brand */}
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="elevated cursor-pointer flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border">
@@ -42,7 +41,6 @@ export function AuthMarketing() {
         </Link>
       </div>
 
-      {/* Hero */}
       <div className="max-w-xl">
         <h1 className="text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
           Build, clone, and generate AI voices at scale.
@@ -55,7 +53,6 @@ export function AuthMarketing() {
         </p>
       </div>
 
-      {/* Features */}
       <div className="mt-8 grid flex-1 gap-4 sm:grid-cols-2">
         <FeatureCard
           icon={<Mic2 className="h-5 w-5 text-primary" />}
@@ -93,7 +90,6 @@ export function AuthMarketing() {
         </Link>
       </Button>
 
-      {/* Footer */}
       <div className="mt-6 border-t border-border/60 pt-5">
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">

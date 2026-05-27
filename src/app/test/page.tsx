@@ -1,5 +1,5 @@
-"use client"
-// Internal/dev test page (not part of production user flows).
+// Button lab: internal visual testbed for variants and toast styles, not part of production user flows.
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Play,

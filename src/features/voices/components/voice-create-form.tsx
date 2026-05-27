@@ -1,5 +1,5 @@
+// Custom voice creation UI: upload/record audio and POST bytes to /api/voices/create with query metadata.
 "use client";
-// Custom voice creation UI — upload or record audio, then POST raw bytes to /api/voices/create with metadata in query params.
 
 import { useState } from "react";
 import { z } from "zod";
@@ -303,7 +303,7 @@ export function VoiceCreateForm({
         params.set("description", description);
       }
 
-      // metadata travels in query params; raw audio bytes are the POST body (see api/voices/create/route.ts).
+      // Metadata goes in query params; raw audio bytes are the POST body.
       const response = await fetch(`/api/voices/create?${params.toString()}`, {
         method: "POST",
         headers: { "Content-Type": file.type },

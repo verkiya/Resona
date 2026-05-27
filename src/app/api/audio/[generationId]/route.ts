@@ -37,7 +37,7 @@ export async function GET(
   return new Response(audioResponse.body, {
     headers: {
       "Content-Type": "audio/wav",
-      // private cache because generations are org-scoped and may be deleted or replaced.
+      // Org-scoped audio uses private cache to avoid stale playback.
       "Cache-Control": "private, max-age=3600",
     },
   });

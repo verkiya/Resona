@@ -17,12 +17,10 @@ export function SettingsPanelSettings() {
 
   return (
     <>
-      {/* Voice selector */}
       <div className="border-b border-border/40 bg-background/30 p-5 backdrop-blur-sm">
         <VoiceSelector />
       </div>
 
-      {/* Voice controls */}
       <div className="flex-1 p-5">
         <div className="mb-5">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">

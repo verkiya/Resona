@@ -1,4 +1,4 @@
-// Sentry demo page for manual error reporting tests.
+// Sentry demo page: checks client connectivity and lets users trigger a sample error for validation.
 "use client";
 
 import * as Sentry from "@sentry/nextjs";

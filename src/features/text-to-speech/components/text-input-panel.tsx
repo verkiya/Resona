@@ -46,7 +46,6 @@ export function TextInputPanel() {
       </div>
 
       <div className="shrink-0 p-4 lg:p-6">
-        {/* Mobile */}
         <div className="flex flex-col gap-3 lg:hidden">
           <div className="flex items-center gap-2">
             <SettingsDrawer>
@@ -64,7 +63,6 @@ export function TextInputPanel() {
           />
         </div>
 
-        {/* Desktop */}
         <div className="hidden transition-all duration-200 lg:block">
           {text.length > 0 ? (
             <div className="flex items-center justify-between">

@@ -1,4 +1,4 @@
-// RSC entry for an existing generation — prefetches generation + voices for TextToSpeechDetailView.
+// TTS detail RSC entry: prefetches the generation, voice catalog, and history, then hydrates the detail view.
 import { TextToSpeechDetailView } from "@/features/text-to-speech/views/text-to-speech-detail-view";
 import { trpc, HydrateClient, prefetch } from "@/trpc/server";
 

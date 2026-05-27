@@ -1,5 +1,5 @@
+// Public learnings page: client-rendered engineering write-up with static content and local section components (whitelisted in proxy.ts).
 "use client";
-// Public engineering write-up — architecture, tradeoffs, and lessons learned (whitelisted in proxy.ts).
 
 import Link from "next/link";
 import {
@@ -19,15 +19,11 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// ─── Learnings page (marketing-style engineering write-up) ───
-// Root page component and section layout below.
-
 export default function LearningsPage() {
   return (
     <main className="relative min-h-screen overflow-hidden cursor-[url('/resona.png')_0_0,pointer] bg-background pb-28 text-foreground md:pb-32">
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.13_25/0.14),transparent_42%),radial-gradient(circle_at_top_right,oklch(0.75_0.15_300/0.12),transparent_38%)]" />
       <div className="mx-auto max-w-5xl px-6 py-16 lg:px-10">
-
         <section className="mb-16 space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground shadow-sm backdrop-blur-sm">
             Engineering breakdown
@@ -55,7 +51,6 @@ export default function LearningsPage() {
           </div>
         </section>
 
-        {/* ── Why I built this ── */}
         <Block label="00" title="Why I Built This">
           <p className="text-muted-foreground leading-relaxed">
             Most AI side projects stop at a model call wrapped in a form. I
@@ -70,7 +65,6 @@ export default function LearningsPage() {
           </p>
         </Block>
 
-        {/* ── Architecture Diagram ── */}
         <Block label="01" title="System Architecture">
           <p className="text-muted-foreground leading-relaxed mb-8">
             The application is easiest to understand if you split it into two
@@ -80,7 +74,6 @@ export default function LearningsPage() {
           </p>
 
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Web app flow */}
             <div>
               <p className="text-xs tracking-widest uppercase text-primary mb-4">
                 Web Application Flow
@@ -94,12 +87,15 @@ export default function LearningsPage() {
                   { label: "Prisma ORM", note: "Relational queries" },
                   { label: "PostgreSQL", note: "Persistence" },
                 ].map((step, i, arr) => (
-                  <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
+                  <FlowStep
+                    key={step.label}
+                    step={step}
+                    last={i === arr.length - 1}
+                  />
                 ))}
               </div>
             </div>
 
-            {/* Voice gen pipeline */}
             <div>
               <p className="text-xs tracking-widest uppercase text-primary mb-4">
                 Voice Generation Pipeline
@@ -114,13 +110,16 @@ export default function LearningsPage() {
                   { label: "/api/audio proxy", note: "Org-scoped stream" },
                   { label: "WaveSurfer.js", note: "Client playback" },
                 ].map((step, i, arr) => (
-                  <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
+                  <FlowStep
+                    key={step.label}
+                    step={step}
+                    last={i === arr.length - 1}
+                  />
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Deployment topology */}
           <div className="mt-10">
             <p className="text-xs tracking-widest uppercase text-primary mb-4">
               Deployment Topology
@@ -137,7 +136,9 @@ export default function LearningsPage() {
                 { service: "CI / CD", host: "GitHub Actions" },
               ].map((t) => (
                 <div key={t.service} className="rounded-lg border bg-card p-3">
-                  <p className="text-[11px] text-muted-foreground mb-1">{t.service}</p>
+                  <p className="text-[11px] text-muted-foreground mb-1">
+                    {t.service}
+                  </p>
                   <p className="text-sm font-semibold text-primary">{t.host}</p>
                 </div>
               ))}
@@ -145,12 +146,11 @@ export default function LearningsPage() {
           </div>
         </Block>
 
-        {/* ── Database Schema ── */}
         <Block label="02" title="Database Schema">
           <p className="text-muted-foreground leading-relaxed mb-6">
-            The schema is intentionally small and opinionated. Each entity owns a
-            single concern, and organization scope is the default context rather
-            than an afterthought.
+            The schema is intentionally small and opinionated. Each entity owns
+            a single concern, and organization scope is the default context
+            rather than an afterthought.
           </p>
           <div className="rounded-xl border bg-card p-5 overflow-x-auto">
             <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`Clerk User + Organization (auth only — not Prisma tables)
@@ -176,7 +176,6 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
           </p>
         </Block>
 
-        {/* ── Technical Decisions ── */}
         <Block label="03" title="Technical Decisions & Tradeoffs">
           <div className="space-y-6">
             <TradeoffCard
@@ -207,24 +206,36 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
           </div>
         </Block>
 
-        {/* ── Billing Flow ── */}
         <Block label="04" title="Billing Architecture">
           <p className="text-muted-foreground leading-relaxed mb-6">
             Billing is a state machine, not a button. The important part is the
-            order of events: verify access, attempt generation, record usage only
-            after success, and expose the portal as a management surface rather
-            than the source of truth.
+            order of events: verify access, attempt generation, record usage
+            only after success, and expose the portal as a management surface
+            rather than the source of truth.
           </p>
           <div className="space-y-1 mb-8">
             {[
-              { label: "User triggers speech generation", note: "tRPC mutation" },
+              {
+                label: "User triggers speech generation",
+                note: "tRPC mutation",
+              },
               { label: "Subscription check", note: "Polar active plan" },
               { label: "Generation proceeds", note: "Modal TTS + S3 upload" },
               { label: "Usage event emitted", note: "Polar meter updated" },
-              { label: "UI reflects updated usage", note: "Transparent to user" },
-              { label: "Billing portal available", note: "Polar-hosted management" },
+              {
+                label: "UI reflects updated usage",
+                note: "Transparent to user",
+              },
+              {
+                label: "Billing portal available",
+                note: "Polar-hosted management",
+              },
             ].map((step, i, arr) => (
-              <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
+              <FlowStep
+                key={step.label}
+                step={step}
+                last={i === arr.length - 1}
+              />
             ))}
           </div>
           <div className="rounded-xl border bg-card p-5">
@@ -238,7 +249,10 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
                 "Voice cloning uploads",
                 "Org-wide shared voices",
               ].map((action) => (
-                <div key={action} className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div
+                  key={action}
+                  className="flex items-center gap-2 text-sm text-muted-foreground"
+                >
                   <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                   {action}
                 </div>
@@ -247,7 +261,6 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
           </div>
         </Block>
 
-        {/* ── Security ── */}
         <Block label="05" title="Security Considerations">
           <p className="text-muted-foreground leading-relaxed mb-6">
             The security model is layered, with controls split between routing,
@@ -294,13 +307,14 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
                   <ShieldCheck className="h-4 w-4 text-primary flex-shrink-0" />
                   <h3 className="font-semibold text-sm">{item.title}</h3>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </Block>
 
-        {/* ── Multi-tenancy deep dive ── */}
         <Block label="06" title="Multi-Tenancy in Practice">
           <p className="text-muted-foreground leading-relaxed mb-6">
             Multi-tenancy is mostly about discipline. The code has to carry the
@@ -332,7 +346,10 @@ const voice = await prisma.voice.findUnique({
               "Org switching updates the active context instead of reusing stale state",
               "Voice and generation records are only visible inside the owning org",
             ].map((point) => (
-              <div key={point} className="flex items-start gap-3 text-sm text-muted-foreground">
+              <div
+                key={point}
+                className="flex items-start gap-3 text-sm text-muted-foreground"
+              >
                 <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                 {point}
               </div>
@@ -340,7 +357,6 @@ const voice = await prisma.voice.findUnique({
           </div>
         </Block>
 
-        {/* ── Challenges ── */}
         <Block label="07" title="Challenges I Solved">
           <div className="space-y-6">
             <ChallengeCard
@@ -373,7 +389,6 @@ if (process.env.NODE_ENV !== "production") {
           </div>
         </Block>
 
-        {/* ── Key Engineering Learnings ── */}
         <Block label="08" title="Key Engineering Learnings">
           <div className="space-y-5">
             {[
@@ -404,13 +419,14 @@ if (process.env.NODE_ENV !== "production") {
             ].map((item) => (
               <div key={item.title} className="border-l-2 border-primary pl-4">
                 <h3 className="font-semibold mb-1">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {item.body}
+                </p>
               </div>
             ))}
           </div>
         </Block>
 
-        {/* ── Performance ── */}
         <Block label="09" title="Performance Considerations">
           <div className="grid gap-4 md:grid-cols-2">
             {[
@@ -441,13 +457,14 @@ if (process.env.NODE_ENV !== "production") {
             ].map((item) => (
               <div key={item.label} className="rounded-xl border bg-card p-4">
                 <p className="text-sm font-semibold mb-1">{item.label}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </Block>
 
-        {/* ── Future Improvements ── */}
         <Block label="10" title="Future Improvements">
           <p className="text-muted-foreground leading-relaxed mb-6">
             These are the next real gaps to close if the product grows, not a
@@ -455,14 +472,46 @@ if (process.env.NODE_ENV !== "production") {
           </p>
           <div className="grid gap-3 md:grid-cols-2">
             {[
-              { item: "Background job queue for voice generation", reason: "Moves inference out of the HTTP request lifecycle and removes timeout pressure." },
-              { item: "Redis caching for org/subscription state", reason: "Cuts repeated lookups on authenticated requests that do the same checks over and over." },
-              { item: "Webhook retry strategy", reason: "Prevents billing state drift when provider events arrive late or fail once." },
-              { item: "Granular RBAC within orgs", reason: "Separates member and admin powers without widening the auth model everywhere." },
-              { item: "Usage analytics dashboards", reason: "Gives organizations visibility into what they are consuming and when." },
-              { item: "Rate limiting per org", reason: "Adds a safety valve against runaway usage and accidental abuse." },
-              { item: "API key system", reason: "Would let external developers access the inference pipeline directly." },
-              { item: "Distributed inference workers", reason: "Scale Modal/Chatterbox workers horizontally beyond a single inference container." },
+              {
+                item: "Background job queue for voice generation",
+                reason:
+                  "Moves inference out of the HTTP request lifecycle and removes timeout pressure.",
+              },
+              {
+                item: "Redis caching for org/subscription state",
+                reason:
+                  "Cuts repeated lookups on authenticated requests that do the same checks over and over.",
+              },
+              {
+                item: "Webhook retry strategy",
+                reason:
+                  "Prevents billing state drift when provider events arrive late or fail once.",
+              },
+              {
+                item: "Granular RBAC within orgs",
+                reason:
+                  "Separates member and admin powers without widening the auth model everywhere.",
+              },
+              {
+                item: "Usage analytics dashboards",
+                reason:
+                  "Gives organizations visibility into what they are consuming and when.",
+              },
+              {
+                item: "Rate limiting per org",
+                reason:
+                  "Adds a safety valve against runaway usage and accidental abuse.",
+              },
+              {
+                item: "API key system",
+                reason:
+                  "Would let external developers access the inference pipeline directly.",
+              },
+              {
+                item: "Distributed inference workers",
+                reason:
+                  "Scale Modal/Chatterbox workers horizontally beyond a single inference container.",
+              },
             ].map((f) => (
               <div key={f.item} className="rounded-xl border bg-card p-4">
                 <p className="text-sm font-semibold mb-1">{f.item}</p>
@@ -472,7 +521,6 @@ if (process.env.NODE_ENV !== "production") {
           </div>
         </Block>
 
-        {/* ── Closing ── */}
         <section className="rounded-2xl border bg-card p-8 mt-6">
           <div className="flex items-center gap-3 mb-5">
             <Code2 className="h-5 w-5 text-primary" />
@@ -493,10 +541,8 @@ if (process.env.NODE_ENV !== "production") {
             back into the user experience.
           </p>
         </section>
-
       </div>
 
-      {/* ── Fixed bottom bar (unchanged) ── */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/85 px-4 py-4 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
         <div className="mx-auto flex max-w-7xl justify-center">
           <Button
@@ -516,7 +562,7 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-// ─── Sub-components (cards, diagrams, code samples) ───
+// Local presentational components used only by this page.
 
 function Block({
   label,
@@ -558,7 +604,9 @@ function FlowStep({
         {!last && <div className="mt-0.5 w-px flex-1 bg-border" />}
       </div>
       <div className="pb-3">
-        <span className="text-sm font-medium text-foreground">{step.label}</span>
+        <span className="text-sm font-medium text-foreground">
+          {step.label}
+        </span>
         <span className="ml-2 text-xs text-muted-foreground">{step.note}</span>
       </div>
     </div>

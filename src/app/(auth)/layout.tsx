@@ -1,4 +1,4 @@
-// Split auth layout — Clerk sign-in/up forms plus AuthMarketing panel.
+// Auth layout: splits marketing panel and routed auth content, keeping sign-in/up navigation visible.
 import Link from "next/link";
 import { AuthMarketing } from "./auth-marketing";
 import { Button } from "@/components/ui/button";

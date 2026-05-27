@@ -1,3 +1,4 @@
+// Deterministic Dicebear avatar hook that returns a data URI for a voice seed.
 import { useMemo } from "react";
 import { micah } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";

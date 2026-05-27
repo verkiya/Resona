@@ -1,5 +1,5 @@
+// Existing-generation TTS view: hydrates form fields and plays audio via the proxy URL.
 "use client";
-// Existing-generation TTS page — hydrates form fields from generations.getById and shows WaveSurfer playback via data.audioUrl.
 
 import { useSuspenseQueries } from "@tanstack/react-query";
 
@@ -33,7 +33,7 @@ export function TextToSpeechDetailView({
 
   const fallbackVoiceId = allVoices[0]?.id ?? "";
 
-  // the requested voice can disappear after deletion, so we fall back to the first available voice to keep the form usable.
+  // Fall back if the referenced voice no longer exists.
   const resolvedVoiceId =
     data?.voiceId && allVoices.some((v) => v.id === data.voiceId)
       ? data.voiceId
@@ -48,7 +48,7 @@ export function TextToSpeechDetailView({
     repetitionPenalty: data.repetitionPenalty,
   };
 
-  // voiceName is a snapshot on the generation row so the preview stays correct even if the voice was later renamed or deleted.
+  // voiceName is a snapshot so previews remain stable if the voice changes later.
   const generationVoice = {
     id: data.voiceId ?? undefined,
     name: data.voiceName,

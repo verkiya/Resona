@@ -12,7 +12,7 @@ interface VoiceAvatarProps {
 }
 
 export function VoiceAvatar({ seed, name, className }: VoiceAvatarProps) {
-  const avatarUrl = useVoiceAvatar(seed); // Generates an SVG in Base64
+  const avatarUrl = useVoiceAvatar(seed); // Converts a deterministic SVG avatar into a data URI
 
   return (
     <Avatar

@@ -1,4 +1,4 @@
-// Clerk middleware enforces auth on protected routes and redirects signed-in users without an active org to /org-selection.
+// Clerk middleware: allows public routes, enforces sign-in elsewhere, and redirects signed-in users without an org to /org-selection to preserve tenant scoping.
 import {
   auth,
   clerkMiddleware,
@@ -23,7 +23,7 @@ export default clerkMiddleware(async (auth, req) => {
   if (isOrgSelectionRoute(req)) {
     return NextResponse.next();
   }
-  // dashboard and API routes require a selected Clerk organization (orgId) for multi-tenant data scoping.
+  // Require orgId on protected routes to enforce tenant scope.
   if (userId && !orgId) {
     const orgSelection = new URL("/org-selection", req.url);
     return NextResponse.redirect(orgSelection);

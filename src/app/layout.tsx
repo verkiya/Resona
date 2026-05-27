@@ -1,4 +1,4 @@
-// Root HTML shell — Clerk, tRPC, nuqs, fonts, toaster, and Vercel analytics.
+// Root app shell: sets global metadata/fonts and composes Clerk + tRPC + nuqs providers so all routes share auth, query, and URL state, plus analytics/toaster.
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
