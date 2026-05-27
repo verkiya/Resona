@@ -1,4 +1,4 @@
-// Authenticated app chrome — sidebar provider, dashboard sidebar, and main content inset.
+// Dashboard shell: restores sidebar state from cookies, provides the sidebar context, and wraps child routes in the app chrome.
 import { cookies } from "next/headers";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";

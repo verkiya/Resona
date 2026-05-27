@@ -1,6 +1,5 @@
-// Browser tRPC + React Query provider; singleton query client avoids duplicate clients on suspense.
+// Client-side tRPC + React Query provider with a singleton browser query client.
 "use client";
-// "use client" allows this provider to be imported from server components such as root layout.tsx.
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
@@ -13,15 +12,15 @@ export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
 let browserQueryClient: QueryClient;
 function getQueryClient() {
   if (typeof window === "undefined") {
-    // each RSC request gets a fresh QueryClient on the server.
+    // Each RSC request gets a fresh QueryClient on the server.
     return makeQueryClient();
   }
-  // reuse one browser QueryClient so React suspense during first paint does not create duplicates.
+  // Reuse one browser QueryClient so suspense does not create duplicates.
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
   return browserQueryClient;
 }
 function getUrl() {
-  // browser should always use relative URL
+  // Browser should always use the relative URL.
   if (typeof window !== "undefined") {
     return "/api/trpc";
   }

@@ -1,4 +1,4 @@
-// Home route — redirects unauthenticated users and renders DashboardView.
+// Dashboard entry: enforces server-side auth, then renders the DashboardView for signed-in users.
 import { DashboardView } from "@/features/dashboard/views/dashboard-view";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

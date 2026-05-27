@@ -1,4 +1,4 @@
-// RSC entry for new TTS — prefetches voices/history, passes searchParams into TextToSpeechView.
+// New TTS RSC entry: reads search params, prefetches voices/history into the cache, and seeds the form defaults.
 import { TextToSpeechView } from "@/features/text-to-speech/views/text-to-speech-view";
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import type { Metadata } from "next";

@@ -1,4 +1,4 @@
-// Streaming skeleton shown while the text-to-speech RSC tree is loading.
+// TTS loading state: renders a streaming skeleton while the RSC tree and client hydration complete.
 import { Skeleton } from "@/components/ui/skeleton";
 import { VoicePreviewPlaceholder } from "@/features/text-to-speech/components/voice-preview-placeholder";
 

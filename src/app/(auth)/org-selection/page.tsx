@@ -1,4 +1,4 @@
-// Clerk organization picker — required before org-scoped dashboard routes (see proxy.ts).
+// Org selection route: forces users to choose/create an org before entering org-scoped routes.
 
 import { OrganizationList } from "@clerk/nextjs";
 

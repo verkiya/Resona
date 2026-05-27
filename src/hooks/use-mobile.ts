@@ -1,4 +1,4 @@
-// matchMedia hook (1024px) for responsive TTS layout and WaveSurfer sizing.
+// matchMedia hook for the 1024px breakpoint used to switch mobile layouts.
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 1024;

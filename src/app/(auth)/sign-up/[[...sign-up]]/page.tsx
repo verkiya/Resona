@@ -1,4 +1,4 @@
-// Clerk-hosted sign-up route with custom premium Resona styling.
+// Clerk sign-up route: renders the hosted UI with Resona-specific appearance overrides.
 
 import { SignUp } from "@clerk/nextjs";
 

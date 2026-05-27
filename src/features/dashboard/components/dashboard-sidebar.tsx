@@ -1,4 +1,4 @@
-// Primary app nav, org switcher, voice create entry, and billing usage footer.
+// Primary app sidebar: navigation, org switcher, voice create trigger, and billing footer.
 "use client";
 
 import Image from "next/image";

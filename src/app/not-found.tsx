@@ -1,4 +1,4 @@
-// App-wide branded 404 page with animated waveform background.
+// App-wide 404 boundary: rendered when no route matches, with branded recovery links.
 
 import Link from "next/link";
 import { Home, AudioLines, ArrowLeft } from "lucide-react";
@@ -6,7 +6,6 @@ import { Home, AudioLines, ArrowLeft } from "lucide-react";
 export default function NotFound() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 text-foreground">
-      {/* ambient blobs */}
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute left-[-8%] top-[12%] h-80 w-80 rounded-full bg-primary/8 blur-3xl"
@@ -22,7 +21,6 @@ export default function NotFound() {
           }}
         />
 
-        {/* waveform background */}
         <div className="absolute inset-0 opacity-[0.12]">
           <svg
             className="absolute inset-0 h-full w-full"
@@ -56,7 +54,6 @@ export default function NotFound() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,oklch(0.97_0.01_280/.35))]" />
       </div>
 
-      {/* content */}
       <div className="relative z-10 mx-auto w-full max-w-2xl">
         <div className="rounded-3xl border border-border/60 bg-card/80 p-10 text-center shadow-2xl backdrop-blur-xl">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl border border-primary/15 bg-[linear-gradient(135deg,oklch(0.72_0.13_25/.14),oklch(0.75_0.15_300/.12))] shadow-lg">

@@ -61,7 +61,7 @@ BUCKET_MOUNT_PATH = "/storage"
 STORAGE_SECRET_NAME = os.environ.get("AWS_MODAL_SECRET_NAME", "aws-storage")
 
 # Non-secret fallback to avoid import-time crash loops.
-DEFAULT_AWS_BUCKET_NAME = "resona-507673060976-us-east-1-an"
+DEFAULT_AWS_BUCKET_NAME = ""
 
 
 def _resolve_bucket_name() -> str:
@@ -97,7 +97,7 @@ image = modal.Image.debian_slim(python_version="3.10").uv_pip_install(
     "peft==0.18.0",
 )
 
-app = modal.App("chatterbox-tts", image=image)
+app = modal.App("resona-chatterbox-tts", image=image)
 
 
 with image.imports():
@@ -141,7 +141,7 @@ with image.imports():
 
 @app.cls(
     gpu="a10g",
-    scaledown_window=60 * 5,
+    scaledown_window=120,
     secrets=[
         modal.Secret.from_name("hf-token"),
         modal.Secret.from_name("chatterbox-api-key"),
@@ -149,7 +149,7 @@ with image.imports():
     ],
     volumes={BUCKET_MOUNT_PATH: _build_bucket_mount()},
 )
-@modal.concurrent(max_inputs=3)
+@modal.concurrent(max_inputs=2)
 class Chatterbox:
     @modal.enter()
     def load_model(self):

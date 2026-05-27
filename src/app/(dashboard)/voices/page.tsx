@@ -1,4 +1,4 @@
-// RSC entry for voices library — parses nuqs search, prefetches voices.getAll.
+// Voices RSC entry: parses URL search params, prefetches voices into the tRPC cache, and hydrates the client view.
 import type { Metadata } from "next";
 import type { SearchParams } from "nuqs/server";
 

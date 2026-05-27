@@ -1,5 +1,5 @@
+// Owns TTS form state and submit handler; calls generations.create then navigates to playback.
 "use client";
-// Owns the TTS form state and submit handler — calls generations.create then navigates to the detail page for playback.
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
@@ -68,7 +68,7 @@ export function TextToSpeechForm({
         const message =
           error instanceof Error ? error.message : "Failed to generate audio";
 
-        // server returns SUBSCRIPTION_REQUIRED when Polar shows no active subscription for this org.
+        // Server returns SUBSCRIPTION_REQUIRED when the org lacks an active subscription.
         if (message === "SUBSCRIPTION_REQUIRED") {
           toast.error("Subscription required", {
             description: "Upgrade to continue generating premium AI voices.",

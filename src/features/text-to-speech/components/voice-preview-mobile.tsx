@@ -110,16 +110,13 @@ export function VoicePreviewMobile({
     <div className="lg:hidden border-t border-border/40 bg-card/40 p-4 backdrop-blur-xl">
       <audio ref={audioRef} src={audioUrl} />
 
-      {/* Header */}
       <div className="mb-3">
         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           Resona Playback
         </p>
       </div>
 
-      {/* Main row */}
       <div className="grid grid-cols-[1fr_auto] items-center gap-3">
-        {/* Metadata */}
         <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/15 p-3 shadow-sm backdrop-blur-sm">
           <p className="truncate text-sm font-medium text-foreground">
             {text}
@@ -137,7 +134,6 @@ export function VoicePreviewMobile({
           )}
         </div>
 
-        {/* Actions */}
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -171,7 +167,6 @@ export function VoicePreviewMobile({
         </div>
       </div>
 
-      {/* Progress */}
       <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted">
         <div
           className="
