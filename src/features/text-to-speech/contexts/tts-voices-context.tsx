@@ -4,7 +4,7 @@
 import { createContext, useContext } from "react";
 import type { inferRouterOutputs } from "@trpc/server";
 
-import type { AppRouter } from "@/trpc/routers/_app";
+import type { AppRouter } from "@/trpc/routers/_app"; // Basically a single type definition of our entire API
 
 type TTSVoiceItem =
   inferRouterOutputs<AppRouter>["voices"]["getAll"]["system"][number];

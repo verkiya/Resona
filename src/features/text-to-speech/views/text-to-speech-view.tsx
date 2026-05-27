@@ -29,7 +29,7 @@ export function TextToSpeechView({
 
   // the requested voice can disappear after deletion, so we fall back to the first available voice to keep the form usable.
   const resolvedVoiceId =
-    initialValues?.voiceId &&
+    initialValues?.voiceId && 
     allVoices.some((v) => v.id === initialValues.voiceId)
       ? initialValues.voiceId
       : fallbackVoiceId;

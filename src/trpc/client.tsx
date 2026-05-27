@@ -21,12 +21,23 @@ function getQueryClient() {
   return browserQueryClient;
 }
 function getUrl() {
-  const base = (() => {
-    if (typeof window !== "undefined") return "";
-    if (process.env.APP_URL) return `https://${process.env.APP_URL}`;
-    return "http://localhost:3000";
-  })();
-  return `${base}/api/trpc`;
+  // browser should always use relative URL
+  if (typeof window !== "undefined") {
+    return "/api/trpc";
+  }
+
+  const appUrl = process.env.APP_URL ?? process.env.VERCEL_URL;
+
+  if (!appUrl) {
+    return "http://localhost:3000/api/trpc";
+  }
+
+  const normalized = appUrl.startsWith("http://") ||
+    appUrl.startsWith("https://")
+    ? appUrl
+    : `https://${appUrl}`;
+
+  return `${normalized}/api/trpc`;
 }
 export function TRPCReactProvider(
   props: Readonly<{

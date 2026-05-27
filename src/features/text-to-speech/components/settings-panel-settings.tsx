@@ -56,21 +56,7 @@ export function SettingsPanelSettings() {
                     max={slider.max}
                     step={slider.step}
                     disabled={isSubmitting}
-                    className="
-  **:data-[slot=slider-thumb]:size-4
-  **:data-[slot=slider-thumb]:border
-  **:data-[slot=slider-thumb]:border-white/50
-  **:data-[slot=slider-thumb]:bg-[linear-gradient(135deg,oklch(0.92_0.04_70),oklch(0.82_0.08_55))]
-  **:data-[slot=slider-thumb]:shadow-[0_4px_12px_oklch(0.75_0.08_50/.22)]
-  **:data-[slot=slider-thumb]:transition-transform
-  **:data-[slot=slider-thumb]:duration-200
-  **:data-[slot=slider-thumb]:hover:scale-110
-
-  **:data-[slot=slider-track]:h-1.5
-  **:data-[slot=slider-track]:bg-[oklch(0.93_0.01_70)]
-
-  **:data-[slot=slider-range]:bg-[linear-gradient(90deg,oklch(0.94_0.03_80),oklch(0.82_0.08_55))]
-"
+                    className=" **:data-[slot=slider-thumb]:size-4  **:data-[slot=slider-thumb]:border  **:data-[slot=slider-thumb]:border-white/50  **:data-[slot=slider-thumb]:bg-[linear-gradient(135deg,oklch(0.92_0.04_70),oklch(0.82_0.08_55))]  **:data-[slot=slider-thumb]:shadow-[0_4px_12px_oklch(0.75_0.08_50/.22)]  **:data-[slot=slider-thumb]:transition-transform  **:data-[slot=slider-thumb]:duration-200  **:data-[slot=slider-thumb]:hover:scale-110  **:data-[slot=slider-track]:h-1.5  **:data-[slot=slider-track]:bg-[oklch(0.93_0.01_70)]  **:data-[slot=slider-range]:bg-[linear-gradient(90deg,oklch(0.94_0.03_80),oklch(0.82_0.08_55))]"
                   />
                 </Field>
               )}

@@ -4,7 +4,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { cache } from "react";
 import * as Sentry from "@sentry/node";
 import superjson from "superjson";
-export const createTRPCContext = cache(async () => {});
+export const createTRPCContext = cache(async () => {}); // This is run for each procedure, so we use dedicated procedures to query user status
 const t = initTRPC.create({
   transformer: superjson,
 });

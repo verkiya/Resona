@@ -59,7 +59,7 @@ export function VoiceSelector() {
         onValueChange={(v) => form.setFieldValue("voiceId", v)}
         disabled={isSubmitting}
       >
-        <SelectTrigger className="!h-16 w-full cursor-pointer rounded-xl bg-primary/20 px-3 shadow-sm transition-all duration-200 hover:bg-primary/30">
+        <SelectTrigger className="h-16! w-full cursor-pointer rounded-xl bg-primary/20 px-3 shadow-sm transition-all duration-200 hover:bg-primary/30">
           <SelectValue>
             {currentVoice && (
               <div className="flex min-w-0 items-center gap-3">
