@@ -1,4 +1,4 @@
-// AI explanation: App-wide branded 404 page with animated waveform background.
+// App-wide branded 404 page with animated waveform background.
 
 import Link from "next/link";
 import { Home, AudioLines, ArrowLeft } from "lucide-react";

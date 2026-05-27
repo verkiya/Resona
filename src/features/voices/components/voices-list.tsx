@@ -1,4 +1,4 @@
-// AI explanation: Renders custom and system voice grids from voices.getAll.
+// Renders custom and system voice grids from voices.getAll.
 import { AudioLines, Mic } from "lucide-react";
 
 import { VoiceCard } from "./voice-card";

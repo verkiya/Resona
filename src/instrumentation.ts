@@ -1,4 +1,4 @@
-// AI explanation: Next.js instrumentation hook — loads Sentry server config when the Node runtime starts.
+// Next.js instrumentation hook — loads Sentry server config when the Node runtime starts.
 import * as Sentry from "@sentry/nextjs";
 
 export async function register() {

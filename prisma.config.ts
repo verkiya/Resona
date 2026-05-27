@@ -1,4 +1,4 @@
-// AI explanation: Prisma CLI config pointing at schema and DATABASE_URL for migrations/generate.
+// Prisma CLI config pointing at schema and DATABASE_URL for migrations/generate.
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 

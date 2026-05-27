@@ -1,5 +1,5 @@
 "use client"
-// AI explanation: Single dashboard shortcut card linking into a feature route.
+// Single dashboard shortcut card linking into a feature route.
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";

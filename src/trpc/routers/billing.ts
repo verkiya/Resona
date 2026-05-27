@@ -1,4 +1,4 @@
-// AI explanation: Polar.sh billing — checkout and portal sessions keyed by Clerk orgId (externalCustomerId) for multi-tenant metering.
+// Polar.sh billing — checkout and portal sessions keyed by Clerk orgId (externalCustomerId) for multi-tenant metering.
 import { TRPCError } from "@trpc/server";
 import { polar } from "@/lib/polar";
 import { env } from "@/lib/env";
@@ -8,7 +8,7 @@ export const billingRouter = createTRPCRouter({
   createCheckout: orgProcedure.mutation(async ({ ctx }) => {
     const result = await polar.checkouts.create({
       products: [env.POLAR_PRODUCT_ID],
-      // AI explanation: Polar externalCustomerId is the Clerk org, not the user, so subscription and usage accrue per organization.
+      // Polar externalCustomerId is the Clerk org, not the user, so subscription and usage accrue per organization.
       externalCustomerId: ctx.orgId,
       successUrl: process.env.APP_URL,
     });
@@ -47,7 +47,7 @@ export const billingRouter = createTRPCRouter({
       const hasActiveSubscription =
         (customerState.activeSubscriptions ?? []).length > 0;
 
-      // AI explanation: sums meter amounts across active subscriptions for the usage estimate shown in the sidebar.
+      // sums meter amounts across active subscriptions for the usage estimate shown in the sidebar.
       let estimatedCostCents = 0;
       for (const sub of customerState.activeSubscriptions ?? []) {
         for (const meter of sub.meters ?? []) {
@@ -61,7 +61,7 @@ export const billingRouter = createTRPCRouter({
         estimatedCostCents,
       };
     } catch {
-      // AI explanation: org has never checked out — Polar has no customer yet, so treat as unsubscribed.
+      // org has never checked out — Polar has no customer yet, so treat as unsubscribed.
       return {
         hasActiveSubscription: false,
         customerId: null,

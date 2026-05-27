@@ -1,4 +1,4 @@
-// AI explanation: TTS generation API — reads/writes Generation rows, calls Chatterbox for synthesis, stores WAV in S3, meters usage via Polar.
+// TTS generation API — reads/writes Generation rows, calls Chatterbox for synthesis, stores WAV in S3, meters usage via Polar.
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { chatterbox } from "@/lib/chatterbox-client";
@@ -27,7 +27,7 @@ export const generationsRouter = createTRPCRouter({
 
       return {
         ...generation,
-        // AI explanation: clients stream audio through the authenticated proxy instead of exposing the S3 objectKey.
+        // clients stream audio through the authenticated proxy instead of exposing the S3 objectKey.
         audioUrl: `/api/audio/${generation.id}`,
       };
     }),
@@ -57,7 +57,7 @@ export const generationsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // AI explanation: generation is gated behind an active org subscription (same rule as custom voice creation).
+      // generation is gated behind an active org subscription (same rule as custom voice creation).
       try {
         const customerState = await polar.customers.getStateExternal({
           externalId: ctx.orgId,
@@ -72,7 +72,7 @@ export const generationsRouter = createTRPCRouter({
         }
       } catch (err) {
         if (err instanceof TRPCError) throw err;
-        // AI explanation: no Polar customer record yet is treated as no subscription.
+        // no Polar customer record yet is treated as no subscription.
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "SUBSCRIPTION_REQUIRED",
@@ -176,7 +176,7 @@ export const generationsRouter = createTRPCRouter({
         });
       } catch {
         if (generationId) {
-          // AI explanation: if S3 upload fails after the DB row exists, delete the row so clients never see a generation without audio.
+          // if S3 upload fails after the DB row exists, delete the row so clients never see a generation without audio.
           await prisma.generation
             .delete({
               where: {
@@ -202,7 +202,7 @@ export const generationsRouter = createTRPCRouter({
           message: "Failed to store generated audio",
         });
       }
-      // AI explanation: metering is fire-and-forget so billing telemetry cannot slow down or fail the generation response.
+      // metering is fire-and-forget so billing telemetry cannot slow down or fail the generation response.
       polar.events
         .ingest({
           events: [
@@ -215,7 +215,7 @@ export const generationsRouter = createTRPCRouter({
           ],
         })
         .catch(() => {
-          // AI explanation: metering failures are intentionally ignored here because they should not block the user flow.
+          // metering failures are intentionally ignored here because they should not block the user flow.
         });
       return {
         id: generationId,

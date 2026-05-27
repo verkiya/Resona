@@ -1,5 +1,5 @@
-// AI explanation: Root tRPC router merging voices, generations, and billing sub-routers.
-import {  createTRPCRouter } from "../init";
+// Root tRPC router — voices (catalog), generations (TTS + S3), billing (Polar).
+import { createTRPCRouter } from "../init";
 import { voicesRouter } from "./voices";
 import { generationsRouter } from "./generations";
 import { billingRouter } from "./billing";
@@ -8,5 +8,5 @@ export const appRouter = createTRPCRouter({
   generations: generationsRouter,
   billing: billingRouter,
 });
-// AI explanation: AppRouter type is inferred from the merged router for client hooks and inferRouterOutputs.
+// AppRouter type powers useTRPC() and inferRouterOutputs across the frontend.
 export type AppRouter = typeof appRouter;

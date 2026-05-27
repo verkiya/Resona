@@ -1,4 +1,4 @@
-// AI explanation: Decorative background pattern on the dashboard marketing hero.
+// Decorative background pattern on the dashboard marketing hero.
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";

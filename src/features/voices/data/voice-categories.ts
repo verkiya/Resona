@@ -1,4 +1,4 @@
-// AI explanation: Voice category enum labels for forms and cards.
+// Voice category enum labels for forms and cards.
 import type { VoiceCategory } from "@/generated/prisma/client";
 
 export const VOICE_CATEGORY_LABELS: Record<VoiceCategory, string> = {

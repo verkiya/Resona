@@ -1,4 +1,5 @@
 "use client";
+// Public engineering write-up — architecture, tradeoffs, and lessons learned (whitelisted in proxy.ts).
 
 import Link from "next/link";
 import {
@@ -18,9 +19,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Root page
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Learnings page (marketing-style engineering write-up) ───
+// Root page component and section layout below.
 
 export default function LearningsPage() {
   return (
@@ -109,10 +109,9 @@ export default function LearningsPage() {
                   { label: "tRPC mutation triggered", note: "Frontend action" },
                   { label: "Billing check", note: "Usage enforced" },
                   { label: "Next.js backend", note: "Orchestration" },
-                  { label: "FastAPI service", note: "Inference layer" },
-                  { label: "Chatterbox TTS", note: "Self-hosted model" },
+                  { label: "Chatterbox API (Modal)", note: "FastAPI + TTS" },
                   { label: "AWS S3", note: "Audio stored" },
-                  { label: "Signed URL returned", note: "Secure delivery" },
+                  { label: "/api/audio proxy", note: "Org-scoped stream" },
                   { label: "WaveSurfer.js", note: "Client playback" },
                 ].map((step, i, arr) => (
                   <FlowStep key={step.label} step={step} last={i === arr.length - 1} />
@@ -129,7 +128,7 @@ export default function LearningsPage() {
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
               {[
                 { service: "Frontend / API", host: "Vercel" },
-                { service: "Inference", host: "Railway + FastAPI" },
+                { service: "Inference", host: "Modal (FastAPI)" },
                 { service: "Database", host: "PostgreSQL" },
                 { service: "Object Storage", host: "AWS S3" },
                 { service: "Auth", host: "Clerk" },
@@ -154,26 +153,26 @@ export default function LearningsPage() {
             than an afterthought.
           </p>
           <div className="rounded-xl border bg-card p-5 overflow-x-auto">
-            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`User
- └── belongs to Organization (via Clerk)
+            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`Clerk User + Organization (auth only — not Prisma tables)
 
-Organization
- ├── Voices[]         // uploaded + cloned voice samples
- │    └── Generations[] // TTS outputs per voice
- ├── UsageEvents[]    // metered billing events
- └── Subscription     // Polar subscription record
+Voice (SYSTEM | CUSTOM)
+ ├── orgId?           // null for SYSTEM, set for CUSTOM
+ ├── objectKey?       // reference clip in S3
+ └── generations[]
 
 Generation
- ├── text             // input prompt
- ├── audioUrl         // S3-backed proxy URL
- ├── voiceId          // FK → Voice
- └── organizationId   // FK → Organization (tenant scope)`}</pre>
+ ├── orgId            // tenant scope on every row
+ ├── voiceId?         // SetNull if voice deleted
+ ├── voiceName        // snapshot at generation time
+ ├── text, objectKey? // WAV in S3 when upload completes
+ └── inference params (temperature, topP, topK, …)
+
+Billing: Polar (subscriptions + usage events at request time)`}</pre>
           </div>
           <p className="text-xs text-muted-foreground mt-3">
-            The important part is the shape of the relationships, not just the
-            fields: generation history hangs off voices, usage hangs off the org,
-            and access control is always resolved before the query reaches the
-            database.
+            The important part is the shape of the relationships: generations
+            hang off voices, Clerk carries org identity, and Polar handles
+            subscription state outside Postgres.
           </p>
         </Block>
 
@@ -219,9 +218,8 @@ Generation
           <div className="space-y-1 mb-8">
             {[
               { label: "User triggers speech generation", note: "tRPC mutation" },
-              { label: "Subscription check", note: "Active plan verified" },
-              { label: "Usage limit check", note: "Quota enforced server-side" },
-              { label: "Generation proceeds", note: "Inference + S3 upload" },
+              { label: "Subscription check", note: "Polar active plan" },
+              { label: "Generation proceeds", note: "Modal TTS + S3 upload" },
               { label: "Usage event emitted", note: "Polar meter updated" },
               { label: "UI reflects updated usage", note: "Transparent to user" },
               { label: "Billing portal available", note: "Polar-hosted management" },
@@ -260,7 +258,7 @@ Generation
             {[
               {
                 title: "Tenant Isolation",
-                desc: "All database queries are scoped to organizationId. No query touches data from another organization without an explicit org boundary check.",
+                desc: "All tenant queries filter by ctx.orgId from Clerk. Custom voices and generations never leak across organizations.",
               },
               {
                 title: "Signed URL Delivery",
@@ -287,8 +285,8 @@ Generation
                 desc: "All secrets are environment-scoped. No credentials are hardcoded or committed. CI/CD pipelines use encrypted secret storage.",
               },
               {
-                title: "Webhook Verification",
-                desc: "Billing webhooks from Polar are signature-verified before any subscription state is mutated.",
+                title: "Polar at request time",
+                desc: "Subscription checks call Polar during mutations (generate, create voice). Usage events are emitted after successful work, not before.",
               },
             ].map((item) => (
               <div key={item.title} className="rounded-xl border bg-card p-5">
@@ -310,18 +308,21 @@ Generation
             boundary is in the edge cases.
           </p>
           <div className="rounded-xl border bg-card p-5 mb-5 overflow-x-auto">
-            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`// Every org operates in isolated scope.
-// This pattern is applied across all domain models.
+            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`// orgProcedure attaches ctx.orgId from Clerk on every tenant mutation.
 
-const voices = await db.voice.findMany({
-  where: {
-    organizationId: ctx.auth.orgId,  // ← always scoped
-  },
+const generation = await prisma.generation.findUnique({
+  where: { id: input.id, orgId: ctx.orgId },
 });
 
-// Middleware blocks access if no org is selected.
-// Users with multiple orgs must explicitly switch context.
-// Cross-tenant data leaks are structurally impossible.`}</pre>
+const voice = await prisma.voice.findUnique({
+  where: {
+    id: input.voiceId,
+    OR: [
+      { variant: "SYSTEM" },
+      { variant: "CUSTOM", orgId: ctx.orgId },
+    ],
+  },
+});`}</pre>
           </div>
           <div className="space-y-3">
             {[
@@ -345,10 +346,13 @@ const voices = await db.voice.findMany({
             <ChallengeCard
               title="Prisma connection exhaustion in development"
               description="Next.js hot reload recreates module instances on every save. Without a singleton pattern, each reload spawns a new Prisma client and a new database connection pool, which quietly exhausts local resources. The fix is to reuse the existing client from a process-level singleton whenever it already exists."
-              code={`// lib/db.ts
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
-export const db = globalForPrisma.prisma ?? new PrismaClient();
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;`}
+              code={`// src/lib/db.ts
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+export const prisma =
+  globalForPrisma.prisma ?? new PrismaClient({ adapter });
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}`}
             />
             <ChallengeCard
               title="Next.js route groups and layout confusion"
@@ -458,7 +462,7 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;`}
               { item: "Usage analytics dashboards", reason: "Gives organizations visibility into what they are consuming and when." },
               { item: "Rate limiting per org", reason: "Adds a safety valve against runaway usage and accidental abuse." },
               { item: "API key system", reason: "Would let external developers access the inference pipeline directly." },
-              { item: "Distributed inference workers", reason: "Extends horizontal scaling beyond a single Railway process." },
+              { item: "Distributed inference workers", reason: "Scale Modal/Chatterbox workers horizontally beyond a single inference container." },
             ].map((f) => (
               <div key={f.item} className="rounded-xl border bg-card p-4">
                 <p className="text-sm font-semibold mb-1">{f.item}</p>
@@ -512,9 +516,7 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;`}
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Sub-components
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Sub-components (cards, diagrams, code samples) ───
 
 function Block({
   label,

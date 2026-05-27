@@ -1,4 +1,4 @@
-// AI explanation: Canonical SYSTEM voice names used by the seed script and uniqueness constraints.
+// Canonical SYSTEM voice names used by the seed script and uniqueness constraints.
 export const CANONICAL_SYSTEM_VOICE_NAMES = [
   "Aaron",
   "Abigail",

@@ -1,4 +1,4 @@
-// AI explanation: Mobile-only playback strip for a generation (WaveSurfer + metadata).
+// Mobile-only playback strip for a generation (WaveSurfer + metadata).
 "use client";
 
 import { useRef, useState, useEffect } from "react";

@@ -1,4 +1,4 @@
-// AI explanation: Static config for dashboard quick-action cards (labels, hrefs, icons).
+// Static config for dashboard quick-action cards (labels, hrefs, icons).
 
 export interface QuickAction {
   title: string;

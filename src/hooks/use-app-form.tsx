@@ -1,4 +1,4 @@
-// AI explanation: TanStack Form hook factory shared by TTS and other forms using field/form context.
+// TanStack Form hook factory shared by TTS and other forms using field/form context.
 "use client";
 
 import { createFormHookContexts, createFormHook } from "@tanstack/react-form";

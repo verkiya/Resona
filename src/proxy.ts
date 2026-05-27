@@ -1,4 +1,4 @@
-// AI explanation: Clerk middleware enforces auth on protected routes and redirects signed-in users without an active org to /org-selection.
+// Clerk middleware enforces auth on protected routes and redirects signed-in users without an active org to /org-selection.
 import {
   auth,
   clerkMiddleware,
@@ -23,7 +23,7 @@ export default clerkMiddleware(async (auth, req) => {
   if (isOrgSelectionRoute(req)) {
     return NextResponse.next();
   }
-  // AI explanation: dashboard and API routes require a selected Clerk organization (orgId) for multi-tenant data scoping.
+  // dashboard and API routes require a selected Clerk organization (orgId) for multi-tenant data scoping.
   if (userId && !orgId) {
     const orgSelection = new URL("/org-selection", req.url);
     return NextResponse.redirect(orgSelection);

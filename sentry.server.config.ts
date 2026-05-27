@@ -1,4 +1,4 @@
-// AI explanation: Sentry initialization for Node/server runtimes.
+// Sentry initialization for Node/server runtimes.
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({

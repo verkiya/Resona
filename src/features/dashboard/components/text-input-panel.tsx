@@ -1,4 +1,4 @@
-// AI explanation: Dashboard variant of the shared text prompt panel (routes into TTS with query params).
+// Dashboard variant of the shared text prompt panel (routes into TTS with query params).
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";

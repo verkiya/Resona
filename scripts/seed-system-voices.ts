@@ -1,4 +1,4 @@
-// AI explanation: One-off script to upload bundled system voice WAVs to S3 and upsert SYSTEM Voice rows (see CANONICAL_SYSTEM_VOICE_NAMES).
+// One-off script to upload bundled system voice WAVs to S3 and upsert SYSTEM Voice rows (see CANONICAL_SYSTEM_VOICE_NAMES).
 import "dotenv/config";
 
 import fs from "node:fs/promises";

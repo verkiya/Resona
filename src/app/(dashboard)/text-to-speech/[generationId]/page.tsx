@@ -1,4 +1,4 @@
-// AI explanation: RSC entry for an existing generation — prefetches generation + voices for TextToSpeechDetailView.
+// RSC entry for an existing generation — prefetches generation + voices for TextToSpeechDetailView.
 import { TextToSpeechDetailView } from "@/features/text-to-speech/views/text-to-speech-detail-view";
 import { trpc, HydrateClient, prefetch } from "@/trpc/server";
 

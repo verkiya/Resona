@@ -1,5 +1,5 @@
 "use client";
-// AI explanation: New-generation TTS page — loads voices, resolves a valid default voiceId, and wraps the form plus settings panel.
+// New-generation TTS page — loads voices, resolves a valid default voiceId, and wraps the form plus settings panel.
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -27,7 +27,7 @@ export function TextToSpeechView({
   const allVoices = [...customVoices, ...systemVoices];
   const fallbackVoiceId = allVoices[0]?.id ?? "";
 
-  // AI explanation: the requested voice can disappear after deletion, so we fall back to the first available voice to keep the form usable.
+  // the requested voice can disappear after deletion, so we fall back to the first available voice to keep the form usable.
   const resolvedVoiceId =
     initialValues?.voiceId &&
     allVoices.some((v) => v.id === initialValues.voiceId)

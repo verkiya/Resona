@@ -1,4 +1,4 @@
-// AI explanation: In-browser recording UI using RecordRTC + WaveSurfer mic waveform.
+// In-browser recording UI using RecordRTC + WaveSurfer mic waveform.
 import {
   Mic,
   Square,

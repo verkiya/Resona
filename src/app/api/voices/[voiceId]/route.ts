@@ -1,4 +1,4 @@
-// AI explanation: Authenticated voice preview proxy — system voices are global; custom voices must belong to the caller's org.
+// Authenticated voice preview proxy — system voices are global; custom voices must belong to the caller's org.
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { getSignedAudioUrl } from "@/lib/aws_s3";
@@ -48,7 +48,7 @@ export async function GET(
   return new Response(audioResponse.body, {
     headers: {
       "Content-Type": contentType,
-      // AI explanation: system voices are cacheable for longer because they are immutable, while custom voices stay short-lived so changes and deletions are reflected sooner.
+      // system voices are cacheable for longer because they are immutable, while custom voices stay short-lived so changes and deletions are reflected sooner.
       "Cache-Control":
         voice.variant === "SYSTEM"
           ? "public, max-age=86400"

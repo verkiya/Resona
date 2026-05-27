@@ -1,4 +1,4 @@
-// AI explanation: Streaming skeleton shown while the text-to-speech RSC tree is loading.
+// Streaming skeleton shown while the text-to-speech RSC tree is loading.
 import { Skeleton } from "@/components/ui/skeleton";
 import { VoicePreviewPlaceholder } from "@/features/text-to-speech/components/voice-preview-placeholder";
 

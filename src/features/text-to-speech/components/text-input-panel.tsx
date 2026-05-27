@@ -1,10 +1,11 @@
-// AI explanation: Main prompt textarea and character limit UI inside the TTS form.
+// Main prompt textarea and character limit UI inside the TTS form.
 "use client";
 
 import { useStore } from "@tanstack/react-form";
-import { Coins } from "lucide-react";
+import { Coins, EraserIcon, RefreshCwIcon, X } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ttsFormOptions } from "./text-to-speech-form";
 import { GenerateButton } from "./generate-button";
@@ -16,7 +17,7 @@ import { PromptSuggestions } from "./prompt-suggestions";
 import { COST_PER_UNIT, TEXT_MAX_LENGTH } from "../data/constants";
 
 const generateButtonClass =
-  "bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] tracking-wide font-semibold cursor-pointer text-white shadow-lg hover:brightness-100 hover:shadow-md active:scale-[0.98] cursor-pointer";
+  "bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] tracking-wide font-semibold cursor-pointer text-white shadow-lg hover:brightness-100 hover:shadow-md active:scale-[0.98]";
 
 export function TextInputPanel() {
   const form = useTypedAppFormContext(ttsFormOptions);
@@ -26,7 +27,7 @@ export function TextInputPanel() {
   const isValid = useStore(form.store, (s) => s.isValid);
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col   bg-card/70 backdrop-blur-lg">
+    <div className="flex h-full min-h-0 flex-1 flex-col bg-card/70 backdrop-blur-lg">
       <div className="relative min-h-0 flex-1">
         <form.Field name="text">
           {(field) => (
@@ -36,11 +37,12 @@ export function TextInputPanel() {
               placeholder="Start typing or paste your text"
               maxLength={TEXT_MAX_LENGTH}
               disabled={isSubmitting}
-              className="absolute inset-0 resize-none border-0 bg-transparent p-5 pb-4 text-lg leading-relaxed tracking-tight font-light shadow-none wrap-break-word placeholder:text-muted-foreground/70 placeholder:font-normal focus-visible:ring-0 lg:p-6 lg:pb-5 lg:text-xl"
+              className="absolute inset-0 resize-none border-0 bg-transparent p-5 pb-4 text-lg font-light leading-relaxed tracking-tight shadow-none wrap-break-word placeholder:font-normal placeholder:text-muted-foreground/70 focus-visible:ring-0 lg:p-6 lg:pb-5 lg:text-xl"
             />
           )}
         </form.Field>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-card to-transparent" />{" "}
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-card to-transparent" />
       </div>
 
       <div className="shrink-0 p-4 lg:p-6">
@@ -55,7 +57,7 @@ export function TextInputPanel() {
           </div>
 
           <GenerateButton
-            className="bg-[linear-gradient(120deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] text-foreground border font-semibold border-border shadow-sm hover:brightness-105 hover:saturate-110 hover:shadow-md active:scale-[0.99]"
+            className="border border-border bg-[linear-gradient(120deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] font-semibold text-foreground shadow-sm hover:brightness-105 hover:saturate-110 hover:shadow-md active:scale-[0.99]"
             disabled={isSubmitting}
             isSubmitting={isSubmitting}
             onSubmit={() => form.handleSubmit()}
@@ -80,8 +82,8 @@ export function TextInputPanel() {
                 </span>
               </Badge>
 
-              <div className="flex items-center gap-4">
-                <p className="text-xs tracking-tight font-medium tabular-nums">
+              <div className="flex items-center gap-3">
+                <p className="text-xs font-medium tracking-tight tabular-nums">
                   {text.length.toLocaleString()}
                   <span className="text-muted-foreground">
                     &nbsp;/&nbsp;{TEXT_MAX_LENGTH.toLocaleString()} characters
@@ -94,6 +96,16 @@ export function TextInputPanel() {
                   isSubmitting={isSubmitting}
                   onSubmit={() => form.handleSubmit()}
                 />
+                <Button
+                  variant="outlinePrimary"
+                  size="icon"
+                  disabled={isSubmitting}
+                  className="size-8 cursor-pointer rounded-xl text-muted-foreground transition-colors "
+                  onClick={() => form.setFieldValue("text", "")}
+                >
+
+                  <EraserIcon className="size-4" />
+                </Button>
               </div>
             </div>
           ) : (

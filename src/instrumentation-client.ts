@@ -1,4 +1,4 @@
-// AI explanation: Client-side Sentry bootstrap loaded by Next for browser error reporting.
+// Client-side Sentry bootstrap loaded by Next for browser error reporting.
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({

@@ -1,4 +1,4 @@
-// AI explanation: matchMedia hook (1024px) for responsive TTS layout and WaveSurfer sizing.
+// matchMedia hook (1024px) for responsive TTS layout and WaveSurfer sizing.
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 1024;
