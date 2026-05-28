@@ -89,9 +89,10 @@ function FileDropzone({
 }) {
   const { isPlaying, togglePlay } = useAudioPlayback(file);
 
-  const { getRootProps, getInputProps, isDragActive, isDragReject } =
+  const { getRootProps, getInputProps, isDragActive, isDragReject, open:openFileDialog } =
     useDropzone({
       accept: { "audio/*": [] },
+      noClick:true,
       maxSize: 20 * 1024 * 1024,
       multiple: false,
       onDrop: (acceptedFiles) => {
@@ -144,7 +145,7 @@ function FileDropzone({
     <div
       {...getRootProps()}
       className={cn(
-        "flex cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border px-6 py-10 transition-colors",
+        "flex  flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border px-6 py-10 transition-colors",
         isDragReject || isInvalid
           ? "border-destructive"
           : isDragActive
@@ -164,7 +165,7 @@ function FileDropzone({
         </p>
 
         <p className="text-center text-sm text-muted-foreground">
-          Supports all audio formats, max size 20MB
+          Supports all audio formats<br></br> Max upload size limit -  20MB
         </p>
       </div>
 
@@ -173,6 +174,7 @@ function FileDropzone({
         type="button"
         variant="default"
         size="sm"
+        onClick={openFileDialog}
       >
         <FolderOpen className="size-3.5" />
         Upload file
@@ -345,7 +347,7 @@ export function VoiceCreateForm({
         queryClient.invalidateQueries({
           queryKey: trpc.voices.getAll.queryKey(),
         });
-
+        // We refetch the voices here
         form.reset();
       } catch (error) {
         const message =
@@ -371,7 +373,7 @@ export function VoiceCreateForm({
       <div
         className={cn(
           scrollable
-            ? "no-scrollbar flex flex-col gap-6 overflow-y-auto overscroll-contain px-4"
+            ? "flex flex-col gap-6 overflow-y-auto overscroll-contain px-4"
             : "flex flex-col gap-6",
         )}
       >

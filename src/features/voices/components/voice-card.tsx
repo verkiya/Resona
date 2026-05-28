@@ -1,5 +1,8 @@
-// Renders one custom voice with preview playback (/api/voices/:id) and delete via voices.delete mutation.
+// Renders one custom voice with preview playback (/api/voices/:id)
+// and delete via voices.delete mutation.
+
 import Link from "next/link";
+import ReactCountryFlag from "react-country-flag";
 import { Mic, MoreHorizontal, Pause, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,17 +17,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+
 import { Button } from "@/components/ui/button";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { Spinner } from "@/components/ui/spinner";
 import { VoiceAvatar } from "@/components/voice-avatar/voice-avatar";
+
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/trpc/routers/_app";
+
 import { VOICE_CATEGORY_LABELS } from "@/features/voices/data/voice-categories";
 import { useAudioPlayback } from "@/hooks/use-audio-playback";
 import { useTRPC } from "@/trpc/client";
@@ -38,27 +46,54 @@ interface VoiceCardProps {
   voice: VoiceItem;
 }
 
-const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+const regionNames = new Intl.DisplayNames(["en"], {
+  type: "region",
+});
 
-function parseLanguage(locale: string) {
-  const [, country] = locale.split("-");
-  if (!country) return { flag: "", region: locale };
+// Parses voice locale values into a normalized country code + readable region.
+// Supports both locale format ("en-US") and direct country codes ("US").
+// Invalid or missing locales gracefully fallback to a neutral globe state.
+function parseLanguage(locale?: string | null) {
+  if (!locale?.trim()) {
+    return {
+      country: null,
+      region: "Unknown region",
+    };
+  }
 
-  // the flag is derived from the region code using Unicode regional indicator symbols, which keeps locale display compact without extra lookup data.
-  const flag = [...country.toUpperCase()]
-    .map((c) => String.fromCodePoint(0x1f1e6 + c.charCodeAt(0) - 65))
-    .join("");
+  let country = "";
 
-  const region = regionNames.of(country) ?? country;
+  // Handles:
+  // en-US -> US
+  // US -> US
+  if (locale.includes("-")) {
+    [, country] = locale.split("-");
+  } else {
+    country = locale;
+  }
 
-  return { flag, region };
+  country = country.toUpperCase();
+
+  // Only ISO-3166 alpha-2 region codes are valid for flag rendering.
+  if (country.length !== 2) {
+    return {
+      country: null,
+      region: locale,
+    };
+  }
+
+  const region = regionNames.of(country) ?? locale;
+
+  return { country, region };
 }
 
 export function VoiceCard({ voice }: VoiceCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const { flag, region } = parseLanguage(voice.language);
+
+  const { country, region } = parseLanguage(voice.language);
 
   const audioSrc = `/api/voices/${encodeURIComponent(voice.id)}`;
+
   const { isPlaying, isLoading, togglePlay } = useAudioPlayback(audioSrc);
 
   const trpc = useTRPC();
@@ -68,10 +103,12 @@ export function VoiceCard({ voice }: VoiceCardProps) {
     trpc.voices.delete.mutationOptions({
       onSuccess: () => {
         toast.success("Voice deleted successfully");
+
         queryClient.invalidateQueries({
           queryKey: trpc.voices.getAll.queryKey(),
         });
       },
+
       onError: (error) => {
         toast.error(error.message ?? "Failed to delete voice");
       },
@@ -112,8 +149,22 @@ export function VoiceCard({ voice }: VoiceCardProps) {
           {voice.description}
         </p>
 
-        <p className="flex items-center gap-1 text-xs">
-          <span className="shrink-0">{flag}</span>
+        <p className="flex items-center gap-1.5 text-xs">
+          {country ? (
+            <ReactCountryFlag
+              countryCode={country}
+              svg
+              style={{
+                width: "1rem",
+                height: "1rem",
+                borderRadius: "2px",
+              }}
+              title={region}
+            />
+          ) : (
+            <span className="text-sm leading-none">🌍</span>
+          )}
+
           <span className="truncate font-medium">{region}</span>
         </p>
       </div>
@@ -166,6 +217,7 @@ export function VoiceCard({ voice }: VoiceCardProps) {
                 className="flex items-center gap-2"
               >
                 <Mic className="size-4 text-primary" />
+
                 <span className="font-medium">Use this voice</span>
               </Link>
             </DropdownMenuItem>
@@ -183,6 +235,7 @@ export function VoiceCard({ voice }: VoiceCardProps) {
                 "
               >
                 <Trash2 className="size-4 text-[oklch(0.62_0.19_20)]" />
+
                 <span className="font-medium">Delete voice</span>
               </DropdownMenuItem>
             )}
@@ -199,13 +252,17 @@ export function VoiceCard({ voice }: VoiceCardProps) {
                 <AlertDialogTitle>Delete voice</AlertDialogTitle>
 
                 <AlertDialogDescription>
-                  Are you sure you want to delete &quot;{voice.name}&quot;? This
-                  action cannot be undone.
+                  Are you sure you want to delete &nbsp;&quot;{voice.name}
+                  &quot;? This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
 
               <AlertDialogFooter>
-                <AlertDialogCancel className="cursor-pointer" variant="softPrimary"  disabled={deleteMutation.isPending}>
+                <AlertDialogCancel
+                  className="cursor-pointer"
+                  variant="softPrimary"
+                  disabled={deleteMutation.isPending}
+                >
                   Cancel
                 </AlertDialogCancel>
 

@@ -30,14 +30,14 @@ export function SettingsPanel() {
 
         <TabsContent
           value="settings"
-          className="mt-0 flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-premium"
+          className="mt-0 flex min-h-0 flex-1 flex-col overflow-y-auto "
         >
           <SettingsPanelSettings />
         </TabsContent>
 
         <TabsContent
           value="history"
-          className="mt-0 flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-premium"
+          className="mt-0 flex min-h-0 flex-1 flex-col overflow-y-auto "
         >
           <SettingsPanelHistory />
         </TabsContent>
