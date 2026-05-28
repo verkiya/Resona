@@ -190,7 +190,7 @@ function FieldError({
   errors,
   ...props
 }: React.ComponentProps<"div"> & {
-  errors?: Array<{ message?: string } | undefined>;
+  errors?: Array<string | { message?: string } | undefined>;
 }) {
   const content = useMemo(() => {
     if (children) {
@@ -201,20 +201,21 @@ function FieldError({
       return null;
     }
 
-    const uniqueErrors = [
-      ...new Map(errors.map((error) => [error?.message, error])).values(),
-    ];
+    const normalizedErrors = errors
+      .map((error) => (typeof error === "string" ? error : error?.message))
+      .filter(Boolean);
 
-    if (uniqueErrors?.length == 1) {
-      return uniqueErrors[0]?.message;
+    const uniqueErrors = [...new Set(normalizedErrors)];
+
+    if (uniqueErrors.length === 1) {
+      return uniqueErrors[0];
     }
 
     return (
       <ul className="ml-4 flex list-disc flex-col gap-1">
-        {uniqueErrors.map(
-          (error, index) =>
-            error?.message && <li key={index}>{error.message}</li>,
-        )}
+        {uniqueErrors.map((error, index) => (
+          <li key={index}>{error}</li>
+        ))}
       </ul>
     );
   }, [children, errors]);
@@ -227,7 +228,10 @@ function FieldError({
     <div
       role="alert"
       data-slot="field-error"
-      className={cn("text-sm font-normal text-destructive", className)}
+      className={cn(
+        "text-sm font-medium tracking-tight text-[oklch(0.62_0.19_20)]",
+        className,
+      )}
       {...props}
     >
       {content}
