@@ -46,7 +46,7 @@ export function SettingsPanelHistory() {
   }
 
   return (
-    <div className="flex flex-col gap-3 p-3 scrollbar-premium">
+    <div className="flex flex-col gap-3 p-3 ">
       {generations.map((generation) => (
         <Link
           href={`/text-to-speech/${generation.id}`}

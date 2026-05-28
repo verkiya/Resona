@@ -161,43 +161,95 @@
   --shadow-lg: var(--shadow-lg);
 }
 /* =========================
-   Premium Soft Scrollbar
+   Premium Global Scrollbar
 ========================= */
 
-.scrollbar-premium {
+/* Firefox */
+* {
   scrollbar-width: thin;
-  scrollbar-color: oklch(0.82 0.02 40) transparent;
+  scrollbar-color: oklch(0.72 0.13 25 / 0.75) transparent;
 }
 
 /* Chrome / Edge / Safari */
-.scrollbar-premium::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.scrollbar-premium::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 999px;
 }
 
-.scrollbar-premium::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    oklch(0.9 0.015 60),
-    oklch(0.84 0.025 35)
-  );
+*::-webkit-scrollbar-thumb {
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
-  transition: all 0.2s ease;
+
+  background: linear-gradient(
+    180deg,
+    oklch(0.74 0.11 35 / 0.9),
+    oklch(0.72 0.13 25 / 0.9),
+    oklch(0.75 0.15 300 / 0.9)
+  );
+
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
-.scrollbar-premium::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, oklch(0.86 0.02 55), oklch(0.78 0.04 30));
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    oklch(0.79 0.13 40),
+    oklch(0.76 0.15 25),
+    oklch(0.79 0.16 300)
+  );
+
+  background-clip: padding-box;
 }
 
-.scrollbar-premium::-webkit-scrollbar-corner {
+*::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(
+    180deg,
+    oklch(0.72 0.14 30),
+    oklch(0.68 0.16 20),
+    oklch(0.72 0.17 305)
+  );
+
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+/* Dark mode refinement */
+.dark * {
+  scrollbar-color: oklch(0.82 0.11 40 / 0.75) transparent;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    oklch(0.42 0.06 35 / 0.95),
+    oklch(0.48 0.08 25 / 0.95),
+    oklch(0.46 0.09 300 / 0.95)
+  );
+
+  background-clip: padding-box;
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    oklch(0.52 0.08 40),
+    oklch(0.58 0.1 25),
+    oklch(0.56 0.11 300)
+  );
+
+  background-clip: padding-box;
 }
 /* =========================
    BASE
@@ -458,4 +510,8 @@
     stroke-dashoffset: -120;
     transform: translateX(-20px);
   }
+}
+.emoji {
+  font-family:
+    "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }

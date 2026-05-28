@@ -42,13 +42,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${outfit.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground scrollbar-premium">
+      <body className="min-h-full flex flex-col bg-background text-foreground ">
         <ClerkProvider>
           <TRPCReactProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
             <Toaster
               closeButton
-              
+
               richColors
                 duration={3000}
 

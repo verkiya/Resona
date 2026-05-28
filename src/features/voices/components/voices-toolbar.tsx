@@ -52,7 +52,7 @@ export function VoicesToolbar({ totalVoices }: VoicesToolbarProps) {
             lg:max-w-md
             rounded-2xl
             border border-border/40
-            bg-background/70
+            bg-card/30
             shadow-sm
             backdrop-blur-xl
             transition-all
@@ -60,7 +60,7 @@ export function VoicesToolbar({ totalVoices }: VoicesToolbarProps) {
             focus-within:shadow-[0_0_0_4px_hsl(var(--primary)/0.08)]
           "
         >
-          <InputGroupAddon className="border-0 bg-transparent">
+          <InputGroupAddon className="border-0">
             <Search className="size-4 text-muted-foreground/70" />
           </InputGroupAddon>
 
@@ -69,7 +69,7 @@ export function VoicesToolbar({ totalVoices }: VoicesToolbarProps) {
             value={localQuery}
             className="
               border-0
-              bg-transparent
+             
               shadow-none
               focus-visible:ring-0
               focus-visible:border-0
