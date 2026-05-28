@@ -170,9 +170,9 @@ function FileDropzone({
       </div>
 
       <Button
-        className="cursor-pointer"
+        className="cursor-pointer rounded-xl"
         type="button"
-        variant="default"
+        variant="audioControl"
         size="sm"
         onClick={openFileDialog}
       >

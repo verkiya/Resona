@@ -19,7 +19,12 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { OrganizationSwitcher, UserButton, useClerk } from "@clerk/nextjs";
+import {
+  OrganizationSwitcher,
+  UserButton,
+  useClerk,
+  useOrganization,
+} from "@clerk/nextjs";
 import {
   type LucideIcon,
   Home,
@@ -33,7 +38,8 @@ import {
 import Link from "next/link";
 import { UsageContainer } from "@/features/billing/components/usage-container";
 import { VoiceCreateDialog } from "@/features/voices/components/voice-create-dialog";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 interface MenuItem {
   title: string;
@@ -133,9 +139,27 @@ function NavSection({ label, items, pathname }: NavSectionProps) {
 
 export function DashboardSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const clerk = useClerk();
+  const { organization } = useOrganization();
   const [voiceDialogOpen, setVoiceDialogOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const previousOrganizationId = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    const currentOrganizationId = organization?.id;
+
+    if (
+      previousOrganizationId.current !== undefined &&
+      previousOrganizationId.current !== currentOrganizationId
+    ) {
+      router.refresh();
+      window.location.reload();
+    }
+
+    previousOrganizationId.current = currentOrganizationId;
+  }, [organization?.id, router]);
+
   useEffect(() => {
     if (!settingsOpen) return;
 

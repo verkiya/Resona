@@ -145,7 +145,7 @@ export function VoiceRecorder({
   return (
     <div
       className={cn(
-        "flex cursor-pointer flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border px-6 py-10",
+        "flex flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border px-6 py-10",
         isInvalid && "border-destructive",
       )}
     >
@@ -163,12 +163,12 @@ export function VoiceRecorder({
       </div>
       <Button
         type="button"
-        variant="default"
-        className="cursor-pointer"
+        variant="audioControl"
+        className="cursor-pointer rounded-xl"
         size="sm"
         onClick={startRecording}
       >
-        <Mic className="size-3.5" />
+        <Mic className="size-3.5 -ml-1" />
         Record
       </Button>
     </div>
