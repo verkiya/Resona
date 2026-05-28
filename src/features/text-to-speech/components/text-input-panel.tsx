@@ -98,7 +98,7 @@ export function TextInputPanel() {
                   variant="outlinePrimary"
                   size="icon"
                   disabled={isSubmitting}
-                  className="size-8 cursor-pointer rounded-xl text-muted-foreground transition-colors "
+                  className="size-8 h-9 w-9  border-2 cursor-pointer rounded-xl text-muted-foreground transition-colors "
                   onClick={() => form.setFieldValue("text", "")}
                 >
 

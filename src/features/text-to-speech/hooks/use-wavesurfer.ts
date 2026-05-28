@@ -106,7 +106,7 @@ export function useWaveSurfer({
       setDuration(ws.getDuration());
       setCurrentTime(0);
       ws.seekTo(0);
-
+// catch NotAllowedError when browser blocks autoplay without user interaction
       if (autoplay) {
         ws.play().catch(() => {});
       }

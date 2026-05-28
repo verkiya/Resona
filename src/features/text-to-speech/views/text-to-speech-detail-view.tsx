@@ -48,7 +48,8 @@ export function TextToSpeechDetailView({
     repetitionPenalty: data.repetitionPenalty,
   };
 
-  // voiceName is a snapshot so previews remain stable if the voice changes later.
+  // use the denormalized voicename snapshot instead of a populated voice relation
+  // so the preview always shows the voice name at the time of generation, even if the voice was later renamed or deleted
   const generationVoice = {
     id: data.voiceId ?? undefined,
     name: data.voiceName,

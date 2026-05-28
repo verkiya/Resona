@@ -119,7 +119,7 @@ export function VoicePreviewPanel({
             ref={containerRef}
             className={cn(
               "w-full cursor-pointer transition-opacity duration-300",
-              !isReady && "opacity-0",
+              !isReady && "opacity-0", // Loading Wavesurfer, we have to mount this, otherwise Wavesurfer won't load, so we hide with opacity attribute
             )}
           />
         </div>
@@ -176,7 +176,7 @@ export function VoicePreviewPanel({
 
             <Button
               size="icon-lg"
-              variant="neonAi"
+              variant="audioControl"
               className="
                 h-16 w-16 cursor-pointer rounded-full
 

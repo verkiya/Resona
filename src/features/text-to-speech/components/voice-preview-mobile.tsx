@@ -149,7 +149,7 @@ export function VoicePreviewMobile({
           </Button>
 
           <Button
-            variant="neonAi"
+            variant="audioControl"
             size="icon"
             className="
               h-11 w-11 cursor-pointer rounded-full
