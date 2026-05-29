@@ -1,5 +1,8 @@
 "use client";
-// Shares the voices list from the page loader with nested TTS components so selectors do not each refetch voices.getAll.
+// TTS Voices Context Provider.
+// Hoists the voices list fetched by the dashboard page layout.
+// Distributes the catalog to nested TTS components (like selectors and preview panels) 
+// without requiring redundant tRPC network calls.
 
 import { createContext, useContext } from "react";
 import type { inferRouterOutputs } from "@trpc/server";

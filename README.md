@@ -1,412 +1,383 @@
-# Resona 🎙️
-### Production-Grade AI Voice Generation SaaS Platform
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs" />
-  <img src="https://img.shields.io/badge/React-19-20232A?logo=react" />
-  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript" />
-  <img src="https://img.shields.io/badge/Tailwind-v4-38B2AC?logo=tailwindcss" />
-  <img src="https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma" />
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql" />
-  <img src="https://img.shields.io/badge/tRPC-TypeSafe-2596BE" />
-  <img src="https://img.shields.io/badge/Clerk-Auth-6C47FF?logo=clerk" />
-  <img src="https://img.shields.io/badge/Polar-Billing-000000" />
-  <img src="https://img.shields.io/badge/Sentry-Monitoring-362D59?logo=sentry" />
-</p>
+# 🎙️ Resona
 
-<p align="center">
-  <strong>AI voice generation, custom voice cloning, multi-tenant SaaS billing, and production-grade deployment infrastructure.</strong>
-</p>
+### AI Voice Generation SaaS Platform
 
----
+<br/>
 
-## ✨ Overview
+[![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript_5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![tRPC](https://img.shields.io/badge/tRPC-2596BE?style=for-the-badge&logo=trpc&logoColor=white)](https://trpc.io/)
+[![Clerk](https://img.shields.io/badge/Clerk-6C47FF?style=for-the-badge&logo=clerk&logoColor=white)](https://clerk.com/)
+[![AWS S3](https://img.shields.io/badge/AWS_S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white)](https://aws.amazon.com/s3/)
+[![Sentry](https://img.shields.io/badge/Sentry-362D59?style=for-the-badge&logo=sentry&logoColor=white)](https://sentry.io/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 
-**Resona** is a full-stack AI-powered voice generation SaaS platform built for real production use.
+<br/>
 
-It enables users and teams to:
-
-- 🎤 Generate realistic AI speech from text
-- 🧬 Clone and manage custom voices
-- 🏢 Operate inside secure organization workspaces
-- 💳 Manage subscriptions with metered billing
-- 📊 Track usage transparently
-- ☁️ Store and stream generated audio securely
-- 📱 Use a polished responsive audio UX across devices
-
-Unlike many demo AI projects, Resona is built as a **real SaaS product**, not a toy prototype.
-
-It owns the inference pipeline end-to-end.
+</div>
 
 ---
 
-# 🚀 Core Features
+## 🌟 Overview
+
+Full-stack AI voice generation platform with self-hosted inference, multi-tenant organization workspaces, metered subscription billing, and signed-URL media delivery.
+
+| Capability | Description |
+|:---|:---|
+| 🎤 **Speech Generation** | Text-to-speech via self-hosted Chatterbox TTS on Modal |
+| 🧬 **Voice Cloning** | Upload or record custom voices, scoped per organization |
+| 🏢 **Multi-Tenancy** | Org-isolated workspaces with Clerk auth + middleware enforcement |
+| 💳 **Metered Billing** | Polar SDK subscriptions with post-success usage event emission |
+| ☁️ **Secure Storage** | Private S3 buckets with signed URL delivery through app proxies |
+| 🔭 **Observability** | Sentry error tracking with org/voice/request context |
 
 ---
 
-## 🎙️ AI Voice Generation Pipeline
+## 🏗️ System Architecture
 
-Production text-to-speech generation powered by a self-hosted inference stack.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          🌐 WEB APPLICATION FLOW                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                           │
+│   Browser (Next.js / React)                                               │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🔐 Clerk Middleware ──── Auth + org check                               │
+│       │                                                                   │
+│       ▼                                                                   │
+│   ⚡ tRPC API Layer ──── Type-safe RPC                                    │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🧠 Business Logic ──── Validation + billing checks                     │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🗄️ Prisma ORM ──── Relational queries                                  │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🐘 PostgreSQL ──── Persistence                                         │
+│                                                                           │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-### Capabilities
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     🎙️ VOICE GENERATION PIPELINE                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                           │
+│   tRPC mutation ──── Frontend action                                      │
+│       │                                                                   │
+│       ▼                                                                   │
+│   💳 Polar billing check ──── Active subscription verified                │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🖥️ Next.js backend ──── Orchestration                                   │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🤖 Chatterbox API (Modal) ──── FastAPI + GPU inference                  │
+│       │                                                                   │
+│       ▼                                                                   │
+│   ☁️ AWS S3 ──── WAV stored, signed URL generated                        │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🔊 /api/audio proxy ──── Org-scoped stream to client                   │
+│       │                                                                   │
+│       ▼                                                                   │
+│   🎵 WaveSurfer.js ──── Waveform playback + scrubbing                    │
+│                                                                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-- Self-hosted Chatterbox TTS inference
-- No dependency on expensive third-party voice APIs
-- Real-time text-to-speech generation
-- Interactive playback
-- Waveform scrubbing + seeking
-- Downloadable generated audio
-- Secure signed URL delivery
+### 🌍 Deployment Topology
 
-### Why this matters
+| Service | Host |
+|:---|:---|
+| 🖥️ Frontend / API | **Vercel** — Next.js app, API routes, tRPC |
+| 🤖 Inference | **Modal** — Chatterbox TTS (FastAPI, GPU) |
+| 🐘 Database | **PostgreSQL** |
+| ☁️ Object Storage | **AWS S3** — signed URLs, app-proxied delivery |
+| 🔐 Auth | **Clerk** — users, organizations, sessions |
+| 💳 Billing | **Polar SDK** — subscriptions, metered usage |
+| 🔭 Monitoring | **Sentry** — errors, session replay |
+| 🔄 CI / CD | **GitHub Actions** — lint, build, preview, deploy |
 
-Owning inference means:
+---
 
-✅ lower long-term costs  
-✅ no vendor lock-in  
-✅ infrastructure control  
-✅ scalable deployment flexibility
+## 🎙️ Voice Generation & Audio
+
+Self-hosted Chatterbox TTS inference running on Modal (FastAPI + GPU). No third-party voice API dependency.
+
+- Self-hosted inference — no per-request API fees, no vendor quota ceilings
+- Real-time text-to-speech with configurable parameters (temperature, topP, topK)
+- WaveSurfer.js waveform rendering with scrubbing, seeking, and progressive streaming
+- Desktop + mobile audio players with download support
+- Signed URL delivery — S3 buckets stay private, browsers never see raw object keys
 
 ---
 
 ## 🧬 Custom Voice Cloning
 
-Users can create reusable custom AI voices.
+Org-scoped custom voice creation with upload and in-browser recording.
 
-### Supported workflows
-
-- Upload voice samples
-- Record directly in-browser
-- Preview recordings before upload
-- Validate duration constraints
-- Enforce file-size limits
-- Generate unique voice avatars
-- Share voices across organizations
-
-### Voice management
-
-- Create
-- Browse
-- Search
-- Preview
-- Delete
-
-Voice identities are enhanced with autogenerated avatars.
+| Workflow | Details |
+|:---|:---|
+| 📤 Upload | MIME type + duration + file-size (~20MB) validation, client + server |
+| 🎙️ Record | In-browser via RecordRTC with preview before upload |
+| 🎨 Avatars | Auto-generated via DiceBear |
+| 🔍 Search | Debounced queries with Nuqs URL state |
+| 🗑️ Delete | Cascade-safe — `SetNull` on generation foreign keys |
 
 ---
 
-## 🔊 Real-Time Audio Experience
+## 🏢 Multi-Tenant Architecture
 
-Audio UX is treated as a first-class product feature.
+Organization isolation is enforced at the database, routing, and middleware layers.
 
-### Includes
+- Clerk middleware enforces auth + org selection before any handler runs
+- Every tRPC procedure receives `ctx.orgId` — all queries filter by it
+- Org switching updates session context; no stale state reuse
+- Voices and generations are only visible inside the owning organization
 
-- WaveSurfer.js waveform rendering
-- Scrubbing support
-- Playback controls
-- Seek controls
-- Live audio previews
-- Mobile audio player
-- Desktop audio player
-- Download support
+```typescript
+// orgProcedure attaches ctx.orgId from Clerk on every tenant mutation.
+const generation = await prisma.generation.findUnique({
+  where: { id: input.id, orgId: ctx.orgId },
+});
 
-This creates a true production media experience instead of static file downloads.
-
----
-
-## 🏢 Multi-Tenant SaaS Architecture
-
-Resona is designed as a true SaaS platform with tenant isolation.
-
-### Features
-
-- Organization-based workspaces
-- Tenant data isolation
-- Role-aware access control
-- Protected routes
-- Session-aware middleware
-- Organization switching workflows
-
-Powered by:
-
-- Clerk authentication
-- Clerk organizations
-- Middleware route protection
-- Session state management
+const voice = await prisma.voice.findUnique({
+  where: {
+    id: input.voiceId,
+    OR: [
+      { variant: "SYSTEM" },
+      { variant: "CUSTOM", orgId: ctx.orgId },
+    ],
+  },
+});
+```
 
 ---
 
-## 💳 Subscription Billing & Monetization
+## 💳 Billing Architecture
 
-Production-grade billing infrastructure included.
+Polar SDK handles subscriptions and metered usage. Billing enforcement is server-side in tRPC procedures — not frontend-only.
 
-### Billing capabilities
+```
+User triggers generation ──► Subscription check (Polar)
+      │                              │
+      │                     ❌ No plan → Upgrade prompt
+      │                     ✅ Active → Proceed
+      │                              │
+      ▼                              ▼
+Generation executes ◄──────── Modal TTS + S3 upload
+      │
+      ▼
+Usage event emitted ──► Polar meter updated (only after success)
+```
 
-- Subscription management
-- Pay-as-you-go metered billing
-- Usage event tracking
-- Checkout flows
-- Upgrade prompts
-- Billing portal access
-- Premium feature gating
-- Subscription enforcement
+**Protected premium actions:** AI speech generation, custom voice creation, voice cloning uploads, org-wide voice sharing — all gated server-side.
 
-Powered by:
-
-**Polar SDK**
-
-### Protected premium actions
-
-- AI speech generation
-- Custom voice creation
-
-Usage is transparently metered and enforced.
+Usage events emit **after** S3 upload confirmation, not before. Failed generations never increment the meter.
 
 ---
 
-# 🖥️ Frontend Experience
+## 🗄️ Database Schema
 
-Modern production frontend architecture.
+Intentionally small. Each entity owns a single concern, org scope is the default.
 
-### Stack
+```
+Clerk User + Organization (auth only — not Prisma tables)
 
-- Next.js App Router
-- React 19
-- Tailwind CSS v4
-- ShadCN UI
-- TanStack React Form
-- Nuqs
-- WaveSurfer.js
-- RecordRTC
-- React Dropzone
-- DiceBear avatars
+Voice (SYSTEM | CUSTOM)
+ ├── orgId?           // null for SYSTEM, set for CUSTOM
+ ├── objectKey?       // reference clip in S3
+ └── generations[]
 
-### UI features
+Generation
+ ├── orgId            // tenant scope on every row
+ ├── voiceId?         // SetNull if voice deleted
+ ├── voiceName        // snapshot at generation time
+ ├── text, objectKey? // WAV in S3 when upload completes
+ └── inference params (temperature, topP, topK, …)
 
-- SaaS dashboards
-- Responsive layouts
-- Sidebar navigation
-- Voice selectors
-- Prompt suggestions
-- History views
-- Loading skeletons
-- Mobile-first responsiveness
-- Desktop optimized workflows
+Billing: Polar (subscriptions + usage events at request time)
+```
 
-Design goal:
-
-**Production usability over demo aesthetics.**
+Generations reference voices. Clerk carries org identity. Polar handles subscription state outside Postgres.
 
 ---
 
-# ⚙️ Backend Architecture
+## 🛡️ Security Model
 
-Built for scale and maintainability.
+Layered controls across routing, storage, validation, and billing enforcement.
 
-### Stack
-
-- Next.js server architecture
-- tRPC
-- Prisma ORM
-- PostgreSQL
-- OpenAPI TypeScript generation
-
-### Capabilities
-
-- End-to-end type safety
-- Shared server/client contracts
-- Relational schema modeling
-- Indexed queries
-- Enum-driven domain modeling
-- Scalable persistence architecture
-
-### Core domain models
-
-- **Clerk** — users and organizations (not stored in Postgres)
-- **Voice** — system presets and org-scoped custom clones (`objectKey` → S3 reference audio)
-- **Generation** — TTS output metadata and settings (`objectKey` → S3 synthesized WAV)
-- **Polar** — subscriptions and metered usage (external; no local billing tables)
+| Layer | Mechanism |
+|:---|:---|
+| 🏢 **Tenant Isolation** | All queries filter by `ctx.orgId`. No cross-org data leakage. |
+| 🔐 **Signed URLs** | Private S3 buckets. Time-limited URLs expire after a short window. |
+| 🚧 **Route Protection** | Clerk middleware enforces auth + org before any handler runs. |
+| 📏 **Upload Validation** | MIME type, file size (~20MB), audio duration — server is authoritative. |
+| 💳 **Premium Enforcement** | tRPC procedures enforce billing. Bypassing UI doesn't bypass policy. |
+| 🔭 **Error Monitoring** | Sentry captures org/voice/request context. No sensitive values logged. |
+| 🔑 **Secrets** | Environment-scoped. No hardcoded credentials. CI uses encrypted storage. |
 
 ---
 
-# ☁️ Storage Infrastructure
+## 🖥️ Frontend Stack
 
-Audio assets are stored using cloud object storage.
-
-### Implementation
-
-- AWS S3 object storage
-- AWS SDK (`@aws-sdk/client-s3`)
-- Signed URL delivery for server-side fetches
-- App proxies (`/api/audio/:id`, `/api/voices/:id`) so browsers never see raw keys
-
-### Used for
-
-- Uploaded voice samples
-- Generated speech
-- Voice previews
-- Streaming playback
+| Technology | Purpose |
+|:---|:---|
+| ⚡ **Next.js 16** | App Router, React Server Components |
+| ⚛️ **React 19** | UI components |
+| 🎨 **Tailwind CSS v4** | Utility-first styling |
+| 🧩 **ShadCN UI** | Accessible component primitives |
+| 📝 **TanStack React Form** | Type-safe form management |
+| 🔗 **Nuqs** | URL state management |
+| 🌊 **WaveSurfer.js** | Audio waveform rendering + playback |
+| 🎙️ **RecordRTC** | Cross-browser audio recording |
+| 📂 **React Dropzone** | File upload interactions |
+| 🎨 **DiceBear** | Auto-generated voice avatars |
 
 ---
 
-# 📊 Observability & Monitoring
+## ⚙️ Backend Stack
 
-Production debugging infrastructure included from day one.
+| Technology | Purpose |
+|:---|:---|
+| ⚡ **tRPC** | End-to-end type-safe API |
+| 🗄️ **Prisma ORM** | Schema-driven database access |
+| 🐘 **PostgreSQL** | Relational persistence |
+| 📋 **OpenAPI TS** | Generated client types for inference API |
+| 🐍 **FastAPI** | Chatterbox TTS inference on Modal |
 
-### Monitoring stack
+### 🧠 Type Safety Pipeline
 
-- Sentry error tracking
-- Session replay
-- Structured logging
-- Stack traces
-- Context-aware debugging
-
-### Tracked metadata
-
-- Organization ID
-- Voice ID
-- Request metadata
-- Text length
-- Generation context
-- API failures
-
-Integrated directly via backend middleware.
+```
+Prisma Schema  ──►  Generated Types  ──►  tRPC Procedures  ──►  React Hooks
+      │                    │                     │                     │
+      └────────── Compile-time safety across the entire stack ────────┘
+```
 
 ---
 
-# 🚢 Deployment & CI/CD
+## ☁️ Storage
 
-Resona is deployment-ready.
-
-### Infrastructure
-
-- **Vercel** — Next.js app, API routes, and tRPC
-- **Modal** — Chatterbox TTS inference (`chatterbox_tts.py`, FastAPI)
-- GitHub Actions
-- Automated CI pipelines
-- Pull request validation
-- Preview environments
-- Build automation
-- Lint enforcement
-- Production deployment workflows
+| Aspect | Implementation |
+|:---|:---|
+| 📦 **Provider** | AWS S3 via `@aws-sdk/client-s3` |
+| 🔐 **Access** | Private buckets + time-limited signed URLs |
+| 🔀 **Delivery** | App proxies (`/api/audio/:id`, `/api/voices/:id`) — browsers never see raw keys |
+| 📂 **Content** | Voice samples, generated WAVs, previews, streaming playback |
 
 ---
 
-# 🧠 Developer Experience
+## 📊 Observability
 
-Built for speed and maintainability.
+Sentry was configured before the first deployment.
 
-### Tooling
+| Context | Tracked |
+|:---|:---|
+| 🏢 Organization | `orgId` on every request |
+| 🎤 Voice | `voiceId`, voice variant |
+| 📨 Request | Text length, generation params |
+| ❌ Failures | API errors with full stack traces |
 
-- Strict TypeScript
-- Prisma schema-driven development
-- Shared API typing
-- OpenAPI-generated client types
-- Predictable environment configuration
-- AI-friendly architecture
-
-### Benefits
-
-- Fewer runtime bugs
-- Better autocomplete
-- Safer refactors
-- Faster iteration
-- Strong maintainability
+Session replay, structured logging, and context-aware debugging included.
 
 ---
 
-# 🧠 Architecture Highlights
+## 🚀 Performance
 
-## Self-Hosted Inference
-Owning inference removes dependency risk and gives full operational control.
-
----
-
-## End-to-End Type Safety
-tRPC + Prisma + TypeScript eliminate contract drift.
-
----
-
-## Multi-Tenancy by Design
-Organizations are a foundational architectural primitive.
+| Strategy | Implementation |
+|:---|:---|
+| 🖥️ **React Server Components** | Data-fetching runs server-side, reducing client JS |
+| 💀 **Loading skeletons** | Prevent layout shift during async operations |
+| ⏱️ **Debounced search** | Voice search doesn't fire tRPC queries on every keystroke |
+| 🔗 **Nuqs URL state** | Filters live in the URL — no component-level sync overhead |
+| 🎵 **Streamed audio** | WaveSurfer.js streams progressively, no full-file preload |
 
 ---
 
-## Monetization-First SaaS Design
-Billing and usage tracking are built into the platform—not bolted on later.
+## 🔧 Challenges Solved
+
+<details>
+<summary>🔄 <strong>Prisma connection exhaustion in development</strong></summary>
+
+Next.js hot reload recreates module instances on every save, spawning new Prisma clients and connection pools. Fixed with a process-level singleton.
+
+```typescript
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+export const prisma =
+  globalForPrisma.prisma ?? new PrismaClient({ adapter });
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}
+```
+</details>
+
+<details>
+<summary>📂 <strong>Next.js route groups and layout confusion</strong></summary>
+
+Route groups affect layout organization, not URL structure. Misplacing them attaches authenticated layouts to public routes. Fix: treat route groups as structure only, keep access control in middleware.
+</details>
+
+<details>
+<summary>⏱️ <strong>Signed URL expiry during playback</strong></summary>
+
+Signed URLs have a limited TTL. If playback starts near expiry, the URL becomes invalid mid-session. Fix: generate fresh URLs at playback time.
+</details>
+
+<details>
+<summary>🎙️ <strong>Browser recording compatibility</strong></summary>
+
+`MediaRecorder` MIME type and blob behavior differs across browsers. RecordRTC abstracts most variance, but upload handling still needs MIME normalization for consistent server-side processing.
+</details>
+
+<details>
+<summary>💰 <strong>Metered billing accuracy</strong></summary>
+
+Usage events emit only after S3 upload confirmation. If generation fails, the meter doesn't increment — billing stays aligned with actual output.
+</details>
 
 ---
 
-## Production Observability
-Monitoring exists from the start, not as an afterthought.
+## 🚢 CI/CD
+
+| Component | Details |
+|:---|:---|
+| 🌐 **Vercel** | Next.js app, API routes, tRPC endpoints |
+| 🤖 **Modal** | Chatterbox TTS inference (`chatterbox_tts.py`, FastAPI) |
+| 🔄 **GitHub Actions** | Automated CI — lint, build, PR validation |
+| 👀 **Preview Envs** | Branch preview deployments on Vercel |
 
 ---
 
-# 🔒 Validation Rules
+## 🧠 Key Engineering Learnings
 
-Platform constraints include:
-
-- ~20MB upload limits
-- Minimum audio duration validation
-- Client-side validation
-- Server-side validation
-- Premium workflow enforcement
-
----
-
-# 🧰 Technical Stack
-
-## Frontend
-- Next.js 16
-- React 19
-- Tailwind CSS v4
-- ShadCN UI
-- TanStack React Form
-- Nuqs
-- WaveSurfer.js
-- DiceBear
-- React Dropzone
-- RecordRTC
-
-## Backend
-- tRPC
-- Prisma
-- PostgreSQL
-- OpenAPI TypeScript
-- FastAPI inference layer
-
-## Infrastructure
-- Vercel (Next.js + API)
-- Modal (TTS inference)
-- AWS S3
-- GitHub Actions
-- Sentry
-
-## Authentication & Billing
-- Clerk
-- Polar SDK
-
-## AI
-- Self-hosted Chatterbox TTS
+| # | Insight | Details |
+|:---|:---|:---|
+| 1️⃣ | **Owning inference changes the economics** | Self-hosting removes per-request cost and vendor quota risk. The product owns the entire cost curve. |
+| 2️⃣ | **Multi-tenancy must be foundational** | Retrofitting tenant isolation is painful. Orgs must be a first-class DB, routing, and middleware concern from day one. |
+| 3️⃣ | **Type safety is a productivity multiplier** | tRPC + Prisma + TypeScript means schema changes propagate visibly through the entire stack at compile time. |
+| 4️⃣ | **Billing is architecture, not UI** | Feature gates and usage metering belong in the application layer. Frontend-only gates are decoration, not policy. |
+| 5️⃣ | **Observability before production** | Sentry was set up before the first deployment. Stack traces + org context were already there when things broke. |
+| 6️⃣ | **Signed URLs are the correct default** | Public buckets are wrong for user-generated content. Time-limited signed URLs give controlled access without risk. |
 
 ---
 
-# 🎯 Project Goal
+## 🔮 Future Improvements
 
-Resona demonstrates how to build a modern AI SaaS product with:
-
-- custom inference ownership
-- scalable SaaS architecture
-- secure authentication
-- subscription monetization
-- production observability
-- CI/CD automation
-- polished product UX
-
----
-
-# Final Philosophy
-
-Resona is intentionally built as:
-
-> **a real production SaaS platform—not an AI demo project.**
+| Improvement | Rationale |
+|:---|:---|
+| 📬 Background job queue | Move inference out of the HTTP request lifecycle, remove timeout pressure |
+| ⚡ Redis caching | Cut repeated org/subscription lookups on authenticated requests |
+| 🔄 Webhook retry strategy | Prevent billing state drift when provider events arrive late |
+| 🛡️ Granular RBAC | Separate member/admin powers without widening the auth model |
+| 📊 Usage analytics | Give organizations visibility into consumption patterns |
+| 🚦 Rate limiting per org | Safety valve against runaway usage and accidental abuse |
+| 🔑 API key system | Let external developers access the inference pipeline directly |
+| 🖥️ Distributed workers | Scale Modal/Chatterbox workers horizontally beyond a single container |

@@ -1,4 +1,7 @@
-// Sidebar billing widget — subscription status, estimated usage cost, upgrade/portal actions.
+// Billing Usage Widget Component.
+// Embedded in the dashboard sidebar to provide real-time billing visibility.
+// Dynamically toggles between an "Upgrade" CTA (for unsubscribed orgs) 
+// and a live "Estimated Cost" meter (for subscribed orgs).
 import { useCallback } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Crown, Activity, Sparkles, ArrowUpRight } from "lucide-react";
@@ -147,7 +150,11 @@ export function UsageContainer() {
 
   return (
     <div className="group-data-[collapsible=icon]:hidden rounded-2xl border border-border/60 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:shadow-md">
-      {/* subscribed orgs see Polar meter estimate; others see UpgradeCard → createCheckout. */}
+      {/* 
+        Conditional Billing UI:
+        Subscribed orgs see their accrued usage from Polar meters.
+        Unsubscribed orgs see a static pricing breakdown and upgrade prompt. 
+      */}
       {data?.hasActiveSubscription ? (
         <UsageCard estimatedCostCents={data.estimatedCostCents} />
       ) : (

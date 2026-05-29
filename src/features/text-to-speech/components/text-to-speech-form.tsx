@@ -1,4 +1,7 @@
-// Owns TTS form state and submit handler; calls generations.create then navigates to playback.
+// Text-to-Speech Form Controller.
+// Manages the state, validation, and submission of the primary TTS generation form via `@tanstack/react-form`.
+// Orchestrates the `generations.create` tRPC mutation and intercepts `SUBSCRIPTION_REQUIRED`
+// errors to trigger the billing upgrade flow.
 "use client";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
@@ -68,7 +71,8 @@ export function TextToSpeechForm({
         const message =
           error instanceof Error ? error.message : "Failed to generate audio";
 
-        // Server returns SUBSCRIPTION_REQUIRED when the org lacks an active subscription.
+        // The tRPC generation endpoint throws SUBSCRIPTION_REQUIRED if the org's Polar customer 
+        // lacks an active subscription. We intercept this specific error to present a contextual upgrade prompt.
         if (message === "SUBSCRIPTION_REQUIRED") {
           toast.error("Subscription required", {
             description: "Upgrade to continue generating premium AI voices.",

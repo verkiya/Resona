@@ -1,4 +1,6 @@
-// Auth layout: splits marketing panel and routed auth content, keeping sign-in/up navigation visible.
+// Authentication Layout.
+// Provides the split-screen shell for all Clerk authentication routes (sign-in, sign-up).
+// Keeps the marketing/branding panel persistent while nested auth flows transition.
 import Link from "next/link";
 import { AuthMarketing } from "./auth-marketing";
 import { Button } from "@/components/ui/button";

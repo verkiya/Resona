@@ -1,4 +1,6 @@
-// Root app shell: sets global metadata/fonts and composes Clerk + tRPC + nuqs providers so all routes share auth, query, and URL state, plus analytics/toaster.
+// Root Application Layout.
+// Establishes the global HTML shell, loads primary fonts, and configures SEO metadata.
+// Wraps all routes in core providers: Clerk (Auth), tRPC (Data Fetching), and Nuqs (URL State).
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -43,7 +45,10 @@ export default function RootLayout({
       className={`${outfit.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground ">
-        <ClerkProvider>
+        <ClerkProvider
+          afterSignOutUrl="/sign-in"
+          afterMultiSessionSingleSignOutUrl="/sign-in"
+        >
           <TRPCReactProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
             <Toaster

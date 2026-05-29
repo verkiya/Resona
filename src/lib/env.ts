@@ -1,4 +1,6 @@
-// Validates server and client environment variables at build/runtime via @t3-oss/env-nextjs.
+// Environment Configuration Singleton.
+// Validates server and client environment variables at build and runtime via @t3-oss/env-nextjs.
+// Fails fast if required secrets are missing, preventing malformed deployments.
 import { z } from "zod";
 import { createEnv } from "@t3-oss/env-nextjs";
 

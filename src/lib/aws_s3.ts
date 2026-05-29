@@ -1,4 +1,6 @@
-// Object storage for voice samples and generated audio; keys are validated before every upload, delete, or signed read.
+// S3 Storage Provider.
+// Handles object storage for voice samples and generated TTS audio.
+// Generates time-limited signed URLs to protect private assets from unauthorized access.
 import {
   S3Client,
   PutObjectCommand,

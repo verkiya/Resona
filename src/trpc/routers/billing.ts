@@ -1,4 +1,7 @@
-// Polar.sh billing — checkout and portal sessions keyed by Clerk orgId (externalCustomerId) for multi-tenant metering.
+// Billing tRPC Router.
+// Manages Polar.sh checkout and customer portal sessions.
+// Enforces multi-tenancy by using the Clerk `orgId` as Polar's `externalCustomerId`.
+// This guarantees subscriptions and metered usage accrue to the organization, not the individual user.
 import { TRPCError } from "@trpc/server";
 import { polar } from "@/lib/polar";
 import { env } from "@/lib/env";
@@ -8,7 +11,8 @@ export const billingRouter = createTRPCRouter({
   createCheckout: orgProcedure.mutation(async ({ ctx }) => {
     const result = await polar.checkouts.create({
       products: [env.POLAR_PRODUCT_ID],
-      // Polar externalCustomerId is the Clerk org, not the user, so subscription and usage accrue per organization.
+      // We map Polar's externalCustomerId to the Clerk orgId. 
+      // This is the core mechanism that makes the billing multi-tenant.
       externalCustomerId: ctx.orgId,
       successUrl: process.env.APP_URL,
     });
@@ -47,7 +51,8 @@ export const billingRouter = createTRPCRouter({
       const hasActiveSubscription =
         (customerState.activeSubscriptions ?? []).length > 0;
 
-      // sums meter amounts across active subscriptions for the usage estimate shown in the sidebar.
+      // Aggregate meter amounts across all active subscriptions 
+      // to calculate the estimated usage cost displayed in the dashboard sidebar.
       let estimatedCostCents = 0;
       for (const sub of customerState.activeSubscriptions ?? []) {
         for (const meter of sub.meters ?? []) {
@@ -61,7 +66,8 @@ export const billingRouter = createTRPCRouter({
         estimatedCostCents,
       };
     } catch {
-      // org has never checked out — Polar has no customer yet, so treat as unsubscribed.
+      // If the org has never initiated checkout, Polar will throw an error because the customer record doesn't exist.
+      // We catch this gracefully and treat it as a valid "unsubscribed" state.
       return {
         hasActiveSubscription: false,
         customerId: null,

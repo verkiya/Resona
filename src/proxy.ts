@@ -1,4 +1,7 @@
-// Clerk middleware: allows public routes, enforces sign-in elsewhere, and redirects signed-in users without an org to /org-selection to preserve tenant scoping.
+// Next.js Edge Middleware (Clerk Auth).
+// Intercepts all page navigations to enforce authentication and organization-level scoping.
+// Bypasses protection for public pages and API/tRPC routes (which implement their own guards).
+// Redirects authenticated users missing an active organization to the /org-selection flow.
 import {
   auth,
   clerkMiddleware,
@@ -13,6 +16,13 @@ const isPublicRoute = createRouteMatcher([
 ]);
 const isOrgSelectionRoute = createRouteMatcher(["/org-selection(.*)"]);
 export default clerkMiddleware(async (auth, req) => {
+  const pathname = req.nextUrl.pathname;
+  const isApiRoute = pathname.startsWith("/api") || pathname.startsWith("/trpc");
+
+  if (isApiRoute) {
+    return NextResponse.next();
+  }
+
   const { userId, orgId } = await auth();
   if (isPublicRoute(req)) {
     return NextResponse.next();
@@ -23,7 +33,9 @@ export default clerkMiddleware(async (auth, req) => {
   if (isOrgSelectionRoute(req)) {
     return NextResponse.next();
   }
-  // Require orgId on protected routes to enforce tenant scope.
+  // Protect against cross-tenant data leaks by enforcing organization scope.
+  // If a user is signed in but hasn't selected an active organization,
+  // we force them into the org-selection flow before accessing the dashboard.
   if (userId && !orgId) {
     const orgSelection = new URL("/org-selection", req.url);
     return NextResponse.redirect(orgSelection);

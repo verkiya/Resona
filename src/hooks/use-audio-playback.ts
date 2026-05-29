@@ -1,4 +1,6 @@
-// Lightweight HTMLAudioElement play/pause for file previews (voice upload form, cards).
+// Audio Playback Hook.
+// Manages lightweight HTMLAudioElement state for simple voice previews (e.g., voice cards, file upload previews).
+// Automatically cleans up the audio instance and object URLs on unmount to prevent memory leaks.
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";

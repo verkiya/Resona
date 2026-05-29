@@ -22,6 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   OrganizationSwitcher,
   UserButton,
+  useAuth,
   useClerk,
   useOrganization,
 } from "@clerk/nextjs";
@@ -138,6 +139,16 @@ function NavSection({ label, items, pathname }: NavSectionProps) {
 }
 
 export function DashboardSidebar() {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (!isLoaded || !isSignedIn) {
+    return null;
+  }
+
+  return <DashboardSidebarContent />;
+}
+
+function DashboardSidebarContent() {
   const pathname = usePathname();
   const router = useRouter();
   const clerk = useClerk();

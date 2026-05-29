@@ -1,10 +1,17 @@
-// tRPC bootstrap — baseProcedure adds Sentry; authProcedure and orgProcedure layer Clerk checks for user and organization scope.
+// tRPC Initialization & Middleware.
+// Configures the base tRPC instance and defines access-control procedures.
+// Layers progressively stricter auth guards: Sentry (base) -> Clerk User (auth) -> Clerk User + Org (org).
 import { auth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { cache } from "react";
 import * as Sentry from "@sentry/node";
 import superjson from "superjson";
-export const createTRPCContext = cache(async () => {}); // This is run for each procedure, so we use dedicated procedures to query user status
+
+// We use React's `cache` to ensure context isn't repeatedly re-evaluated in RSCs.
+// Note: We intentionally keep this context empty and resolve Clerk auth inside the procedures 
+// themselves. This avoids blocking public procedures on auth resolution.
+export const createTRPCContext = cache(async () => {}); 
+
 const t = initTRPC.create({
   transformer: superjson,
 });

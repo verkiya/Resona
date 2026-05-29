@@ -1,4 +1,9 @@
-// Custom voice API: validates org subscription and audio metadata, uploads to S3, and persists the object key.
+// Voice Creation API Route.
+// Handles the multipart file upload for custom voice cloning.
+// 1. Verifies the organization has an active paid subscription.
+// 2. Validates audio metadata (format and duration) via music-metadata.
+// 3. Streams the audio buffer to S3.
+// 4. Emits a billing telemetry event for the successful creation.
 import { auth } from "@clerk/nextjs/server";
 import { parseBuffer } from "music-metadata";
 import { z } from "zod";
@@ -23,7 +28,7 @@ export async function POST(request: Request) {
   if (!userId || !orgId) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
-  // Paid feature: require an active org subscription before creating voices.
+  // Premium Feature Guard: Voice cloning requires an active subscription.
   try {
     const customerState = await polar.customers.getStateExternal({
       externalId: orgId,
@@ -34,7 +39,8 @@ export async function POST(request: Request) {
       return Response.json({ error: "SUBSCRIPTION_REQUIRED" }, { status: 403 });
     }
   } catch {
-    // Treat missing Polar customer as unsubscribed.
+    // If the org hasn't created a checkout session yet, the Polar customer API will throw an error.
+    // We treat this missing customer state gracefully as an unsubscribed org.
     return Response.json({ error: "SUBSCRIPTION_REQUIRED" }, { status: 403 });
   }
   const url = new URL(request.url);
@@ -86,7 +92,9 @@ export async function POST(request: Request) {
   const normalizedContentType =
     contentType.split(";")[0]?.trim() || "audio/wav";
 
-  // Reject uploads until audio metadata confirms format and minimum duration.
+  // We parse the audio buffer locally before S3 upload to ensure:
+  // 1. It's actually a valid audio file (rejects renamed binaries).
+  // 2. The sample is long enough for the cloning model to extract a viable speaker embedding.
   let duration: number;
   try {
     const metadata = await parseBuffer(
@@ -147,7 +155,8 @@ export async function POST(request: Request) {
     });
   } catch {
     if (createdVoiceId) {
-      // Roll back the voice row if upload/persist fails to avoid dangling records.
+      // S3 upload or final DB update failed.
+      // Roll back the initial DB insert to prevent dangling records where the UI shows a voice that cannot be previewed or used.
       await prisma.voice
         .delete({
           where: {
@@ -162,7 +171,9 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
-  // Fire-and-forget metering so billing does not block voice creation.
+  // Billing Telemetry:
+  // We emit the `voice_creation` event asynchronously. 
+  // Network failures reaching Polar must not fail the entire API request.
   polar.events
     .ingest({
       events: [

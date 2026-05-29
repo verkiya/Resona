@@ -1,4 +1,10 @@
-// TTS generation API — reads/writes Generation rows, calls Chatterbox for synthesis, stores WAV in S3, meters usage via Polar.
+// TTS Generation tRPC Router.
+// Orchestrates the multi-step voice synthesis pipeline:
+// 1. Validates org subscription status.
+// 2. Invokes the FastAPI/Modal Chatterbox TTS inference.
+// 3. Implements a two-phase write pattern (create DB row -> upload to S3 -> update DB).
+// 4. Handles rollback if S3 upload fails.
+// 5. Emits fire-and-forget billing telemetry to Polar.
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { chatterbox } from "@/lib/chatterbox-client";
@@ -27,7 +33,8 @@ export const generationsRouter = createTRPCRouter({
 
       return {
         ...generation,
-        // clients stream audio through the authenticated proxy instead of exposing the S3 objectKey.
+        // Route audio playback through the proxy to enforce auth checks,
+        // preventing unauthorized access to the underlying S3 object key.
         audioUrl: `/api/audio/${generation.id}`,
       };
     }),
@@ -57,7 +64,7 @@ export const generationsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // generation is gated behind an active org subscription (same rule as custom voice creation).
+      // Gate text-to-speech generation behind an active organization subscription.
       try {
         const customerState = await polar.customers.getStateExternal({
           externalId: ctx.orgId,
@@ -72,7 +79,7 @@ export const generationsRouter = createTRPCRouter({
         }
       } catch (err) {
         if (err instanceof TRPCError) throw err;
-        // no Polar customer record yet is treated as no subscription.
+        // A missing Polar customer record means the org has never checked out.
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "SUBSCRIPTION_REQUIRED",
@@ -176,7 +183,8 @@ export const generationsRouter = createTRPCRouter({
         });
       } catch {
         if (generationId) {
-          // if S3 upload fails after the DB row exists, delete the row so clients never see a generation without audio.
+          // Rollback: If the S3 upload fails after the DB record is created, 
+          // delete the orphaned row so the UI never displays a broken generation.
           await prisma.generation
             .delete({
               where: {
@@ -202,7 +210,9 @@ export const generationsRouter = createTRPCRouter({
           message: "Failed to store generated audio",
         });
       }
-      // metering is fire-and-forget so billing telemetry cannot slow down or fail the generation response.
+
+      // Fire-and-forget telemetry:
+      // Ingesting usage events into Polar must never block or fail the client's generation request.
       polar.events
         .ingest({
           events: [
@@ -215,7 +225,8 @@ export const generationsRouter = createTRPCRouter({
           ],
         })
         .catch(() => {
-          // metering failures are intentionally ignored here because they should not block the user flow.
+          // Intentionally swallow telemetry errors. 
+          // Billing accuracy is secondary to user experience in the critical generation path.
         });
       return {
         id: generationId,

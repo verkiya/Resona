@@ -1,4 +1,6 @@
-// Client-side Sentry bootstrap loaded by Next for browser error reporting.
+// Next.js Browser Instrumentation.
+// Initializes Sentry for client-side error reporting and session replay.
+// Injected by Next.js into the browser bundle before application code runs.
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({

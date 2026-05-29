@@ -1,4 +1,6 @@
-// Dashboard shell: restores sidebar state from cookies, provides the sidebar context, and wraps child routes in the app chrome.
+// Dashboard Shell Layout.
+// Wraps all authenticated routes within the primary application chrome (sidebar + main content area).
+// Synchronizes sidebar collapse state with cookies to prevent layout shift across hard navigations.
 import { cookies } from "next/headers";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";

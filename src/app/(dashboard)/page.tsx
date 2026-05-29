@@ -1,4 +1,6 @@
-// Dashboard entry: enforces server-side auth, then renders the DashboardView for signed-in users.
+// Dashboard Entry Route.
+// Enforces a strict server-side authentication boundary before rendering the primary dashboard view.
+// Redirects unauthenticated traffic to the `/sign-in` flow.
 import { DashboardView } from "@/features/dashboard/views/dashboard-view";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

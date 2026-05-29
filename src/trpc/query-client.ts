@@ -1,4 +1,6 @@
-// TanStack Query defaults (superjson dehydrate/hydrate) shared by server and browser clients.
+// React Query Defaults & Serialization.
+// Configures the base QueryClient shared by both the server and the browser.
+// Registers SuperJSON to preserve rich data types (Dates, Maps, Sets) across the network boundary.
 import {
   defaultShouldDehydrateQuery,
   QueryClient,

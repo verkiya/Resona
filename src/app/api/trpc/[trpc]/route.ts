@@ -1,4 +1,6 @@
-// HTTP adapter that exposes the app router at /api/trpc for client mutations and queries.
+// tRPC Fetch Adapter Route.
+// Bridges standard HTTP requests to the tRPC AppRouter.
+// Provides the context (including authentication state) to all downstream procedures.
 import { createTRPCContext } from '@/trpc/init';
 import { appRouter } from '@/trpc/routers/_app';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
