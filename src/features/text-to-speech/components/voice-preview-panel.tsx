@@ -1,8 +1,8 @@
-"use client";
 // Voice Preview Panel Component.
 // Renders the WaveSurfer playback UI for a completed TTS generation.
 // Fetches the audio stream through the authenticated `/api/audio/:id` proxy route
 // to protect the underlying S3 object URL.
+"use client";
 
 import { useState } from "react";
 import { Pause, Play, Download, Redo, Undo } from "lucide-react";
@@ -82,7 +82,6 @@ export function VoicePreviewPanel({
 
   return (
     <div className="hidden h-full flex-1 flex-col border-t border-border/40 bg-card/30 backdrop-blur-xl lg:flex">
-      {/* Header */}
       <div className="border-b border-border/30 px-6 py-5">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           Resona Playback
@@ -92,7 +91,6 @@ export function VoicePreviewPanel({
         </h3>
       </div>
 
-      {/* Waveform */}
       <div className="relative flex flex-1 items-center justify-center px-6 py-8">
         {!isReady && (
           <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -122,13 +120,13 @@ export function VoicePreviewPanel({
             ref={containerRef}
             className={cn(
               "w-full cursor-pointer transition-opacity duration-300",
-              !isReady && "opacity-0", // Loading Wavesurfer, we have to mount this, otherwise Wavesurfer won't load, so we hide with opacity attribute
+              // WaveSurfer requires a mounted container before it can measure and draw.
+              !isReady && "opacity-0",
             )}
           />
         </div>
       </div>
 
-      {/* Time */}
       <div className="flex items-center justify-center px-6">
         <p className="text-2xl font-semibold tabular-nums tracking-tight text-foreground">
           {formatTime(currentTime)}
@@ -138,11 +136,9 @@ export function VoicePreviewPanel({
         </p>
       </div>
 
-      {/* Footer */}
       <div className="p-6">
         <div className="grid w-full grid-cols-3 items-center gap-6">
           {" "}
-          {/* Metadata */}
           <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/20 p-2 shadow-sm backdrop-blur-sm ">
             <p className="line-clamp-2 truncate text-sm font-medium text-foreground">
               {text}
@@ -159,7 +155,6 @@ export function VoicePreviewPanel({
               </div>
             )}
           </div>
-          {/* Controls */}
           <div className="flex items-center justify-center gap-3 ">
             <Button
               variant="ghost"
@@ -212,7 +207,6 @@ export function VoicePreviewPanel({
               </div>
             </Button>
           </div>
-          {/* Download */}
           <div className="flex justify-end">
             <Button
               variant="pillGradient"

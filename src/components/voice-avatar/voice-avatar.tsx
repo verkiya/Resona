@@ -1,4 +1,6 @@
-// Deterministic avatar image for a voice id via useVoiceAvatar (Dicebear/multiavatar).
+// Deterministic voice avatar component.
+// Converts a voice id/name into a DiceBear data URI and renders it through the
+// shared Avatar primitive used by voice cards, history, and preview panels.
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,7 +14,7 @@ interface VoiceAvatarProps {
 }
 
 export function VoiceAvatar({ seed, name, className }: VoiceAvatarProps) {
-  const avatarUrl = useVoiceAvatar(seed); // Converts a deterministic SVG avatar into a data URI
+  const avatarUrl = useVoiceAvatar(seed);
 
   return (
     <Avatar

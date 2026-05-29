@@ -1,5 +1,5 @@
 // Voice Creation API Route.
-// Handles the multipart file upload for custom voice cloning.
+// Accepts custom voice metadata in query params and raw audio bytes in the body.
 // 1. Verifies the organization has an active paid subscription.
 // 2. Validates audio metadata (format and duration) via music-metadata.
 // 3. Streams the audio buffer to S3.
@@ -28,7 +28,8 @@ export async function POST(request: Request) {
   if (!userId || !orgId) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
-  // Premium Feature Guard: Voice cloning requires an active subscription.
+  // Voice cloning is a premium action, so the server enforces the Polar subscription
+  // even when the request bypasses the client UI.
   try {
     const customerState = await polar.customers.getStateExternal({
       externalId: orgId,
@@ -171,9 +172,8 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
-  // Billing Telemetry:
-  // We emit the `voice_creation` event asynchronously. 
-  // Network failures reaching Polar must not fail the entire API request.
+  // Voice creation is already durable at this point; Polar metering must not
+  // make the successful upload appear failed to the user.
   polar.events
     .ingest({
       events: [

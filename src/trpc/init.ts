@@ -8,9 +8,9 @@ import * as Sentry from "@sentry/node";
 import superjson from "superjson";
 
 // We use React's `cache` to ensure context isn't repeatedly re-evaluated in RSCs.
-// Note: We intentionally keep this context empty and resolve Clerk auth inside the procedures 
+// Note: We intentionally keep this context empty and resolve Clerk auth inside the procedures
 // themselves. This avoids blocking public procedures on auth resolution.
-export const createTRPCContext = cache(async () => {}); 
+export const createTRPCContext = cache(async () => {});
 
 const t = initTRPC.create({
   transformer: superjson,

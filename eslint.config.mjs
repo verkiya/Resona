@@ -1,3 +1,6 @@
+// ESLint config for the Resona Next.js app.
+// Extends Next's TypeScript/core-vitals rules and keeps generated build artifacts
+// out of lint runs so CI checks only source files.
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -5,9 +8,7 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",

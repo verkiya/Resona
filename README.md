@@ -33,10 +33,10 @@ Full-stack AI voice generation platform with self-hosted inference, multi-tenant
 |:---|:---|
 | 🎤 **Speech Generation** | Text-to-speech via self-hosted Chatterbox TTS on Modal |
 | 🧬 **Voice Cloning** | Upload or record custom voices, scoped per organization |
-| 🏢 **Multi-Tenancy** | Org-isolated workspaces with Clerk auth + middleware enforcement |
+| 🏢 **Multi-Tenancy** | Org-isolated workspaces with Clerk-backed Next.js Proxy enforcement |
 | 💳 **Metered Billing** | Polar SDK subscriptions with post-success usage event emission |
 | ☁️ **Secure Storage** | Private S3 buckets with signed URL delivery through app proxies |
-| 🔭 **Observability** | Sentry error tracking with org/voice/request context |
+| 🔭 **Observability** | Sentry error tracking with structured logs on critical paths |
 
 ---
 
@@ -50,7 +50,7 @@ Full-stack AI voice generation platform with self-hosted inference, multi-tenant
 │   Browser (Next.js / React)                                               │
 │       │                                                                   │
 │       ▼                                                                   │
-│   🔐 Clerk Middleware ──── Auth + org check                               │
+│   🔐 Clerk Proxy ──── Auth + org check                                    │
 │       │                                                                   │
 │       ▼                                                                   │
 │   ⚡ tRPC API Layer ──── Type-safe RPC                                    │
@@ -136,9 +136,10 @@ Org-scoped custom voice creation with upload and in-browser recording.
 
 ## 🏢 Multi-Tenant Architecture
 
-Organization isolation is enforced at the database, routing, and middleware layers.
+Organization isolation is enforced at the database, routing, and Proxy/procedure layers.
 
-- Clerk middleware enforces auth + org selection before any handler runs
+- Clerk-backed Proxy enforces auth + org selection for protected page routes
+- API routes and tRPC procedures enforce their own server-side guards
 - Every tRPC procedure receives `ctx.orgId` — all queries filter by it
 - Org switching updates session context; no stale state reuse
 - Voices and generations are only visible inside the owning organization
@@ -219,10 +220,10 @@ Layered controls across routing, storage, validation, and billing enforcement.
 |:---|:---|
 | 🏢 **Tenant Isolation** | All queries filter by `ctx.orgId`. No cross-org data leakage. |
 | 🔐 **Signed URLs** | Private S3 buckets. Time-limited URLs expire after a short window. |
-| 🚧 **Route Protection** | Clerk middleware enforces auth + org before any handler runs. |
+| 🚧 **Route Protection** | Clerk-backed Proxy guards pages; API/tRPC handlers validate auth server-side. |
 | 📏 **Upload Validation** | MIME type, file size (~20MB), audio duration — server is authoritative. |
 | 💳 **Premium Enforcement** | tRPC procedures enforce billing. Bypassing UI doesn't bypass policy. |
-| 🔭 **Error Monitoring** | Sentry captures org/voice/request context. No sensitive values logged. |
+| 🔭 **Error Monitoring** | Sentry captures errors and structured logs from critical request paths. |
 | 🔑 **Secrets** | Environment-scoped. No hardcoded credentials. CI uses encrypted storage. |
 
 ---
@@ -281,7 +282,7 @@ Sentry was configured before the first deployment.
 
 | Context | Tracked |
 |:---|:---|
-| 🏢 Organization | `orgId` on every request |
+| 🏢 Organization | `orgId` on guarded generation/billing paths |
 | 🎤 Voice | `voiceId`, voice variant |
 | 📨 Request | Text length, generation params |
 | ❌ Failures | API errors with full stack traces |
@@ -322,7 +323,7 @@ if (process.env.NODE_ENV !== "production") {
 <details>
 <summary>📂 <strong>Next.js route groups and layout confusion</strong></summary>
 
-Route groups affect layout organization, not URL structure. Misplacing them attaches authenticated layouts to public routes. Fix: treat route groups as structure only, keep access control in middleware.
+Route groups affect layout organization, not URL structure. Misplacing them attaches authenticated layouts to public routes. Fix: treat route groups as structure only, keep access control in `proxy.ts` and server handlers.
 </details>
 
 <details>
@@ -361,10 +362,10 @@ Usage events emit only after S3 upload confirmation. If generation fails, the me
 | # | Insight | Details |
 |:---|:---|:---|
 | 1️⃣ | **Owning inference changes the economics** | Self-hosting removes per-request cost and vendor quota risk. The product owns the entire cost curve. |
-| 2️⃣ | **Multi-tenancy must be foundational** | Retrofitting tenant isolation is painful. Orgs must be a first-class DB, routing, and middleware concern from day one. |
+| 2️⃣ | **Multi-tenancy must be foundational** | Retrofitting tenant isolation is painful. Orgs must be a first-class DB, routing, and server-guard concern from day one. |
 | 3️⃣ | **Type safety is a productivity multiplier** | tRPC + Prisma + TypeScript means schema changes propagate visibly through the entire stack at compile time. |
 | 4️⃣ | **Billing is architecture, not UI** | Feature gates and usage metering belong in the application layer. Frontend-only gates are decoration, not policy. |
-| 5️⃣ | **Observability before production** | Sentry was set up before the first deployment. Stack traces + org context were already there when things broke. |
+| 5️⃣ | **Observability before production** | Sentry was set up before the first deployment, with structured logs around generation and billing paths. |
 | 6️⃣ | **Signed URLs are the correct default** | Public buckets are wrong for user-generated content. Time-limited signed URLs give controlled access without risk. |
 
 ---

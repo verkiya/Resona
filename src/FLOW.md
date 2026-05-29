@@ -8,7 +8,8 @@ Start here for orientation, then read the file-level and inline comments in `src
 
 1. Public: `/sign-in`, `/sign-up`, `/learnings`, `/test`
 2. Signed in, no org → redirect `/org-selection`
-3. Otherwise → dashboard + `/api/*` + `/api/trpc/*`
+3. API/tRPC routes bypass Proxy and enforce auth in handlers/procedures
+4. Otherwise → dashboard routes
 
 ## TTS generation (happy path)
 

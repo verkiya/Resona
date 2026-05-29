@@ -1,6 +1,6 @@
 // Checkout Redirection Hook.
-// Triggers the `billing.createCheckout` tRPC mutation and intercepts the 
-// response to force a top-level window redirect to the Polar.sh payment portal.
+// Triggers the `billing.createCheckout` tRPC mutation and intercepts the
+// response to force a top-level window redirect to Polar's checkout page.
 import { useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";

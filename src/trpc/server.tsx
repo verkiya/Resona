@@ -13,8 +13,8 @@ import { makeQueryClient } from "./query-client";
 import { appRouter } from "./routers/_app";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-// React's `cache()` ensures that all server components within a single request 
-// share the exact same QueryClient instance. This allows `prefetch` calls 
+// React's `cache()` ensures that all server components within a single request
+// share the exact same QueryClient instance. This allows `prefetch` calls
 // in nested RSCs to populate the cache before the `<HydrationBoundary>` serializes it.
 export const getQueryClient = cache(makeQueryClient);
 export const trpc = createTRPCOptionsProxy({

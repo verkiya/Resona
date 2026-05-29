@@ -17,7 +17,7 @@ function getQueryClient() {
     // Server: Always return a fresh QueryClient per request to prevent cross-request data leaks.
     return makeQueryClient();
   }
-  // Browser: Reuse a single QueryClient. 
+  // Browser: Reuse a single QueryClient.
   // If we recreated this on every render, Suspense boundaries would drop the cache and cause infinite refetches.
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
   return browserQueryClient;

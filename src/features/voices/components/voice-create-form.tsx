@@ -308,7 +308,7 @@ export function VoiceCreateForm({
         params.set("description", description);
       }
 
-      // We send metadata via URL search params so the POST body can strictly contain 
+      // We send metadata via URL search params so the POST body can strictly contain
       // the raw audio blob. This avoids the overhead of parsing `multipart/form-data` on the server.
       const response = await fetch(`/api/voices/create?${params.toString()}`, {
         method: "POST",
@@ -348,11 +348,11 @@ export function VoiceCreateForm({
 
         toast.success("Voice created successfully!");
 
+        // Invalidate the `voices.getAll` query to ensure the newly created voice
+        // appears immediately in the voice selector and catalog UI.
         queryClient.invalidateQueries({
           queryKey: trpc.voices.getAll.queryKey(),
         });
-        // Invalidate the `voices.getAll` query to ensure the newly created voice 
-        // appears immediately in the voice selector and catalog UI.
         form.reset();
       } catch (error) {
         const message =
