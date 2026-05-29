@@ -81,7 +81,7 @@ export default function LearningsPage() {
               <div className="space-y-1">
                 {[
                   { label: "Browser (Next.js / React)", note: "Client" },
-                  { label: "Clerk Middleware", note: "Auth + org check" },
+                  { label: "Clerk Proxy", note: "Auth + org check" },
                   { label: "tRPC API Layer", note: "Type-safe RPC" },
                   { label: "Business Logic", note: "Validation + checks" },
                   { label: "Prisma ORM", note: "Relational queries" },
@@ -278,8 +278,8 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
                 desc: "Audio assets in S3 are never publicly accessible. Signed URLs expire after a short window, preventing unauthorized hotlinking or enumeration.",
               },
               {
-                title: "Middleware Route Protection",
-                desc: "Clerk middleware enforces authentication and organization selection on all protected routes before any page or API handler runs.",
+                title: "Proxy Route Protection",
+                desc: "Clerk-backed Proxy enforces authentication and organization selection on protected page routes; API and tRPC handlers keep their own server-side guards.",
               },
               {
                 title: "Upload Validation",
@@ -291,7 +291,7 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
               },
               {
                 title: "Error Monitoring",
-                desc: "Sentry captures failures with org/voice/request context attached. Sensitive values are never logged — only opaque identifiers.",
+                desc: "Sentry captures failures, while critical paths log opaque org and voice identifiers. Sensitive values are never logged.",
               },
               {
                 title: "Environment Isolation",
@@ -340,8 +340,8 @@ const voice = await prisma.voice.findUnique({
           </div>
           <div className="space-y-3">
             {[
-              "Organization selection is enforced before page or API logic runs",
-              "Session context carries orgId into every tRPC procedure",
+              "Organization selection is enforced before protected page logic runs",
+              "Org-scoped tRPC procedures resolve orgId before tenant data access",
               "Database reads are always filtered by an explicit organization boundary",
               "Org switching updates the active context instead of reusing stale state",
               "Voice and generation records are only visible inside the owning org",
@@ -372,7 +372,7 @@ if (process.env.NODE_ENV !== "production") {
             />
             <ChallengeCard
               title="Next.js route groups and layout confusion"
-              description="Route groups affect layout organization, not URL structure. Misunderstanding that distinction can accidentally attach an authenticated layout to a public route or expose a protected route in the wrong shell. The fix was to treat route groups as structure only and keep access control in middleware."
+              description="Route groups affect layout organization, not URL structure. Misunderstanding that distinction can accidentally attach an authenticated layout to a public route or expose a protected route in the wrong shell. The fix was to treat route groups as structure only and keep access control in proxy.ts and server handlers."
             />
             <ChallengeCard
               title="Signed URL expiry during long playback sessions"
@@ -398,7 +398,7 @@ if (process.env.NODE_ENV !== "production") {
               },
               {
                 title: "Multi-tenancy has to be foundational",
-                body: "Retrofitting tenant isolation into an existing codebase is painful. If organizations are part of the product, they need to be treated as a first-class database, routing, and middleware concern from day one.",
+                body: "Retrofitting tenant isolation into an existing codebase is painful. If organizations are part of the product, they need to be treated as a first-class database, routing, and server-guard concern from day one.",
               },
               {
                 title: "Type safety is a productivity multiplier",
@@ -410,7 +410,7 @@ if (process.env.NODE_ENV !== "production") {
               },
               {
                 title: "Observability before production, not after",
-                body: "Sentry was set up before the first deployment. When things broke, the stack traces, org context, and request metadata were already there, which made debugging a fast exercise instead of a forensic one.",
+                body: "Sentry was set up before the first deployment. When things broke, stack traces and structured logs around generation and billing paths made debugging a fast exercise instead of a forensic one.",
               },
               {
                 title: "Signed URLs are the correct default for private media",
@@ -537,7 +537,7 @@ if (process.env.NODE_ENV !== "production") {
             />
             <TradeoffCard
               question="How does Sentry context get enriched?"
-              answer="Every tRPC procedure runs inside middleware that attaches orgId, userId, and request metadata to the Sentry scope. When an error bubbles up, the stack trace arrives with enough context to identify the tenant, the action, and the input shape — without logging sensitive content like voice audio or billing tokens."
+              answer="tRPC runs through Sentry middleware with RPC input capture, and critical generation paths log opaque org and voice identifiers. When an error bubbles up, the stack trace and nearby structured logs give enough context to identify the failing path without logging sensitive content like voice audio or billing tokens."
               icon={<Layers3 className="h-4 w-4 text-primary" />}
             />
             <TradeoffCard

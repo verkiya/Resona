@@ -1,4 +1,4 @@
-// Sentry initialization for Next.js edge/middleware runtimes.
+// Sentry initialization for Next.js Edge and Proxy runtimes.
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({

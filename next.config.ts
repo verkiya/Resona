@@ -1,9 +1,10 @@
-// Next.js config — Sentry wrapper and build settings for the Resona app.
+// Next.js config for the Resona app.
+// Sets request-size behavior for audio uploads and wraps the build with Sentry
+// source-map, tunnel, and logging options.
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   devIndicators: false,
   experimental: {
     proxyClientMaxBodySize: "20mb",
@@ -29,7 +30,7 @@ export default withSentryConfig(nextConfig, {
 
   // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
   // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+  // Note: Check that the configured route will not match with your Next.js Proxy, otherwise reporting of client-
   // side errors will fail.
   tunnelRoute: "/monitoring",
 

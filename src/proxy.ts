@@ -1,4 +1,4 @@
-// Next.js Edge Middleware (Clerk Auth).
+// Next.js Proxy for Clerk-backed route protection.
 // Intercepts all page navigations to enforce authentication and organization-level scoping.
 // Bypasses protection for public pages and API/tRPC routes (which implement their own guards).
 // Redirects authenticated users missing an active organization to the /org-selection flow.
