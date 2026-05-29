@@ -32,7 +32,7 @@
   --accent: oklch(0.75 0.15 300);
   --accent-foreground: oklch(1 0 0);
 
-  --destructive: oklch(0.61 0.17 5);
+  --destructive: oklch(0.62 0.19 20);
   --destructive-foreground: oklch(1 0 0);
 
   --border: oklch(0.91 0.012 285);

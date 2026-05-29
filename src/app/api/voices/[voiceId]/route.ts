@@ -1,4 +1,8 @@
-// Authenticated voice preview proxy — system voices are global; custom voices must belong to the caller's org.
+// Authenticated Voice Preview Proxy Route.
+// Streams voice sample audio from S3.
+// Enforces dual-mode access control:
+// - `SYSTEM` voices are globally accessible.
+// - `CUSTOM` voices enforce strict org-level ownership matching.
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { getSignedAudioUrl } from "@/lib/aws_s3";
@@ -48,7 +52,9 @@ export async function GET(
   return new Response(audioResponse.body, {
     headers: {
       "Content-Type": contentType,
-      // system voices are cacheable for longer because they are immutable, while custom voices stay short-lived so changes and deletions are reflected sooner.
+      // Differential Caching Strategy:
+      // System voices are immutable and public, so they can be aggressively cached by the CDN.
+      // Custom voices are private to the org, so they must use a `private` cache control.
       "Cache-Control":
         voice.variant === "SYSTEM"
           ? "public, max-age=86400"

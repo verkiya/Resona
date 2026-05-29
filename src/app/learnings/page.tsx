@@ -521,6 +521,151 @@ if (process.env.NODE_ENV !== "production") {
           </div>
         </Block>
 
+        <Block label="11" title="Error Handling Patterns">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            A production product needs a coherent error strategy, not ad-hoc
+            try/catch blocks scattered across the codebase. The pattern here is
+            layered: tRPC procedures throw typed errors, the frontend catches
+            them with consistent toast feedback, and Sentry captures everything
+            with enough context to debug without reproducing.
+          </p>
+          <div className="space-y-6">
+            <TradeoffCard
+              question="Why typed tRPC errors instead of generic status codes?"
+              answer="tRPC's TRPCError carries a code (UNAUTHORIZED, FORBIDDEN, NOT_FOUND, etc.) that maps directly to the business domain. The frontend can pattern-match on error codes to show contextual messages — 'upgrade your plan' vs 'voice not found' — instead of a generic 'something went wrong'. This makes error handling a product feature rather than a debug afterthought."
+              icon={<Bug className="h-4 w-4 text-primary" />}
+            />
+            <TradeoffCard
+              question="How does Sentry context get enriched?"
+              answer="Every tRPC procedure runs inside middleware that attaches orgId, userId, and request metadata to the Sentry scope. When an error bubbles up, the stack trace arrives with enough context to identify the tenant, the action, and the input shape — without logging sensitive content like voice audio or billing tokens."
+              icon={<Layers3 className="h-4 w-4 text-primary" />}
+            />
+            <TradeoffCard
+              question="What about client-side error boundaries?"
+              answer="React error boundaries catch rendering crashes and show a recovery UI instead of a blank screen. Combined with tRPC's onError callback and toast notifications, the user always sees feedback — whether the failure is a network timeout, a validation rejection, or an unexpected server error."
+              icon={<ShieldCheck className="h-4 w-4 text-primary" />}
+            />
+          </div>
+        </Block>
+
+        <Block label="12" title="State Management Strategy">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            State management in Resona is deliberately split across three
+            boundaries. Each boundary owns a specific responsibility, and mixing
+            them is where most React apps accumulate unnecessary complexity.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3 mb-6">
+            {[
+              {
+                title: "Server State",
+                desc: "Owned by tRPC + React Query. Voices, generations, and subscription status are fetched, cached, and invalidated through query keys. No manual Redux-style stores.",
+              },
+              {
+                title: "URL State",
+                desc: "Owned by Nuqs. Search filters, active voice selection, and pagination live in the URL. This makes the UI bookmarkable, shareable, and free from component-level sync issues.",
+              },
+              {
+                title: "Ephemeral UI State",
+                desc: "Owned by React useState/useRef. Modal open/close, recording status, playback position — state that has no meaning outside the current session and should never be persisted.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border bg-card p-5">
+                <h3 className="font-semibold text-sm mb-2">{item.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-xl border bg-card p-5 overflow-x-auto">
+            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`// Example: URL state with Nuqs keeps filters shareable and persistent.
+// No useEffect sync — the URL is the single source of truth.
+
+const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
+const [voiceType, setVoiceType] = useQueryState("type", parseAsString);
+
+// tRPC query reads directly from URL state:
+const { data } = trpc.voice.list.useQuery({
+  search,
+  variant: voiceType ?? undefined,
+  orgId: ctx.orgId,
+});`}</pre>
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            The key discipline is never duplicating server state in local
+            component state. If it came from a query, it stays in the query
+            cache. If it belongs in the URL, Nuqs owns it.
+          </p>
+        </Block>
+
+        <Block label="13" title="Inference Orchestration & Failure Recovery">
+          <p className="text-muted-foreground leading-relaxed mb-6">
+            The generation pipeline crosses three systems (tRPC → Modal/FastAPI
+            → S3), so the orchestration has to handle partial failures at every
+            boundary. The pattern is a two-phase write with rollback, plus
+            fire-and-forget metering so billing telemetry never blocks the user
+            response.
+          </p>
+          <div className="rounded-xl border bg-card p-5 mb-6 overflow-x-auto">
+            <pre className="text-sm leading-relaxed text-muted-foreground whitespace-pre">{`// Simplified generation orchestration from generations.ts
+
+// Phase 1: Create DB row (no objectKey yet)
+const generation = await prisma.generation.create({
+  data: { orgId, text, voiceName, voiceId, ...params },
+});
+
+try {
+  // Phase 2: Upload WAV to S3, then link to DB row
+  await uploadAudio({ buffer, key: objectKey });
+  await prisma.generation.update({
+    where: { id: generation.id },
+    data: { objectKey },
+  });
+} catch {
+  // Rollback: delete orphaned DB row so clients never see
+  // a generation without audio
+  await prisma.generation.delete({ where: { id: generation.id } });
+  throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+}
+
+// Fire-and-forget: metering cannot slow or fail the response
+polar.events.ingest({ ... }).catch(() => {});`}</pre>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 mb-6">
+            {[
+              {
+                title: "Two-Phase Write with Rollback",
+                desc: "The DB row is created before the S3 upload. If the upload fails, the row is deleted so clients never see a generation without audio. This avoids orphaned records without requiring distributed transactions.",
+              },
+              {
+                title: "Fire-and-Forget Metering",
+                desc: "Polar usage events emit after success but are non-blocking. The .catch(() => {}) ensures billing telemetry cannot slow down or break the generation response path.",
+              },
+              {
+                title: "Cross-Language Type Safety",
+                desc: "The FastAPI inference server exposes an OpenAPI spec. A dev script (sync-api.ts) fetches it and generates TypeScript types. The client uses openapi-fetch with those types — so the Python ↔ TypeScript boundary is type-checked at compile time.",
+              },
+              {
+                title: "Modal CloudBucketMount",
+                desc: "The GPU container mounts the S3 bucket read-only at /storage. Voice reference audio is accessed as local files inside the container — no per-request S3 fetches during inference.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-xl border bg-card p-5">
+                <h3 className="font-semibold text-sm mb-2">{item.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            The important constraint is ordering: verify subscription → generate
+            audio → store in S3 → write objectKey → emit usage event. Each step
+            depends on the previous one succeeding, and failure at any point
+            rolls back cleanly without leaving inconsistent state.
+          </p>
+        </Block>
+
         <section className="rounded-2xl border bg-card p-8 mt-6">
           <div className="flex items-center gap-3 mb-5">
             <Code2 className="h-5 w-5 text-primary" />

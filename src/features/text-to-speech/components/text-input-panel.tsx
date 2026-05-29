@@ -1,4 +1,7 @@
-// Main prompt textarea and character limit UI inside the TTS form.
+// Text Input Panel Component.
+// Provides the primary textarea for text-to-speech generation.
+// Synchronizes character counts and live billing estimations ($0.10/1K chars)
+// with the parent form state.
 "use client";
 
 import { useStore } from "@tanstack/react-form";

@@ -1,4 +1,7 @@
-// Voice catalog and deletion — lists SYSTEM + org CUSTOM voices; delete removes DB row and best-effort S3 cleanup.
+// Voices tRPC Router.
+// Manages the catalog of available voices, distinguishing between global SYSTEM voices 
+// and org-scoped CUSTOM clones.
+// Handles voice deletion, ensuring database cleanup and best-effort S3 object removal.
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { prisma } from "@/lib/db";
@@ -93,7 +96,8 @@ export const voicesRouter = createTRPCRouter({
       await prisma.voice.delete({ where: { id: voice.id } });
 
       if (voice.objectKey) {
-        // S3 delete is best-effort so a storage failure does not block removing the voice from the app.
+        // We delete the DB record first, then attempt to delete the S3 object.
+        // The S3 delete is fire-and-forget so a storage API timeout doesn't block UI progress.
         await deleteAudio(voice.objectKey).catch(() => {});
       }
 

@@ -1,4 +1,6 @@
-// Global error boundary: reports failures to Sentry and renders Next's fallback error UI when the App Router crashes.
+// Global Error Boundary.
+// Catches unhandled exceptions that escape the App Router.
+// Captures stack traces to Sentry and renders a generic fallback UI to prevent a blank white screen.
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
@@ -17,7 +19,7 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body>
-        {/* NextError requires a numeric status code, but App Router errors do not expose one, so 0 renders the generic fallback. */}
+        {/* NextError enforces a numeric `statusCode` prop. Since App Router errors lack HTTP status codes, we pass `0` to render the generic fallback. */}
         <NextError statusCode={0} />
       </body>
     </html>

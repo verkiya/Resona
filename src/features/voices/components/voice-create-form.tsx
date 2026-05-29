@@ -1,4 +1,7 @@
-// Custom voice creation UI: upload/record audio and POST bytes to /api/voices/create with query metadata.
+// Voice Creation Form Component.
+// Provides the UI for creating custom voices via file upload or live microphone recording.
+// Submits metadata as query parameters and raw audio bytes as the POST body to `/api/voices/create`.
+// Validates inputs locally before invoking the network request.
 "use client";
 
 import { useState } from "react";
@@ -305,7 +308,8 @@ export function VoiceCreateForm({
         params.set("description", description);
       }
 
-      // Metadata goes in query params; raw audio bytes are the POST body.
+      // We send metadata via URL search params so the POST body can strictly contain 
+      // the raw audio blob. This avoids the overhead of parsing `multipart/form-data` on the server.
       const response = await fetch(`/api/voices/create?${params.toString()}`, {
         method: "POST",
         headers: { "Content-Type": file.type },
@@ -347,7 +351,8 @@ export function VoiceCreateForm({
         queryClient.invalidateQueries({
           queryKey: trpc.voices.getAll.queryKey(),
         });
-        // We refetch the voices here
+        // Invalidate the `voices.getAll` query to ensure the newly created voice 
+        // appears immediately in the voice selector and catalog UI.
         form.reset();
       } catch (error) {
         const message =

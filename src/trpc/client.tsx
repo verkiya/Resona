@@ -1,4 +1,6 @@
-// Client-side tRPC + React Query provider with a singleton browser query client.
+// Client-Side tRPC & React Query Provider.
+// Sets up the `useTRPC` hooks and the browser-side QueryClient.
+// Ensures a singleton pattern is used in the browser to prevent cache duplication during Suspense boundaries.
 "use client";
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -12,10 +14,11 @@ export const { TRPCProvider, useTRPC } = createTRPCContext<AppRouter>();
 let browserQueryClient: QueryClient;
 function getQueryClient() {
   if (typeof window === "undefined") {
-    // Each RSC request gets a fresh QueryClient on the server.
+    // Server: Always return a fresh QueryClient per request to prevent cross-request data leaks.
     return makeQueryClient();
   }
-  // Reuse one browser QueryClient so suspense does not create duplicates.
+  // Browser: Reuse a single QueryClient. 
+  // If we recreated this on every render, Suspense boundaries would drop the cache and cause infinite refetches.
   if (!browserQueryClient) browserQueryClient = makeQueryClient();
   return browserQueryClient;
 }

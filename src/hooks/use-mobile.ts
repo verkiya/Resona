@@ -1,4 +1,6 @@
-// matchMedia hook for the 1024px breakpoint used to switch mobile layouts.
+// Responsive Breakpoint Hook.
+// Tracks the window width against the 1024px boundary via `matchMedia`.
+// Determines whether the dashboard should render its mobile or desktop layout.
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 1024;

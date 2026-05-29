@@ -1,4 +1,7 @@
-// WaveSurfer lifecycle hook for TTS playback; recreates per URL and tears down on unmount.
+// WaveSurfer Audio Visualizer Hook.
+// Manages the complete lifecycle of the WaveSurfer.js canvas for TTS playback.
+// Recreates the instance when the URL changes and guarantees teardown on unmount
+// to prevent zombie audio nodes.
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -106,7 +109,8 @@ export function useWaveSurfer({
       setDuration(ws.getDuration());
       setCurrentTime(0);
       ws.seekTo(0);
-// catch NotAllowedError when browser blocks autoplay without user interaction
+// Catch NotAllowedError when the browser blocks autoplay without user interaction.
+// This is a common requirement in modern browsers to prevent unexpected audio playback.
       if (autoplay) {
         ws.play().catch(() => {});
       }

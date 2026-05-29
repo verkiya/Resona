@@ -1,4 +1,6 @@
-// App-wide 404 boundary: rendered when no route matches, with branded recovery links.
+// Global Not Found Boundary (404).
+// Renders a branded fallback UI when a requested route or resource does not exist.
+// Provides navigational escape hatches back to valid application states.
 
 import Link from "next/link";
 import { Home, AudioLines, ArrowLeft } from "lucide-react";

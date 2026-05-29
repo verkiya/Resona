@@ -1,4 +1,6 @@
-// Root tRPC router — voices (catalog), generations (TTS + S3), billing (Polar).
+// Root tRPC Router.
+// Combines all domain-specific routers into a single API surface.
+// The exported `AppRouter` type acts as the single source of truth for all client-side API typings.
 import { createTRPCRouter } from "../init";
 import { voicesRouter } from "./voices";
 import { generationsRouter } from "./generations";

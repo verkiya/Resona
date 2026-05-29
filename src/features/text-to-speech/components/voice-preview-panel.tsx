@@ -1,5 +1,8 @@
 "use client";
-// Desktop playback UI for a saved generation — audioUrl points at /api/audio/:id and WaveSurfer handles waveform + transport.
+// Voice Preview Panel Component.
+// Renders the WaveSurfer playback UI for a completed TTS generation.
+// Fetches the audio stream through the authenticated `/api/audio/:id` proxy route
+// to protect the underlying S3 object URL.
 
 import { useState } from "react";
 import { Pause, Play, Download, Redo, Undo } from "lucide-react";

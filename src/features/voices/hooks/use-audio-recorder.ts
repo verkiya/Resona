@@ -1,4 +1,7 @@
-// Record/stop/cleanup hook backing VoiceRecorder (stream, timer, blob output).
+// Audio Recorder Hook.
+// Bridges the browser's `MediaStream` API with `RecordRTC` and `WaveSurfer` 
+// to record, visualize, and output raw audio blobs for custom voice creation.
+// Enforces strict cleanup of microphone tracks and timers.
 import { useState, useRef, useCallback, useEffect } from "react";
 import type RecordRTCType from "recordrtc";
 import WaveSurfer from "wavesurfer.js";

@@ -1,6 +1,7 @@
-// Renders one custom voice with preview playback (/api/voices/:id)
-// and delete via voices.delete mutation.
-
+// Voice Card Component.
+// Renders a single voice item (System or Custom) within the catalog.
+// Provides inline audio previews streamed from `/api/voices/:id`.
+// Handles deletion flows for custom voices owned by the organization.
 import Link from "next/link";
 import ReactCountryFlag from "react-country-flag";
 import { Mic, MoreHorizontal, Pause, Play, Trash2 } from "lucide-react";
@@ -50,9 +51,9 @@ const regionNames = new Intl.DisplayNames(["en"], {
   type: "region",
 });
 
-// Parses voice locale values into a normalized country code + readable region.
-// Supports both locale format ("en-US") and direct country codes ("US").
-// Invalid or missing locales gracefully fallback to a neutral globe state.
+// Locale Normalization Utility.
+// Converts diverse locale string formats ("en-US", "US") into standard ISO-3166 alpha-2 
+// country codes for deterministic flag rendering. Fallback to a globe for unknown regions.
 function parseLanguage(locale?: string | null) {
   if (!locale?.trim()) {
     return {
