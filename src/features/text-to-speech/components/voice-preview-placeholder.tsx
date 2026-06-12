@@ -1,8 +1,5 @@
 // Empty state shown before the first generation exists on the new-TTS page.
-import Link from "next/link";
 import {  AudioWaveformIcon, MicIcon } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 
 export function VoicePreviewPlaceholder() {
   return (

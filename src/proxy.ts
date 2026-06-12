@@ -3,7 +3,6 @@
 // Bypasses protection for public pages and API/tRPC routes (which implement their own guards).
 // Redirects authenticated users missing an active organization to the /org-selection flow.
 import {
-  auth,
   clerkMiddleware,
   createRouteMatcher,
 } from "@clerk/nextjs/server";
