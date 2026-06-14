@@ -5,11 +5,9 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ShieldCheck,
-  Database,
   CreditCard,
   HardDrive,
   Bug,
-  Mic2,
   Zap,
   Server,
   Code2,

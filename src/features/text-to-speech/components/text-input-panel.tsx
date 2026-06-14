@@ -5,7 +5,7 @@
 "use client";
 
 import { useStore } from "@tanstack/react-form";
-import { Coins, EraserIcon, RefreshCwIcon, X } from "lucide-react";
+import { Coins, EraserIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
