@@ -131,7 +131,6 @@ export default function LearningsPage() {
                 { service: "Auth", host: "Clerk" },
                 { service: "Billing", host: "Polar SDK" },
                 { service: "Error Monitoring", host: "Sentry" },
-                { service: "CI / CD", host: "GitHub Actions" },
               ].map((t) => (
                 <div key={t.service} className="rounded-lg border bg-card p-3">
                   <p className="text-[11px] text-muted-foreground mb-1">
@@ -178,7 +177,7 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
           <div className="space-y-6">
             <TradeoffCard
               question="Why self-host inference instead of an API?"
-              answer="Third-party voice APIs charge per character or per request, which turns usage into a direct tax on growth. Self-hosting Chatterbox TTS shifts the cost model, removes quota ceilings, and lets the product own latency, scaling, and deployment behavior. The tradeoff is operational work, but that work is part of the product rather than a dependency you cannot influence."
+              answer="Self-hosting Chatterbox TTS shifts generation into owned infrastructure instead of a voice API contract. The product gains control over model behavior, storage access, and deployment boundaries. The tradeoff is operational work: Modal, bucket mounts, API keys, and failure handling all become part of the application."
               icon={<Zap className="h-4 w-4 text-primary" />}
             />
             <TradeoffCard
@@ -293,7 +292,7 @@ Billing: Polar (subscriptions + usage events at request time)`}</pre>
               },
               {
                 title: "Environment Isolation",
-                desc: "All secrets are environment-scoped. No credentials are hardcoded or committed. CI/CD pipelines use encrypted secret storage.",
+                desc: "All required secrets are environment-scoped and validated at startup. The code expects credentials from deployment environments, not hardcoded values.",
               },
               {
                 title: "Polar at request time",
@@ -392,7 +391,7 @@ if (process.env.NODE_ENV !== "production") {
             {[
               {
                 title: "Owning inference changes the economics",
-                body: "Self-hosting TTS removes per-request cost, eliminates vendor quota risk, and gives infrastructure-level control. The operational complexity is real, but the leverage is larger because the product owns the entire cost curve.",
+                body: "Self-hosting TTS moves generation cost, reliability, and model behavior into infrastructure the product controls. The operational complexity is real, but the system can evolve without being constrained by a third-party voice API surface.",
               },
               {
                 title: "Multi-tenancy has to be foundational",
@@ -637,11 +636,11 @@ polar.events.ingest({ ... }).catch(() => {});`}</pre>
               },
               {
                 title: "Fire-and-Forget Metering",
-                desc: "Polar usage events emit after success but are non-blocking. The .catch(() => {}) ensures billing telemetry cannot slow down or break the generation response path.",
+                desc: "Polar usage events emit after success but are non-blocking. The event names are part of the billing contract: tts_generation sums the characters metadata property, while voice_creation counts successful clone creations.",
               },
               {
                 title: "Cross-Language Type Safety",
-                desc: "The FastAPI inference server exposes an OpenAPI spec. A dev script (sync-api.ts) fetches it and generates TypeScript types. The client uses openapi-fetch with those types — so the Python ↔ TypeScript boundary is type-checked at compile time.",
+                desc: "The FastAPI inference server exposes an OpenAPI spec. scripts/sync-api.ts fetches it and regenerates TypeScript types, so changing chatterbox_tts.py requires syncing the client contract.",
               },
               {
                 title: "Modal CloudBucketMount",

@@ -98,6 +98,7 @@ export const voicesRouter = createTRPCRouter({
       if (voice.objectKey) {
         // We delete the DB record first, then attempt to delete the S3 object.
         // The S3 delete is fire-and-forget so a storage API timeout doesn't block UI progress.
+        // If strict storage hygiene becomes required, add a reconciliation job for missed deletes.
         await deleteAudio(voice.objectKey).catch(() => {});
       }
 

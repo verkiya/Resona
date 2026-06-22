@@ -51,6 +51,7 @@ if load_dotenv is not None:
 
 # Modal deploy runbook — create hf-token, chatterbox-api-key, and aws-storage secrets; then `python -m modal deploy chatterbox_tts.py`.
 # POST /generate expects JSON { prompt, voice_key } with header x-api-key; voice_key is an S3 key under the read-only bucket mount (see module docstring).
+# The Next.js app writes S3 objects first; Modal only reads them, which keeps inference stateless across requests.
 # Hobby tradeoffs: wildcard CORS, shared API key, no rate limiting — tighten before public production.
 
 

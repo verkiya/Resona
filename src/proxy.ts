@@ -19,6 +19,8 @@ export default clerkMiddleware(async (auth, req) => {
   const isApiRoute = pathname.startsWith("/api") || pathname.startsWith("/trpc");
 
   if (isApiRoute) {
+    // API routes and tRPC procedures are intentionally responsible for their own Clerk/org guards.
+    // Keeping this proxy page-focused avoids duplicating auth policy across two request layers.
     return NextResponse.next();
   }
 

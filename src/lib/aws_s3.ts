@@ -1,6 +1,7 @@
 // S3 Storage Provider.
 // Handles object storage for voice samples and generated TTS audio.
 // Generates time-limited signed URLs to protect private assets from unauthorized access.
+// The app owns all writes; Modal reads voice reference audio through its read-only bucket mount.
 import {
   S3Client,
   PutObjectCommand,
@@ -25,7 +26,7 @@ type UploadAudioOptions = {
 };
 
 function validateKey(key: string) {
-  // every S3 operation goes through this guard so a malformed key cannot escape the expected storage prefix.
+  // Every S3 operation goes through this guard so malformed or traversal-style keys cannot escape the expected storage prefix.
   if (!key || key.includes("..")) {
     throw new Error("Invalid key");
   }

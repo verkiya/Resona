@@ -1,4 +1,5 @@
 // Dev script — fetches Chatterbox OpenAPI and regenerates src/types/chatterbox-api.d.ts (requires CHATTERBOX_API_URL).
+// Run after changing or redeploying chatterbox_tts.py so the TypeScript client matches the Modal/FastAPI contract.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

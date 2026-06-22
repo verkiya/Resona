@@ -1,4 +1,5 @@
 // One-off script to upload bundled system voice WAVs to S3 and upsert SYSTEM Voice rows (see CANONICAL_SYSTEM_VOICE_NAMES).
+// Adding a bundled preset requires updating the WAV filename, canonical name list, and metadata map together.
 import "dotenv/config";
 
 import fs from "node:fs/promises";

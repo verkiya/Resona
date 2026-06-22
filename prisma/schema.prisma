@@ -53,6 +53,9 @@ model Voice {
   @@index([orgId])
   @@index([objectKey])         // speeds up S3 key lookups when resolving voice audio.
   @@unique([name, variant])    // one SYSTEM row per preset name; CUSTOM names are scoped per org in app logic.
+  // NOTE:
+  // Implementation intent is unclear from local context.
+  // The current DB constraint makes CUSTOM voice names globally unique by variant, not org-scoped.
 }
 
 model Generation {
@@ -78,5 +81,5 @@ model Generation {
 
   @@index([orgId])
   @@index([voiceId])
-  @@index([objectKey])   // optional index for generation audio proxy lookups by S3 key.
+  @@index([objectKey])   // optional index if future reconciliation jobs need to map S3 keys back to generation rows.
 }

@@ -1,6 +1,6 @@
 // Text Input Panel Component.
 // Provides the primary textarea for text-to-speech generation.
-// Synchronizes character counts and live billing estimations ($0.10/1K chars)
+// Synchronizes character counts and the estimate derived from COST_PER_UNIT
 // with the parent form state.
 "use client";
 

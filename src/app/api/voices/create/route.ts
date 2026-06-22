@@ -174,6 +174,7 @@ export async function POST(request: Request) {
   }
   // Voice creation is already durable at this point; Polar metering must not
   // make the successful upload appear failed to the user.
+  // The Polar meter for this path counts successful `voice_creation` events.
   polar.events
     .ingest({
       events: [

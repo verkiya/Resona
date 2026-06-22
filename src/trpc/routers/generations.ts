@@ -183,8 +183,8 @@ export const generationsRouter = createTRPCRouter({
         });
       } catch {
         if (generationId) {
-          // Rollback: If the S3 upload fails after the DB record is created, 
-          // delete the orphaned row so the UI never displays a broken generation.
+          // Rollback: storage and Postgres are not transactional together.
+          // If the S3 upload or final update fails, delete the orphaned row so the UI never displays a broken generation.
           await prisma.generation
             .delete({
               where: {
@@ -213,6 +213,7 @@ export const generationsRouter = createTRPCRouter({
 
       // Fire-and-forget telemetry:
       // Ingesting usage events into Polar must never block or fail the client's generation request.
+      // The Polar meter is configured around event `tts_generation` and metadata property `characters`.
       polar.events
         .ingest({
           events: [
