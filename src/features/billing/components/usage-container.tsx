@@ -47,7 +47,7 @@ function UpgradeCard() {
       <div className="grid grid-cols-2 gap-2">
         <div className="rounded-xl border border-border/50 bg-background/60 p-3">
           <p className="text-lg font-bold tracking-tight text-foreground">
-            $0.10
+            $0.30
           </p>
           <p className="text-[11px] text-muted-foreground">per 1K chars</p>
         </div>

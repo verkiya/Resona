@@ -27,7 +27,7 @@
 
 ## 🌟 Overview
 
-Full-stack AI voice generation platform with self-hosted inference, multi-tenant organization workspaces, metered subscription billing, and signed-URL media delivery.
+Full-stack AI voice generation platform with self-hosted inference, multi-tenant organization workspaces, metered subscription billing, and private media delivery.
 
 | Capability | Description |
 |:---|:---|
@@ -35,7 +35,7 @@ Full-stack AI voice generation platform with self-hosted inference, multi-tenant
 | 🧬 **Voice Cloning** | Upload or record custom voices, scoped per organization |
 | 🏢 **Multi-Tenancy** | Org-isolated workspaces with Clerk-backed Next.js Proxy enforcement |
 | 💳 **Metered Billing** | Polar SDK subscriptions with post-success usage event emission |
-| ☁️ **Secure Storage** | Private S3 buckets with signed URL delivery through app proxies |
+| ☁️ **Secure Storage** | Private S3 buckets, opaque object keys, and authenticated app proxies |
 | 🔭 **Observability** | Sentry error tracking with structured logs on critical paths |
 
 ---
@@ -104,7 +104,19 @@ Full-stack AI voice generation platform with self-hosted inference, multi-tenant
 | 🔐 Auth | **Clerk** — users, organizations, sessions |
 | 💳 Billing | **Polar SDK** — subscriptions, metered usage |
 | 🔭 Monitoring | **Sentry** — errors, session replay |
-| 🔄 CI / CD | **GitHub Actions** — lint, build, preview, deploy |
+
+### 🧱 Architectural Boundaries
+
+| Boundary | Responsibility |
+|:---|:---|
+| Frontend | Next.js App Router pages, React Server Components where possible, client components for waveform, recording, forms, and dashboard interactions |
+| API Layer | tRPC routers for product mutations/queries; route handlers for binary upload and audio streaming |
+| Auth Layer | Clerk sessions and organizations; Proxy guards page routes while API/tRPC handlers enforce auth again server-side |
+| Data Layer | Prisma models for voices and generations only; Clerk and Polar remain external systems of record |
+| Billing Layer | Polar checkout, portal sessions, subscription checks, and post-success usage events keyed by Clerk org ID |
+| Storage Layer | AWS S3 stores system voices, custom voice references, and generated WAVs behind application-controlled access |
+| Inference Layer | Modal-hosted FastAPI service wraps Chatterbox TTS and reads voice reference audio from the S3 bucket mount |
+| Observability | Sentry captures errors and request context on critical API/tRPC paths |
 
 ---
 
@@ -112,11 +124,22 @@ Full-stack AI voice generation platform with self-hosted inference, multi-tenant
 
 Self-hosted Chatterbox TTS inference running on Modal (FastAPI + GPU). No third-party voice API dependency.
 
-- Self-hosted inference — no per-request API fees, no vendor quota ceilings
+- Self-hosted inference shifts generation cost and reliability concerns into owned infrastructure
 - Real-time text-to-speech with configurable parameters (temperature, topP, topK)
 - WaveSurfer.js waveform rendering with scrubbing, seeking, and progressive streaming
 - Desktop + mobile audio players with download support
 - Signed URL delivery — S3 buckets stay private, browsers never see raw object keys
+
+### Generation Flow
+
+1. The dashboard submits text, voice ID, and inference parameters through `generations.create`.
+2. The tRPC procedure verifies an active Polar subscription for the current Clerk organization.
+3. The selected voice must be either a global `SYSTEM` voice or a `CUSTOM` voice owned by the same organization.
+4. The Next.js API calls the Modal/FastAPI Chatterbox endpoint and receives WAV bytes.
+5. A `Generation` row is created, the WAV is uploaded to S3, and the row is updated with the S3 object key.
+6. If storage or the final DB update fails, the newly created row is deleted so the UI does not show broken audio.
+7. Polar usage is emitted only after successful storage using event `tts_generation` with metadata `{ characters }`.
+8. Playback goes through `/api/audio/:generationId`, which re-checks organization ownership before streaming audio.
 
 ---
 
@@ -131,6 +154,16 @@ Org-scoped custom voice creation with upload and in-browser recording.
 | 🎨 Avatars | Auto-generated via DiceBear |
 | 🔍 Search | Debounced queries with Nuqs URL state |
 | 🗑️ Delete | Cascade-safe — `SetNull` on generation foreign keys |
+
+### Voice Cloning Flow
+
+1. The client uploads raw audio bytes to `/api/voices/create` with validated metadata in query params.
+2. The route checks Clerk auth, active organization, and Polar subscription before reading the body.
+3. The server validates file presence, size, content type, parseable audio metadata, and minimum duration.
+4. A `CUSTOM` voice row is created without an object key, then the audio is uploaded to S3.
+5. The row is updated with `voices/orgs/:orgId/:voiceId`; failures roll back the initial DB insert.
+6. Polar usage is emitted only after durable storage using event `voice_creation`.
+7. Previews go through `/api/voices/:voiceId`; `SYSTEM` voices are globally readable after auth, while `CUSTOM` voices require org ownership.
 
 ---
 
@@ -184,6 +217,19 @@ Usage event emitted ──► Polar meter updated (only after success)
 
 Usage events emit **after** S3 upload confirmation, not before. Failed generations never increment the meter.
 
+### Polar Contract
+
+Polar uses the Clerk organization ID as `externalCustomerId`. That is the multi-tenant billing boundary: subscriptions, portal sessions, and usage events all attach to the organization rather than an individual user.
+
+Configured billing behavior depends on Polar dashboard state plus the event names emitted by code:
+
+| Product Surface | Code Event | Meter Semantics |
+|:---|:---|:---|
+| Text-to-speech | `tts_generation` | Sum metadata property `characters` |
+| Custom voice creation | `voice_creation` | Count successful events |
+
+`billing.getStatus` reads Polar customer state at request time and sums active subscription meter amounts for the dashboard estimate. There is no local subscription cache or webhook mirror in Postgres.
+
 ---
 
 ## 🗄️ Database Schema
@@ -224,7 +270,7 @@ Layered controls across routing, storage, validation, and billing enforcement.
 | 📏 **Upload Validation** | MIME type, file size (~20MB), audio duration — server is authoritative. |
 | 💳 **Premium Enforcement** | tRPC procedures enforce billing. Bypassing UI doesn't bypass policy. |
 | 🔭 **Error Monitoring** | Sentry captures errors and structured logs from critical request paths. |
-| 🔑 **Secrets** | Environment-scoped. No hardcoded credentials. CI uses encrypted storage. |
+| 🔑 **Secrets** | Environment-scoped and validated at startup. No hardcoded credentials. |
 
 ---
 
@@ -272,7 +318,12 @@ Prisma Schema  ──►  Generated Types  ──►  tRPC Procedures  ──►
 | 📦 **Provider** | AWS S3 via `@aws-sdk/client-s3` |
 | 🔐 **Access** | Private buckets + time-limited signed URLs |
 | 🔀 **Delivery** | App proxies (`/api/audio/:id`, `/api/voices/:id`) — browsers never see raw keys |
-| 📂 **Content** | Voice samples, generated WAVs, previews, streaming playback |
+| 📂 **Content** | System voice samples, custom voice references, generated WAVs |
+| 🧭 **Key Shape** | `voices/system/:id.wav`, `voices/orgs/:orgId/:voiceId`, `generations/orgs/:orgId/:generationId` |
+
+The Next.js app owns writes to S3. Modal mounts the same bucket read-only at `/storage`, so inference can resolve `voice_key` values as local files without receiving S3 credentials from each request.
+
+Deletes are best-effort after the database record is removed. If strict storage hygiene becomes required, add a reconciliation job that compares live object keys against Prisma rows.
 
 ---
 
@@ -346,14 +397,24 @@ Usage events emit only after S3 upload confirmation. If generation fails, the me
 
 ---
 
-## 🚢 CI/CD
+## 🚢 Deployment & Operations
 
 | Component | Details |
 |:---|:---|
 | 🌐 **Vercel** | Next.js app, API routes, tRPC endpoints |
 | 🤖 **Modal** | Chatterbox TTS inference (`chatterbox_tts.py`, FastAPI) |
-| 🔄 **GitHub Actions** | Automated CI — lint, build, PR validation |
-| 👀 **Preview Envs** | Branch preview deployments on Vercel |
+
+### Operational Workflows
+
+| Workflow | Command / Location | Why It Matters |
+|:---|:---|:---|
+| Generate Prisma client | `prisma generate` via `predev`, `prebuild`, and `postinstall` | Keeps Prisma 7 generated client in sync with schema changes |
+| Sync inference types | `npm run sync-api` | Regenerates `src/types/chatterbox-api.d.ts` from the deployed Modal/FastAPI OpenAPI spec |
+| Seed system voices | `npx prisma db seed` / `scripts/seed-system-voices.ts` | Uploads bundled WAV presets and upserts global `SYSTEM` voice rows |
+| Deploy inference | `python -m modal deploy chatterbox_tts.py` | Publishes the Chatterbox FastAPI service used by `CHATTERBOX_API_URL` |
+| Configure storage mount | Modal secret `aws-storage` or `AWS_MODAL_SECRET_NAME` | Lets Modal read the same bucket the app writes to |
+
+The Modal class is configured with `scaledown_window=120`, so inactive inference workers may scale down. The app should continue treating inference as a network boundary that can fail, cold start, or return invalid audio.
 
 ---
 
@@ -361,7 +422,7 @@ Usage events emit only after S3 upload confirmation. If generation fails, the me
 
 | # | Insight | Details |
 |:---|:---|:---|
-| 1️⃣ | **Owning inference changes the economics** | Self-hosting removes per-request cost and vendor quota risk. The product owns the entire cost curve. |
+| 1️⃣ | **Owning inference changes the operating model** | Self-hosting moves generation cost, reliability, and model behavior into infrastructure the product controls. |
 | 2️⃣ | **Multi-tenancy must be foundational** | Retrofitting tenant isolation is painful. Orgs must be a first-class DB, routing, and server-guard concern from day one. |
 | 3️⃣ | **Type safety is a productivity multiplier** | tRPC + Prisma + TypeScript means schema changes propagate visibly through the entire stack at compile time. |
 | 4️⃣ | **Billing is architecture, not UI** | Feature gates and usage metering belong in the application layer. Frontend-only gates are decoration, not policy. |
