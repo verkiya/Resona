@@ -317,7 +317,7 @@
   border: 1px solid oklch(0.88 0.01 280 / 0.5) !important;
   border-radius: 1rem !important;
   color: var(--foreground) !important;
-  backdrop-filter: blur(18px);
+  backdrop-filter:(18px);
   box-shadow:
     0 12px 32px oklch(0.2 0.02 280 / 0.08),
     inset 0 1px 0 rgb(255 255 255 / 0.35);
@@ -401,7 +401,7 @@
   background: rgb(255 255 255 / 0.35) !important;
   border: 1px solid rgb(255 255 255 / 0.2) !important;
   color: var(--muted-foreground) !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter:(10px);
   border-radius: 999px !important;
   transition: all 0.2s ease;
 }
@@ -418,7 +418,7 @@
   border: 1px solid oklch(0.88 0.01 280 / 0.35) !important;
   background: rgb(255 255 255 / 0.45) !important;
   color: var(--foreground) !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter:(10px);
 }
 
 /* Dark mode */

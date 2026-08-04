@@ -10,14 +10,14 @@ export default function NotFound() {
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-6 text-foreground">
       <div className="pointer-events-none absolute inset-0">
         <div
-          className="absolute left-[-8%] top-[12%] h-80 w-80 rounded-full bg-primary/8 blur-3xl"
+          className="absolute left-[-8%] top-[12%] h-80 w-80 rounded-full bg-primary/8"
           style={{
             animation: "floatSlow 14s ease-in-out infinite",
           }}
         />
 
         <div
-          className="absolute right-[-10%] top-[20%] h-96 w-96 rounded-full bg-accent/6 blur-3xl"
+          className="absolute right-[-10%] top-[20%] h-96 w-96 rounded-full bg-accent/6"
           style={{
             animation: "floatSlowReverse 18s ease-in-out infinite",
           }}
@@ -57,7 +57,7 @@ export default function NotFound() {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-2xl">
-        <div className="rounded-3xl border border-border/60 bg-card/80 p-10 text-center shadow-2xl backdrop-blur-xl">
+        <div className="rounded-3xl border border-border/60 bg-card/80 p-10 text-center shadow-2xl">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl border border-primary/15 bg-[linear-gradient(135deg,oklch(0.72_0.13_25/.14),oklch(0.75_0.15_300/.12))] shadow-lg">
             <AudioLines className="h-9 w-9 text-primary" />
           </div>
@@ -86,7 +86,7 @@ export default function NotFound() {
 
             <Link
               href="/voices"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-6 py-3 text-sm font-medium shadow-sm backdrop-blur-sm transition-all duration-200 hover:border-primary/20 hover:bg-primary/5 hover:scale-[1.01]"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card/60 px-6 py-3 text-sm font-medium shadow-sm transition-all duration-200 hover:border-primary/20 hover:bg-primary/5 hover:scale-[1.01]"
             >
               <ArrowLeft className="h-4 w-4" />
               Explore Voices

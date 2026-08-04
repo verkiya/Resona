@@ -200,7 +200,7 @@ export function VoiceCard({ voice }: VoiceCardProps) {
 
           <DropdownMenuContent
             align="end"
-            className="border-border/50 bg-background/95 backdrop-blur-xl"
+            className="border-border/50 bg-background/95"
           >
             <DropdownMenuItem
               asChild

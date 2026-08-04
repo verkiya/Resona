@@ -70,7 +70,7 @@ export default function ButtonLabPage() {
             {variants.map((variant) => (
               <div
                 key={variant}
-                className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-5 backdrop-blur-sm"
+                className="space-y-4 rounded-2xl border border-border/50 bg-card/50 p-5"
               >
                 <div>
                   <p className="font-medium tracking-tight">{variant}</p>
@@ -98,7 +98,7 @@ export default function ButtonLabPage() {
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold">Sizes</h2>
 
-          <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/50 bg-card/50 p-6">
             <div className="flex flex-wrap items-center gap-4">
               {sizes.map((size) => (
                 <Button key={size} size={size} variant="royal">
@@ -113,7 +113,7 @@ export default function ButtonLabPage() {
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold">Icon Sizes</h2>
 
-          <div className="rounded-2xl border border-border/50 bg-card/50 p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/50 bg-card/50 p-6">
             <div className="flex flex-wrap items-center gap-4">
               <Button size="icon-xs" variant="iconMuted">
                 <Play />

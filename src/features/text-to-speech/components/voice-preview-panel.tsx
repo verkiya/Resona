@@ -81,7 +81,7 @@ export function VoicePreviewPanel({
   };
 
   return (
-    <div className="hidden h-full flex-1 flex-col border-t border-border/40 bg-card/30 backdrop-blur-xl lg:flex">
+    <div className="hidden h-full flex-1 flex-col border-t border-border/40 bg-card/30 lg:flex">
       <div className="border-b border-border/30 px-6 py-5">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           Resona Playback
@@ -100,7 +100,7 @@ export function VoicePreviewPanel({
                 gap-2 rounded-2xl border border-border/40
                 bg-background/80 px-4 py-2
                 text-sm text-muted-foreground
-                shadow-xl backdrop-blur-xl
+                shadow-xl
               "
             >
               <Spinner className="size-4" />
@@ -139,7 +139,7 @@ export function VoicePreviewPanel({
       <div className="p-6">
         <div className="grid w-full grid-cols-3 items-center gap-6">
           {" "}
-          <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/20 p-2 shadow-sm backdrop-blur-sm ">
+          <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/20 p-2 shadow-sm ">
             <p className="line-clamp-2 truncate text-sm font-medium text-foreground">
               {text}
             </p>

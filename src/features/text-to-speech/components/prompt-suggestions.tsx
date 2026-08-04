@@ -104,7 +104,6 @@ export function PromptSuggestions({
             className={`
               cursor-pointer gap-1.5 rounded-md
               px-2.5 py-1 text-xs
-              backdrop-blur-sm
               transition-all duration-200
               hover:scale-[1.02]
               ${suggestion.color}

@@ -13,8 +13,7 @@ export const WavyBackground = ({
   containerClassName,
   colors,
   waveWidth,
-  backgroundFill,
-  blur = 10,
+  backgroundFill, = 10,
   speed = "fast",
   waveOpacity = 0.5,
   waveYOffset = 250,
@@ -25,8 +24,7 @@ export const WavyBackground = ({
   containerClassName?: string;
   colors?: string[];
   waveWidth?: number;
-  backgroundFill?: string;
-  blur?: number;
+  backgroundFill?: string;?: number;
   speed?: "slow" | "fast";
   waveOpacity?: number;
   waveYOffset?: number;
@@ -102,14 +100,14 @@ export const WavyBackground = ({
     w = ctx.canvas.width = window.innerWidth;
     h = ctx.canvas.height = window.innerHeight;
 
-    ctx.filter = `blur(${blur}px)`;
+    ctx.filter = `(${}px)`;
     nt = 0;
 
     const handleResize = () => {
       if (!ctx) return;
       w = ctx.canvas.width = window.innerWidth;
       h = ctx.canvas.height = window.innerHeight;
-      ctx.filter = `blur(${blur}px)`;
+      ctx.filter = `(${}px)`;
     };
 
     window.addEventListener("resize", handleResize);
@@ -160,7 +158,7 @@ export const WavyBackground = ({
         ref={canvasRef}
         id="canvas"
         style={{
-          ...(isSafari ? { filter: `blur(${blur}px)` } : {}),
+          ...(isSafari ? { filter: `(${}px)` } : {}),
         }}
       />
       <div className={cn("relative z-10", className)} {...props}>

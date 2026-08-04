@@ -54,7 +54,6 @@ export function VoicesToolbar({ totalVoices }: VoicesToolbarProps) {
             border border-border/40
             bg-card/30
             shadow-sm
-            backdrop-blur-xl
             transition-all
             focus-within:border-primary/30
             focus-within:shadow-[0_0_0_4px_hsl(var(--primary)/0.08)]

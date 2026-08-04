@@ -14,7 +14,7 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground hover:bg-primary/90",
 
         ctaGlow:
-          "relative bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] text-white font-semibold shadow-lg hover:brightness-110 active:scale-[0.97] before:absolute before:inset-0 before:rounded-md before:bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] before:blur-lg before:opacity-40 before:-z-10",
+          "relative bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] text-white font-semibold shadow-lg hover:brightness-110 active:scale-[0.97] before:absolute before:inset-0 before:rounded-md before:bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] before: before:opacity-40 before:-z-10",
 
         softGradient:
           "bg-[linear-gradient(120deg,oklch(0.85_0.08_60),oklch(0.75_0.12_300))] text-foreground border border-border shadow-sm hover:brightness-105 hover:saturate-110 hover:shadow-md active:scale-[0.99]",
@@ -29,7 +29,7 @@ const buttonVariants = cva(
           "border border-accent/40 text-accent hover:bg-accent/10 hover:border-accent",
 
         glassCta:
-          "bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 shadow-lg",
+          "bg-white/10 border border-white/20 text-white hover:bg-white/20 shadow-lg",
 
         success:
           "bg-[linear-gradient(90deg,#34d399,#4ade80)] text-white font-medium shadow-sm hover:brightness-110",
@@ -62,7 +62,7 @@ const buttonVariants = cva(
           "border border-primary/25 text-primary hover:bg-primary/10",
 
         darkGlass:
-          "bg-black/30 text-white border border-white/10 backdrop-blur-xl hover:bg-black/40 shadow-lg",
+          "bg-black/30 text-white border border-white/10 hover:bg-black/40 shadow-lg",
 
         activeSidebar:
           "bg-[linear-gradient(90deg,oklch(0.72_0.13_25),oklch(0.75_0.15_300))] text-white font-semibold shadow-lg ring-2 ring-white/20 brightness-110",

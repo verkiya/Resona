@@ -51,7 +51,7 @@ export function SettingsPanelHistory() {
         <Link
           href={`/text-to-speech/${generation.id}`}
           key={generation.id}
-          className="group flex items-start gap-3 rounded-2xl border border-border/30 bg-card/50 p-4 text-left shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-card/80 hover:shadow-md"
+          className="group flex items-start gap-3 rounded-2xl border border-border/30 bg-card/50 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-card/80 hover:shadow-md"
         >
           <VoiceAvatar
             seed={generation.voiceId ?? generation.voiceName}

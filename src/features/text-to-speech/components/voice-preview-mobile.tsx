@@ -107,7 +107,7 @@ export function VoicePreviewMobile({
   if (!audioUrl) return null;
 
   return (
-    <div className="lg:hidden border-t border-border/40 bg-card/40 p-4 backdrop-blur-xl">
+    <div className="lg:hidden border-t border-border/40 bg-card/40 p-4">
       <audio ref={audioRef} src={audioUrl} />
 
       <div className="mb-3">
@@ -117,7 +117,7 @@ export function VoicePreviewMobile({
       </div>
 
       <div className="grid grid-cols-[1fr_auto] items-center gap-3">
-        <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/15 p-3 shadow-sm backdrop-blur-sm">
+        <div className="min-w-0 rounded-2xl border border-border/30 bg-primary/15 p-3 shadow-sm">
           <p className="truncate text-sm font-medium text-foreground">
             {text}
           </p>

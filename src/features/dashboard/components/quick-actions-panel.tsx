@@ -4,7 +4,7 @@ import { QuickActionCard } from "./quick-action-card";
 
 export function QuickActionsPanel() {
   return (
-    <section className="space-y-6 rounded-2xl border border-border/50 bg-card/30 p-3 backdrop-blur-sm">
+    <section className="space-y-6 rounded-2xl border border-border/50 bg-card/30 p-3">
       <div>
         <h2 className="text-xl font-semibold tracking-tight">
           Explore voice scenarios

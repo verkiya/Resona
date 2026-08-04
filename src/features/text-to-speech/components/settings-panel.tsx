@@ -11,12 +11,12 @@ const tabTriggerClassName =
 
 export function SettingsPanel() {
   return (
-    <div className="hidden w-105 min-h-0 flex-col border-l border-border/40 bg-card/60 backdrop-blur-lg shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] lg:flex">
+    <div className="hidden w-105 min-h-0 flex-col border-l border-border/40 bg-card/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] lg:flex">
       <Tabs
         defaultValue="settings"
         className="flex h-full min-h-0 flex-col gap-y-0"
       >
-        <TabsList className="h-12 w-full rounded-none border-b border-border/40 bg-background/60 p-0 backdrop-blur-md group-data-[orientation=horizontal]/tabs:h-12">
+        <TabsList className="h-12 w-full rounded-none border-b border-border/40 bg-background/60 p-0 group-data-[orientation=horizontal]/tabs:h-12">
           <TabsTrigger value="settings" className={tabTriggerClassName}>
             <Settings className="size-5" />
             Settings

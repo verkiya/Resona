@@ -149,7 +149,7 @@ export function UsageContainer() {
   const { data } = useQuery(trpc.billing.getStatus.queryOptions());
 
   return (
-    <div className="group-data-[collapsible=icon]:hidden rounded-2xl border border-border/60 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:shadow-md">
+    <div className="group-data-[collapsible=icon]:hidden rounded-2xl border border-border/60 bg-card/80 p-4 transition-all duration-300 hover:border-primary/20 hover:shadow-md">
       {/* 
         Conditional Billing UI:
         Subscribed orgs see their accrued usage from Polar meters.

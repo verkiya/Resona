@@ -6,7 +6,7 @@ function TextareaWaveSkeleton() {
   const bars = [10, 22, 14, 30, 18, 26, 12, 20, 28, 16, 24];
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border/50 bg-card/40 p-5 backdrop-blur-sm">
+    <div className="flex h-full flex-col rounded-xl border border-border/50 bg-card/40 p-5">
       <div className="space-y-3">
         <Skeleton className="h-4 w-2/3 bg-muted/60" />
         <Skeleton className="h-4 w-5/6 bg-muted/50" />
