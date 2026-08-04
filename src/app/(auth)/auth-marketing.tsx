@@ -84,9 +84,9 @@ export function AuthMarketing() {
         variant="shimmerCta"
         className="absolute bottom-4 left-1/2 mt-4 flex -translate-x-1/2 items-center gap-2 rounded-2xl border bg-primary px-5 py-3 text-sm font-medium shadow-lg transition hover:-translate-x-1/2 hover:scale-105 hover:text-muted"
       >
-        <Link href="/learnings">
+        <Link href="/learnings" target="_blank" rel="noopener noreferrer">
           <BookOpen className="h-4 w-4 text-muted" />
-          What I Learned Building Resona
+          What I Learnt Building Resona
         </Link>
       </Button>
 
