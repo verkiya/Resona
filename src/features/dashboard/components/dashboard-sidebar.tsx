@@ -207,7 +207,7 @@ function DashboardSidebarContent() {
 
   const othersMenuItems: MenuItem[] = [
     {
-      title: "What I learnt Building Resona",
+      title: "What I Learnt Building Resona",
       url: "/learnings",
       icon: BookIcon,
     },

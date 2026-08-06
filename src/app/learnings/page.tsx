@@ -23,7 +23,7 @@ export default function LearningsPage() {
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top_left,oklch(0.72_0.13_25/0.14),transparent_42%),radial-gradient(circle_at_top_right,oklch(0.75_0.15_300/0.12),transparent_38%)]" />
       <div className="mx-auto max-w-5xl px-6 py-16 lg:px-10">
         <section className="mb-16 space-y-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground shadow-sm backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground shadow-sm">
             Engineering breakdown
           </div>
 
@@ -685,7 +685,7 @@ polar.events.ingest({ ... }).catch(() => {});`}</pre>
         </section>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/85 px-4 py-4 backdrop-blur-xl supports-[backdrop-filter]:bg-background/70">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/85 px-4 py-4 supports-[backdrop-filter]:bg-background/70">
         <div className="mx-auto flex max-w-7xl justify-center">
           <Button
             asChild
@@ -725,7 +725,7 @@ function Block({
           {title}
         </h2>
       </div>
-      <div className="rounded-2xl border border-border/60 bg-card/60 p-6 shadow-sm backdrop-blur-sm md:p-8">
+      <div className="rounded-2xl border border-border/60 bg-card/60 p-6 shadow-sm md:p-8">
         {children}
       </div>
     </section>
@@ -808,7 +808,7 @@ function ChallengeCard({
 
 function HeroStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card/70 p-4 shadow-sm backdrop-blur-sm">
+    <div className="rounded-2xl border border-border/60 bg-card/70 p-4 shadow-sm">
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         {label}
       </p>

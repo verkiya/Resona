@@ -17,7 +17,7 @@ export function SettingsPanelSettings() {
 
   return (
     <>
-      <div className="border-b border-border/40 bg-background/30 p-5 backdrop-blur-sm">
+      <div className="border-b border-border/40 bg-background/30 p-5">
         <VoiceSelector />
       </div>
 
@@ -32,7 +32,7 @@ export function SettingsPanelSettings() {
           {sliders.map((slider) => (
             <form.Field key={slider.id} name={slider.id}>
               {(field) => (
-                <Field className="rounded-2xl border border-border/40 bg-card/50 p-4 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-card/70 hover:shadow-md">
+                <Field className="rounded-2xl border border-border/40 bg-card/50 p-4 shadow-sm transition-all duration-200 hover:bg-card/70 hover:shadow-md">
                   <FieldLabel className="text-sm font-semibold tracking-tight">
                     {slider.label}
                   </FieldLabel>

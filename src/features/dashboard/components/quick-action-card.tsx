@@ -26,7 +26,7 @@ export function QuickActionCard({
           )}
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="absolute h-10 w-10 rounded-full bg-white/20 blur-lg" />
+            <div className="absolute h-10 w-10 rounded-full bg-white/20" />
 
             <div className="absolute flex items-end gap-1">
               <span

@@ -12,7 +12,7 @@ interface VoicesListProps {
 export function VoicesList({ title, voices }: VoicesListProps) {
   if (!voices.length) {
     return (
-      <div className="space-y-5 rounded-2xl border border-border/50 bg-card/30 p-5 backdrop-blur-sm">
+      <div className="space-y-5 rounded-2xl border border-border/50 bg-card/30 p-5">
         <div className="flex items-center gap-2">
           <div className="rounded-lg bg-primary/10 p-2">
             <Mic className="size-4 text-primary" />
@@ -26,7 +26,7 @@ export function VoicesList({ title, voices }: VoicesListProps) {
 
         <div className="flex flex-col items-center justify-center gap-4 py-12">
           <div className="relative flex h-24 w-24 items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-primary/10 blur-xl" />
+            <div className="absolute inset-0 rounded-full bg-primary/10" />
 
             <div className="absolute flex items-end gap-1">
               <span className="h-5 w-1 rounded-full bg-primary/40 animate-pulse" />
@@ -57,7 +57,7 @@ export function VoicesList({ title, voices }: VoicesListProps) {
   }
 
   return (
-    <div className="space-y-5 rounded-2xl border border-border/50 bg-card/30 p-5 backdrop-blur-sm">
+    <div className="space-y-5 rounded-2xl border border-border/50 bg-card/30 p-5">
       <div className="flex items-center gap-2">
         <div className="rounded-lg bg-primary/10 p-2">
           <AudioLines className="size-4 text-primary" />

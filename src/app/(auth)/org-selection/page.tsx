@@ -16,7 +16,6 @@ export default function OrgSelectionPage() {
             w-full border border-border/60
             rounded-3xl
             bg-card/80
-            backdrop-blur-xl
             shadow-2xl
             px-8 py-8
           `,
@@ -82,7 +81,6 @@ export default function OrgSelectionPage() {
             rounded-xl
             border border-border/60
             bg-background/70
-            backdrop-blur-sm
             shadow-sm
             transition-all duration-200
             hover:bg-primary/8
@@ -116,7 +114,6 @@ export default function OrgSelectionPage() {
             rounded-xl
             border border-border/60
             bg-background/80
-            backdrop-blur-sm
             shadow-sm
             transition-all duration-200
             focus:border-primary/40
