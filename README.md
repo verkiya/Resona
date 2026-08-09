@@ -26,6 +26,32 @@
 
 <br />
 
+## 📸 Screenshots
+
+<div align="center">
+  <img src="public/resona/introduction.png" alt="Resona Introduction" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/1.png" alt="Screenshot 1" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/2.png" alt="Screenshot 2" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/3.png" alt="Screenshot 3" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/4.png" alt="Screenshot 4" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/5.png" alt="Screenshot 5" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/6.png" alt="Screenshot 6" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/7.png" alt="Screenshot 7" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/8.png" alt="Screenshot 8" width="800" style="border-radius: 8px; margin-bottom: 16px;" />
+  <br />
+  <img src="public/resona/9.png" alt="Screenshot 9" width="800" style="border-radius: 8px;" />
+</div>
+
+<br />
+
 ## 📖 Table of Contents
 
 - [Overview](#-overview)
