@@ -1,3 +1,6 @@
+
+
+
 <div align="center">
  
   <h1>🎙️ Resona</h1>
@@ -26,13 +29,9 @@
 ## 📸 Quick Demo
 
 <div align="center">
- 
-
-https://github.com/user-attachments/assets/f0bd7bf8-2bac-4b9d-a107-f7f52d35fb74
 
 
-
-
+https://github.com/user-attachments/assets/538d606f-acdf-4ffe-89bb-14899f802f63
 
 
   <br />
