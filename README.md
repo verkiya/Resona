@@ -1,12 +1,9 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/Resona-AI_Voice_SaaS-black?style=for-the-badge" alt="Resona" />
+ 
   <h1>🎙️ Resona</h1>
   <p><strong>Full-stack AI voice generation platform with self-hosted inference, multi-tenant organization workspaces, metered subscription billing, and private media delivery.</strong></p>
-  
-  <p>
-    <a href="https://resonapro.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-▶-4f46e5?style=flat-square" alt="Live Demo"></a>
-    <a href="https://resonapro.vercel.app/learnings"><img src="https://img.shields.io/badge/Engineering_Learnings-📘-059669?style=flat-square" alt="Learnings"></a>
-  </p>
+
+
 
   <div>
     <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js" /></a>
@@ -17,11 +14,25 @@
     <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" /></a>
     <a href="https://trpc.io/"><img src="https://img.shields.io/badge/tRPC-2596BE?style=flat-square&logo=trpc&logoColor=white" alt="tRPC" /></a>
     <a href="https://clerk.com/"><img src="https://img.shields.io/badge/Clerk-6C47FF?style=flat-square&logo=clerk&logoColor=white" alt="Clerk" /></a>
-    <a href="https://aws.amazon.com/s3/"><img src="https://img.shields.io/badge/AWS_S3-569A31?style=flat-square&logo=amazons3&logoColor=white" alt="AWS S3" /></a>
+    <a href="https://aws.amazon.com/s3/"><img src="https://img.shields.io/badge/AWS_S3-FF9900?style=flat-square&logo=amazonaws&logoColor=white" alt="AWS S3" /></a>
     <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" /></a>
     <a href="https://sentry.io/"><img src="https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white" alt="Sentry" /></a>
     <a href="https://vercel.com/"><img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" /></a>
   </div>
+</div>
+
+<br />
+
+## 📸 Quick Demo
+
+<div align="center">
+  <video src="public/resona/resona.mp4" width="800" controls autoplay loop muted style="border-radius: 8px; margin-bottom: 16px;"></video>
+  <br />
+  <p>
+    <a href="https://resonapro.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-▶-4f46e5?style=for-the-badge" alt="Live Demo"></a>
+    <a href="https://resonapro.vercel.app/learnings"><img src="https://img.shields.io/badge/Engineering_Learnings-📘-059669?style=for-the-badge" alt="Learnings"></a>
+    <a href="https://youtu.be/Bt2X_5rsFO0"><img src="https://img.shields.io/badge/Watch_Brief_Resona_Demonstration-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Brief Resona Demonstration" /></a>
+  </p>
 </div>
 
 <br />
@@ -237,14 +248,14 @@ erDiagram
     Clerk ||--o{ Voice : "auth + org identity"
     Clerk ||--o{ Generation : "auth + org identity"
     Voice ||--o{ Generation : has
-    
+
     Voice {
         string id
         string variant "SYSTEM | CUSTOM"
         string orgId "null for SYSTEM"
         string objectKey "reference clip in S3"
     }
-    
+
     Generation {
         string id
         string orgId "tenant scope"
