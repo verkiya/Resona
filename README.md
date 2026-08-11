@@ -43,9 +43,9 @@ https://github.com/user-attachments/assets/538d606f-acdf-4ffe-89bb-14899f802f63
 
   <br />
   <p>
-    <a href="https://resonapro.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-▶-4f46e5?style=for-the-badge" alt="Live Demo"></a>
-    <a href="https://resonapro.vercel.app/learnings"><img src="https://img.shields.io/badge/Engineering_Learnings-📘-059669?style=for-the-badge" alt="Learnings"></a>
-    <a href="https://youtu.be/Bt2X_5rsFO0"><img src="https://img.shields.io/badge/Watch_Brief_Resona_Demonstration-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Brief Resona Demonstration" /></a>
+    <a href="https://resonapro.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"></a>
+    <a href="https://resonapro.vercel.app/learnings"><img src="https://img.shields.io/badge/Engineering_Learnings-059669?style=for-the-badge&logo=gitbook&logoColor=white" alt="Learnings"></a>
+    <a href="https://youtu.be/Bt2X_5rsFO0"><img src="https://img.shields.io/badge/Watch_Demonstration-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Brief Resona Demonstration" /></a>
   </p>
 </div>
 
