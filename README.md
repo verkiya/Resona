@@ -26,7 +26,7 @@
 ## 📸 Quick Demo
 
 <div align="center">
-  <video src="public/resona/resona.mp4" width="800" controls autoplay loop muted style="border-radius: 8px; margin-bottom: 16px;"></video>
+  <video src="https://github.com/verkiya/Resona/raw/main/public/resona/resona.mp4" width="800" controls autoplay loop muted style="border-radius: 8px; margin-bottom: 16px;"></video>
   <br />
   <p>
     <a href="https://resonapro.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-▶-4f46e5?style=for-the-badge" alt="Live Demo"></a>
