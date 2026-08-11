@@ -31,10 +31,6 @@
   </div>
 </div>
 
-<br />
-
-## 📸 Quick Demo
-
 <div align="center">
 
 
