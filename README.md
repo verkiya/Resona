@@ -3,7 +3,7 @@
 
 <div align="center">
 
-  <h1>🎙️ Resona</h1>
+  <h1>Resona</h1>
   <p><strong>Full-stack AI voice generation platform with self-hosted inference, multi-tenant organization workspaces, metered subscription billing, and private media delivery.</strong></p>
 
 
